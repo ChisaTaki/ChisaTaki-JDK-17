@@ -37,7 +37,7 @@ How to build the ChisaTaki Bot
 10. Navigate to Console and press the Restart Button
 11. If it is successful, the console should output the following 
 
-```bash
+```
 [main] INFO net.dv8tion.jda.api.JDA - Login Successful!
 [JDA MainWS-ReadThread] INFO net.dv8tion.jda.internal.requests.WebSocketClient - Connected to WebSocket
 [JDA MainWS-ReadThread] INFO net.dv8tion.jda.api.JDA - Finished Loading!
