@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public class TimeUtils {
+	
 	public static long getCurrentEpochSecond() {
 		return Instant.now().getEpochSecond();
 	}
@@ -16,5 +17,9 @@ public class TimeUtils {
 		
 		Instant instant = Instant.ofEpochSecond(epochSecond);
 		return LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+	}
+	
+	public static long getUnixTimeIn10Minutes(long epochSecond) {
+		return epochSecond + (10 * 60);
 	}
 }
