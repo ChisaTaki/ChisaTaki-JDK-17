@@ -5,11 +5,11 @@ import org.slf4j.LoggerFactory;
 
 import dev.kurumiDisciples.chisataki.audio.MusicInteraction;
 import dev.kurumiDisciples.chisataki.listeners.IgnoreInteraction;
-import dev.kurumiDisciples.chisataki.listeners.RockPaperInteraction;
 import dev.kurumiDisciples.chisataki.listeners.ShrineDeletionInteraction;
 import dev.kurumiDisciples.chisataki.listeners.ShrineInteraction;
 import dev.kurumiDisciples.chisataki.modmail.ModMailInteraction;
 import dev.kurumiDisciples.chisataki.modmail.TicketInteraction;
+import dev.kurumiDisciples.chisataki.rps.RpsInteraction;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -36,7 +36,7 @@ public class Main {
               CacheFlag.STICKER, CacheFlag.ROLE_TAGS, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS,
               CacheFlag.SCHEDULED_EVENTS, CacheFlag.FORUM_TAGS)
           .setMemberCachePolicy(MemberCachePolicy.ALL).setChunkingFilter(ChunkingFilter.ALL)
-          .addEventListeners(new MemeInteraction()).addEventListeners(new RockPaperInteraction())
+          .addEventListeners(new MemeInteraction()).addEventListeners(new RpsInteraction())
           .addEventListeners(new EmbedInteraction()).addEventListeners(new SupportInteraction())
           .addEventListeners(new ShrineInteraction()).addEventListeners(new ShrineDeletionInteraction())
           .addEventListeners(new BotDevContext()).addEventListeners(new GifInteraction())
