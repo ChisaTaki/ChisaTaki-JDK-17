@@ -23,7 +23,7 @@ public class Main {
   final static Logger logger = LoggerFactory.getLogger(Main.class);
   final static int gcSec = 3600;
   private static JDA jda;
-  
+
   public static void main(String[] args) {
     // We construct a builder for a BOT account. If we wanted to use a CLIENT
     // account
@@ -44,19 +44,17 @@ public class Main {
           .addEventListeners(new WelcomeInteraction()).addEventListeners(new IgnoreInteraction())
           .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
           .addEventListeners(new Debugger()).addEventListeners(new ModMailInteraction())
-        .addEventListeners(new TicketInteraction()).addEventListeners(new MusicInteraction())
+          .addEventListeners(new TicketInteraction()).addEventListeners(new MusicInteraction())
           .setActivity(Activity.of(ActivityType.WATCHING, "ChisaTaki's Wedding", "https://chisatakicopium.com"))
           .build();
-      jda.awaitReady(); // awaits for the cache system to build 
+      jda.awaitReady(); // awaits for the cache system to build
       logger.info("Chisataki Bot successfully built and connected to JDA!");
-      
+
       CommandCenter.addCommands(getJDA());
       logger.info("Commands added!");
       MessageCache.setMaxSize(2000);
       logger.info("Message Cache Size: {}", MessageCache.getMaxSize());
 
-
-      
     }
 
     catch (InterruptedException e) {
