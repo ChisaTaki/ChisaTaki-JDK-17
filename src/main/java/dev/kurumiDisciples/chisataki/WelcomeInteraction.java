@@ -231,6 +231,8 @@ public class WelcomeInteraction extends ListenerAdapter {
 		InputStream welcomeGif = createGifEncoder(generateFrames);
 
 		logger.info("END: \n" + RuntimeUtils.getSystemInformation());
+		System.gc();
+		logger.info("CLEAR: \n" + RuntimeUtils.getSystemInformation());
 
 		return welcomeGif;
 	}
