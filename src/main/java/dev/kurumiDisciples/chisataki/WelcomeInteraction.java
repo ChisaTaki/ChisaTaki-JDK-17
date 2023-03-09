@@ -18,7 +18,6 @@ import javax.imageio.ImageIO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumiDisciples.chisataki.utils.RuntimeUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -218,22 +217,16 @@ public class WelcomeInteraction extends ListenerAdapter {
 	}
 
 	private static InputStream createGifForWelcome(Member member) throws Exception{
-		logger.info("BEGIN FRAME GENERATION: \n" + RuntimeUtils.getSystemInformation());
 
 		ArrayList<BufferedImage> bufferedImages = gifToBufferedImages("data/images/outline.png");
 		ArrayList<BufferedImage> generateFrames = new ArrayList<>();
 		for (int i = 0; i < bufferedImages.size(); i++) {
 			generateFrames.add(modifyFrame(bufferedImages.get(i), member));
 		}
-
-		logger.info("BEGIN ENCODER: \n" + RuntimeUtils.getSystemInformation());
-
+		
 		InputStream welcomeGif = createGifEncoder(generateFrames);
-
-		logger.info("END: \n" + RuntimeUtils.getSystemInformation());
 		System.gc();
-		logger.info("CLEAR: \n" + RuntimeUtils.getSystemInformation());
-
+		
 		return welcomeGif;
 	}
 
