@@ -12,6 +12,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;  
+import java.util.concurrent.Executors;  
 
 import javax.imageio.ImageIO;
 
@@ -32,50 +34,50 @@ public class WelcomeInteraction extends ListenerAdapter {
 
 	final static String WELCOME_CHANNEL = "1010096738381611029";
 
+  private static final int THREAD_POOL_SIZE = 10;
+
+  private ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+
 	SlashCommandInteractionEvent event;
 
+  private static Font font;
+
+  private static BufferedImage baseImage = null;
+
+  
 	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-		Thread testCommand = new Thread(){
-			public void run(){
-				if (event.getName().equals("test-image")){
-					event.deferReply().queue();
-					try{
-
-						event.getHook().editOriginal("Hello " + event.getMember().getAsMention() + "!").setEmbeds(createEmbed(event))
-						.setFiles(FileUpload.fromData(createGifForWelcome(event.getMember()), "welcome.gif")).queue(); 
-
-					}
-					catch (Exception e){
-						event.getHook().editOriginal("Generation Failed. See console").queue();
-						e.printStackTrace();
-					}
-				}
+	threadPool.submit(() -> {
+		if (event.getName().equals("test-image")){
+			event.deferReply().queue();
+			try{
+				event.getHook().editOriginal("Hello " + event.getMember().getAsMention() + "!").setEmbeds(createEmbed(event))
+				.setFiles(FileUpload.fromData(createGifForWelcome(event.getMember()), "welcome.gif")).queue(); 
 			}
-		};
-		testCommand.start();
-	}
+			catch (Exception e){
+				event.getHook().editOriginal("Generation Failed. See console").queue();
+				e.printStackTrace();
+			}
+		}
+	});
+}
 	public void onGuildMemberJoin(GuildMemberJoinEvent event){
-		Thread welcomeThread = new Thread(){
-			public void run(){
-				if (!event.getMember().getUser().isBot()){
-					try{
-						event.getGuild().getTextChannelById(WELCOME_CHANNEL).sendMessage("Hello " + event.getMember().getAsMention() + "!").setEmbeds(createEmbed(event))
-						.setFiles(FileUpload.fromData(createGifForWelcome(event.getMember()), "welcome.gif")).queue();
-					}
-					catch (Exception e){
-						e.printStackTrace();
-						event.getGuild().getTextChannelById(WELCOME_CHANNEL).sendMessage("Hello " + event.getMember().getAsMention() + "!").setEmbeds(createEmbedFailure(event)).queue();
-					}
+    threadPool.execute(() -> {
+        if (!event.getMember().getUser().isBot()){
+            try{
+                event.getGuild().getTextChannelById(WELCOME_CHANNEL).sendMessage("Hello " + event.getMember().getAsMention() + "!").setEmbeds(createEmbed(event))
+                    .setFiles(FileUpload.fromData(createGifForWelcome(event.getMember()), "welcome.gif")).queue();
+            }
+            catch (Exception e){
+                e.printStackTrace();
+                event.getGuild().getTextChannelById(WELCOME_CHANNEL).sendMessage("Hello " + event.getMember().getAsMention() + "!").setEmbeds(createEmbedFailure(event)).queue();
+            }
 
-					if (event.getUser().getId().equals("249721338044874753")){
-						pingLemons(event);
-					}
-				}
-			}
-		};
-		welcomeThread.setName("Welcome-Thread");
-		welcomeThread.start();
-	}
+            if (event.getUser().getId().equals("249721338044874753")){
+                pingLemons(event);
+            }
+        }
+    });
+}
 
 
 	private static MessageEmbed createEmbed(GuildMemberJoinEvent event){
@@ -152,13 +154,13 @@ public class WelcomeInteraction extends ListenerAdapter {
 	public static BufferedImage writeTextOnImage(BufferedImage image, String text, int x, int y, int fontSize) {
 		Graphics2D g2 = image.createGraphics();
 		try{
-			g2.setFont(Font.createFont(Font.TRUETYPE_FONT, new File("data/font/YuseiMagic-Regular.ttf")).deriveFont(Float.valueOf(fontSize)));
+			font = Font.createFont(Font.TRUETYPE_FONT, new File("data/font/YuseiMagic-Regular.ttf"));
 		}
 		catch (Exception e){
 			System.out.println("Unable to load font");
-			g2.setFont(new Font("Arial", Font.PLAIN, fontSize));
+			font = new Font("Arial", Font.PLAIN, fontSize);
 		}
-
+    g2.setFont(font.deriveFont((float) fontSize));
 		g2.setColor(Color.WHITE);
 		g2.drawString(text, x, y);
 		g2.dispose();
@@ -173,16 +175,16 @@ public class WelcomeInteraction extends ListenerAdapter {
 	}
 
 
-	private static BufferedImage getBaseImage(){
-		BufferedImage baseImage = null;
-		try{
-			baseImage = ImageIO.read(new File("data/images/testImage.png"));
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
-		return baseImage;
-	}
+	private static BufferedImage getBaseImage() {
+    if (baseImage == null) {
+        try {
+            baseImage = ImageIO.read(new File("data/images/testImage.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    return baseImage;
+}
 
 	private static InputStream generateImage(Member member) throws Exception{
 		return bufferedImageToInputStream(
@@ -259,52 +261,6 @@ public class WelcomeInteraction extends ListenerAdapter {
 
 		return gifImage;
 	}
-	/*
-public static InputStream createGifEncoder(ArrayList<BufferedImage> frames, int delay) throws IOException {
-    ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-    // Get the first frame and create an ImageWriter to write the output GIF
-    BufferedImage firstFrame = frames.get(0);
-    Iterator<ImageWriter> writers = ImageIO.getImageWritersBySuffix("gif");
-    ImageWriter writer = writers.next();
-
-    // Set the output stream and the output parameters
-    ImageOutputStream ios = new MemoryCacheImageOutputStream(baos);
-    writer.setOutput(ios);
-
-    // Create the write parameters for the GIF format and set the delay time
-
-    writer.prepareWriteSequence(null);
-    // Set the metadata for the output image
-    IIOMetadata metadata = writer.getDefaultImageMetadata(new ImageTypeSpecifier(firstFrame), null);
-    IIOMetadataNode root = new IIOMetadataNode("javax_imageio_gif_image_1.0");
-    IIOMetadataNode graphicsControlExtension = new IIOMetadataNode("GraphicControlExtension");
-    graphicsControlExtension.setAttribute("delayTime", Integer.toString(delay / 10)); // Convert to centiseconds
-    graphicsControlExtension.setAttribute("disposalMethod", "none");
-    graphicsControlExtension.setAttribute("userInputFlag", "FALSE");
-    graphicsControlExtension.setAttribute("transparentColorFlag", "TRUE");
-    graphicsControlExtension.setAttribute("transparentColorIndex", "0");
-
-    root.appendChild(graphicsControlExtension);
-    metadata.mergeTree("javax_imageio_gif_image_1.0", root);
-
-    try {
-        // Write the first frame and the rest of the frames with their delay times
-        writer.writeToSequence(new IIOImage(firstFrame, null, metadata), null);
-        for (int i = 1; i < frames.size(); i++) {
-            BufferedImage frame = frames.get(i);
-            writer.writeToSequence(new IIOImage(frame, null, metadata), null);
-        }
-
-        writer.endWriteSequence();
-        ios.close();
-    } finally {
-        writer.dispose();
-    }
-
-    return new ByteArrayInputStream(baos.toByteArray());
-}
-	 */
 
 	public static InputStream createGifEncoder(ArrayList<BufferedImage> imageList) throws Exception {
 		//  File gifFile = new File("data/images/test.gif");
