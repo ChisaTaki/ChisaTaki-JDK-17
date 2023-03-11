@@ -40,7 +40,7 @@ public class WelcomeInteraction extends ListenerAdapter {
 
 	SlashCommandInteractionEvent event;
 
-  private static Font font;
+  private static Font font = null;
 
   private static BufferedImage baseImage = null;
 
@@ -143,18 +143,26 @@ public class WelcomeInteraction extends ListenerAdapter {
 		}
 	}
 
-	public static BufferedImage overlayImages(BufferedImage baseImage, BufferedImage topImage, int x, int y) {
-		Graphics2D g2d = baseImage.createGraphics();
-		g2d.drawImage(topImage, x, y, null);
-		g2d.dispose();
-		return baseImage;
-	}
+public static BufferedImage overlayImages(BufferedImage baseImage, BufferedImage topImage, int x, int y) {
+    Graphics2D g2d = null;
+    try {
+        g2d = baseImage.createGraphics();
+        g2d.drawImage(topImage, x, y, null);
+    } finally {
+        if (g2d != null) {
+            g2d.dispose();
+        }
+    }
+    return baseImage;
+}
 
 
 	public static BufferedImage writeTextOnImage(BufferedImage image, String text, int x, int y, int fontSize) {
 		Graphics2D g2 = image.createGraphics();
 		try{
+      if (font == null){
 			font = Font.createFont(Font.TRUETYPE_FONT, new File("data/font/YuseiMagic-Regular.ttf"));
+      }
 		}
 		catch (Exception e){
 			System.out.println("Unable to load font");
@@ -201,7 +209,6 @@ public class WelcomeInteraction extends ListenerAdapter {
 	public static ArrayList<BufferedImage> gifToBufferedImages(String filePath) throws Exception {
 		ArrayList<BufferedImage> frames = new ArrayList<>();
 		BufferedImage gifImage = ImageIO.read(new File(filePath));
-		System.out.println(gifImage.getWidth() + " " + gifImage.getHeight());
 		int numberOfFrames = 93;
 		int frameWidth = 46314 / numberOfFrames;
 		int frameHeight = 290;
@@ -218,48 +225,24 @@ public class WelcomeInteraction extends ListenerAdapter {
 		return frames;
 	}
 
-	private static InputStream createGifForWelcome(Member member) throws Exception{
+	private static InputStream createGifForWelcome(Member member) throws Exception {
+    ArrayList<BufferedImage> bufferedImages = gifToBufferedImages("data/images/outline.png");
+    ArrayList<BufferedImage> generateFrames = new ArrayList<>(bufferedImages.size());
+    for (BufferedImage img : bufferedImages) {
+        generateFrames.add(modifyFrame(img, member));
+    }
 
-		ArrayList<BufferedImage> bufferedImages = gifToBufferedImages("data/images/outline.png");
-		ArrayList<BufferedImage> generateFrames = new ArrayList<>();
-		for (int i = 0; i < bufferedImages.size(); i++) {
-			generateFrames.add(modifyFrame(bufferedImages.get(i), member));
-		}
-		
-		InputStream welcomeGif = createGifEncoder(generateFrames);
-		System.gc();
-		
-		return welcomeGif;
-	}
+    InputStream welcomeGif = createGifEncoder(generateFrames);
+    System.gc();
+
+    return welcomeGif;
+}
 
 	private static BufferedImage modifyFrame(BufferedImage frame, Member member) throws Exception{
 		return writeTextOnImage(overlayImages(
 				frame,
 				makeCircleImage(ImageIO.read(new URL(member.getUser().getAvatarUrl()))), 
 				185,25), "Welcome " + member.getUser().getName() + "!",  25, 255, 30);
-	}
-
-
-	public static BufferedImage createGifImage(ArrayList<BufferedImage> frames, int delay) {
-		BufferedImage gifImage = null;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
-		try {
-			ImageIO.write(frames.get(0), "gif", baos);
-			baos.flush();
-
-			for (int i = 1; i < frames.size(); i++) {
-				ImageIO.write(frames.get(i), "gif", baos);
-			}
-
-			baos.close();
-			byte[] bytes = baos.toByteArray();
-			gifImage = ImageIO.read(new ByteArrayInputStream(bytes));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return gifImage;
 	}
 
 	public static InputStream createGifEncoder(ArrayList<BufferedImage> imageList) throws Exception {
