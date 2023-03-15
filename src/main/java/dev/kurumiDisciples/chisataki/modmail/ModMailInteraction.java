@@ -25,7 +25,6 @@ import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
 public class ModMailInteraction extends ListenerAdapter {
 
-  private ButtonInteractionEvent buttonEvent;
 
   public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
     if (event.getName().equals("sdfsa")) {
