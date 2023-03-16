@@ -2,6 +2,10 @@ package dev.kurumiDisciples.chisataki;
 import java.awt.Color;
 import java.util.Random;
 
+import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
 import dev.kurumiDisciples.chisataki.listeners.IgnoreInteraction;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -24,6 +28,9 @@ public class MemeInteraction extends ListenerAdapter {
   private static final String MAD_DOG_TAKINA = "<:MadDogTakina:1027897140976025701>";
   private static final String CHISATAKI_KISS = "<:ChisaTakiKiss:1013059473167888486>";
 
+
+  private static final ExecutorService THREAD_POOL_EXECUTOR = Executors.newFixedThreadPool(5);
+  
   public void onMessageReceived(MessageReceivedEvent event) {
     Thread messageThread = new Thread() {
       public void run() {
@@ -156,7 +163,6 @@ public class MemeInteraction extends ListenerAdapter {
   }
 
 
-
   public MessageEmbed buildSus(Member member){
     String format = "";
     return new EmbedBuilder()
@@ -188,10 +194,10 @@ public class MemeInteraction extends ListenerAdapter {
   public MessageEmbed buildBite(Member memberBiting, Member memberBitten){
     return new EmbedBuilder()
       .setColor(new Color(144, 96, 233))
-      .setImage("https://tenor.com/view/bite-gif-22830201")
+      .setImage("https://media.tenor.com/jLoppoafD5EAAAAC/bite.gif")
       .setTitle("Just a little bite, " + memberBitten.getEffectiveName() + ", it shouldn't hurt!")
       .setAuthor(memberBiting.getEffectiveName() + " bites " + memberBitten.getEffectiveName())
-      .setFooter("OOPS image broke")
+      .setFooter("fixed image lol")
       .build();
   }
 

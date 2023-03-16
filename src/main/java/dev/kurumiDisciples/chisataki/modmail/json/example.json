@@ -1,0 +1,273 @@
+[
+  {
+    "discordData": {
+      "414141961600106516": {
+        "name": "HickoryMax",
+        "tag": "6161",
+        "nick": "HickoryMax",
+        "avatar": "70a038d3cc03bb28f7fd739dc7ad6ffc"
+      }
+    },
+    "attachments": [],
+    "reactions": [],
+    "embeds": [
+      {
+        "description": "Support will be with you shortly.\nTo close this ticket react with 🔒",
+        "color": "#1ec45c",
+        "footer": {
+          "text": "TicketTool.xyz - Ticketing without clutter",
+          "iconURL": "https://tickettool.xyz/images/footer.png"
+        },
+        "fields": []
+      },
+      {
+        "description": "**Why are you creating this ticket?**\n> `figuring things out`",
+        "fields": []
+      }
+    ],
+    "content": "<@414141961600106516> Welcome",
+    "components": [
+      {
+        "type": 1,
+        "components": [
+          {
+            "type": 2,
+            "style": 2,
+            "label": "Close",
+            "emoji": {
+              "name": "🔒"
+            },
+            "custom_id": "㐒ᇌ浭Ⴒ嚷Ι樱㉲ಪ澠䌰㆜䀭怒玁暵ᮛ價眫怛ϵ㞕䟙㚆⌘᭼Ỿ䒆扟秄耀"
+          }
+        ]
+      }
+    ],
+    "user_id": "557628352828014614",
+    "bot": true,
+    "username": "Ticket Tool",
+    "nick": "Ticket Tool",
+    "tag": "4843",
+    "avatar": "ba5ef012585bb2f9c72a655b28d7aa5f",
+    "id": "1080717632287813692",
+    "created": 1677733562300,
+    "edited": null
+  },
+  {
+    "discordData": {
+      "185512885080817664": {
+        "name": "poetiquette",
+        "tag": "2493",
+        "nick": "poetiquette",
+        "avatar": "da87fcbdd93c5f2d6040feba92c53f40"
+      }
+    },
+    "attachments": [],
+    "reactions": [],
+    "content": "<@185512885080817664>",
+    "components": [],
+    "user_id": "414141961600106516",
+    "bot": false,
+    "username": "HickoryMax",
+    "nick": "HickoryMax",
+    "tag": "6161",
+    "avatar": "70a038d3cc03bb28f7fd739dc7ad6ffc",
+    "id": "1080717850127388673",
+    "created": 1677733614237,
+    "edited": null
+  },
+  {
+    "discordData": {},
+    "attachments": [],
+    "reactions": [],
+    "content": "Here please",
+    "components": [],
+    "user_id": "414141961600106516",
+    "bot": false,
+    "username": "HickoryMax",
+    "nick": "HickoryMax",
+    "tag": "6161",
+    "avatar": "70a038d3cc03bb28f7fd739dc7ad6ffc",
+    "id": "1080717861204529262",
+    "created": 1677733616878,
+    "edited": null
+  },
+  {
+    "discordData": {},
+    "attachments": [],
+    "reactions": [],
+    "content": "I really wanna help figure out what's going on",
+    "components": [],
+    "user_id": "414141961600106516",
+    "bot": false,
+    "username": "HickoryMax",
+    "nick": "HickoryMax",
+    "tag": "6161",
+    "avatar": "70a038d3cc03bb28f7fd739dc7ad6ffc",
+    "id": "1080717897313288254",
+    "created": 1677733625487,
+    "edited": null
+  },
+  {
+    "discordData": {},
+    "attachments": [],
+    "reactions": [],
+    "content": "I’m just exhausted trying to explain everything, because I’ve send bug reports to both Apple and Comcast about stuff I’ve been seeing. I either get ignored or told there’s nothing there. I have technical data to prove this stuff, but I can’t even get anyone with power to hold people to account to even fucking look at anything.\n\nI get the feeling that I’ve been doxed by people in this server awhile back. Because when I brought up what’s on the docket at SCOTUS about section 230 a week ago, a bunch of people flipped the fuck out threatening to nuke the server for whatever reason.",
+    "components": [],
+    "user_id": "185512885080817664",
+    "bot": false,
+    "username": "poetiquette",
+    "nick": "poetiquette",
+    "tag": "2493",
+    "avatar": "da87fcbdd93c5f2d6040feba92c53f40",
+    "id": "1080719535868497942",
+    "created": 1677734016149,
+    "edited": null
+  },
+  {
+    "discordData": {},
+    "attachments": [],
+    "reactions": [],
+    "content": "?",
+    "components": [],
+    "user_id": "654324045025771540",
+    "bot": false,
+    "username": "FerrisNya",
+    "nick": "FerrisNya",
+    "tag": "7967",
+    "avatar": "ac8b7316ac2646841c5f2e1ff6cde848",
+    "id": "1080724612465303593",
+    "created": 1677735226504,
+    "edited": null
+  },
+  {
+    "discordData": {},
+    "attachments": [],
+    "reactions": [],
+    "content": "Would you mind expanding on that, because, and this is just my own personal view, I can't see any reason why they'd have reason to dox you?",
+    "components": [],
+    "user_id": "654324045025771540",
+    "bot": false,
+    "username": "FerrisNya",
+    "nick": "FerrisNya",
+    "tag": "7967",
+    "avatar": "ac8b7316ac2646841c5f2e1ff6cde848",
+    "id": "1080724740555157515",
+    "created": 1677735257043,
+    "edited": null
+  },
+  {
+    "discordData": {},
+    "attachments": [],
+    "reactions": [],
+    "content": "In reference to the \"keyboard switching colors,\" this seems to be known to happen on iOS devices (and in fact, may be called a known feature), according to Apple, it usually indicates that there is highlighted text, but sometimes it does bug out and switch the colors regardless of if anything's selected, which can take force-closing the app or restarting the device to fix.",
+    "components": [],
+    "user_id": "654324045025771540",
+    "bot": false,
+    "username": "FerrisNya",
+    "nick": "FerrisNya",
+    "tag": "7967",
+    "avatar": "ac8b7316ac2646841c5f2e1ff6cde848",
+    "id": "1080732286254841866",
+    "created": 1677737056078,
+    "edited": 1677737123993
+  },
+  {
+    "discordData": {},
+    "attachments": [],
+    "reactions": [],
+    "embeds": [
+      {
+        "description": "Ticket Closed by <@414141961600106516>",
+        "color": "#fbfe32",
+        "fields": []
+      }
+    ],
+    "components": [],
+    "user_id": "557628352828014614",
+    "bot": true,
+    "username": "Ticket Tool",
+    "nick": "Ticket Tool",
+    "tag": "4843",
+    "avatar": "ba5ef012585bb2f9c72a655b28d7aa5f",
+    "id": "1081424792864956456",
+    "created": 1677902162520,
+    "edited": null
+  },
+  {
+    "discordData": {},
+    "attachments": [],
+    "reactions": [],
+    "embeds": [
+      {
+        "description": "```Support team ticket controls```",
+        "color": "#2f3136",
+        "fields": []
+      }
+    ],
+    "components": [
+      {
+        "type": 1,
+        "components": [
+          {
+            "type": 2,
+            "style": 2,
+            "label": "Transcript",
+            "emoji": {
+              "name": "📑"
+            },
+            "custom_id": "㮢࿸䤂䞖汷ၶC憣煎⯥䣑攍捗秣㋕㷘˜ቪ璟價䪳㤿捶Fࢣ䔩㖶᭫䟈耀"
+          },
+          {
+            "type": 2,
+            "style": 2,
+            "label": "Open",
+            "emoji": {
+              "name": "🔓"
+            },
+            "custom_id": "־ᗚᑎ෇姎☪ணၑ䜭淊㌮皉橗࿶⢀⳷㤭ਆ竇㦄ෳ〭匥巰۸燀耀"
+          },
+          {
+            "type": 2,
+            "style": 2,
+            "label": "Delete",
+            "emoji": {
+              "name": "⛔"
+            },
+            "custom_id": "梃禺ᐻᚯ㰿ㄹ秴兰瀙䨂れʪ䳅⠸ẞ㜦ᮊ᧛㘰ϸ催⒭穼散䣦楙㒠耀"
+          }
+        ]
+      }
+    ],
+    "user_id": "557628352828014614",
+    "bot": true,
+    "username": "Ticket Tool",
+    "nick": "Ticket Tool",
+    "tag": "4843",
+    "avatar": "ba5ef012585bb2f9c72a655b28d7aa5f",
+    "id": "1081424797004746874",
+    "created": 1677902163507,
+    "edited": null
+  },
+  {
+    "discordData": {},
+    "attachments": [],
+    "reactions": [],
+    "embeds": [
+      {
+        "description": "Transcript Saving",
+        "color": "#ffee58",
+        "fields": []
+      }
+    ],
+    "components": [],
+    "user_id": "557628352828014614",
+    "bot": true,
+    "username": "Ticket Tool",
+    "nick": "Ticket Tool",
+    "tag": "4843",
+    "avatar": "ba5ef012585bb2f9c72a655b28d7aa5f",
+    "id": "1083876608236073061",
+    "created": 1678486720857,
+    "edited": null
+  }
+]
