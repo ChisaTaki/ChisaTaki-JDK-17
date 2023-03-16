@@ -107,11 +107,11 @@ private JsonArrayBuilder createEmbedObject(Message message) {
         return reversedList;
     }
 
-  private JsonArrayObject addReactions(Message message){
-    JsonArrayObjectBuilder arrayBuilder = Json.createArrayBuilder();
+  private JsonArrayBuilder addReactions(Message message){
+    JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
     message.getReactions().forEach(reaction -> {
       JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-      objectBuilder.add("id", reaction.getId());
+      objectBuilder.add("id", reaction.getEmoji().getType() == Emoji.Type.CUSTOM ? reaction.getEmoji().asCustom().getId() : "");
       objectBuilder.add("name", reaction.getEmoji().getName());
       objectBuilder.add("animated", reaction.getEmoji().getType() == Emoji.Type.CUSTOM ? reaction.getEmoji().asCustom().isAnimated() : false);
       objectBuilder.add("count", reaction.hasCount() ? reaction.getCount() : 1);
@@ -120,13 +120,13 @@ private JsonArrayBuilder createEmbedObject(Message message) {
     return arrayBuilder;
   }
   
-  private JsonArrayObject addAttachments(Message message){
-    JsonArrayObjectBuilder arrayBuilder = Json.createArrayBuilder();
+  private JsonArrayBuilder addAttachments(Message message){
+    JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
     message.getAttachments().forEach(attachment -> {
       JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
-      objectBuilder.add("Base64", "")
-      objectBuilder.add("url", attachment.getUrl())
-      objectBuilder.add("size", attachment.getSize())
+      objectBuilder.add("Base64", "");
+      objectBuilder.add("url", attachment.getUrl());
+      objectBuilder.add("size", attachment.getSize());
       objectBuilder.addNull("height");
       objectBuilder.addNull("width");
     });
