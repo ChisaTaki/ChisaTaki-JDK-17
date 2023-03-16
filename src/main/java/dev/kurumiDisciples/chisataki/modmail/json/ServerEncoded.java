@@ -1,4 +1,4 @@
-package dev.kurumi.chisataki.modmail.json;
+package dev.kurumiDisciples.chisataki.modmail.json;
 
 import javax.json.*;
 import javax.json.stream.*;
@@ -16,14 +16,14 @@ public class ServerEncoded{
   private JsonObject json;
   
   public ServerEncoded(Guild guild){
-     json = json.createObjectBuilder()
+     json = Json.createObjectBuilder()
       .add("name", guild.getName())
       .add("id", guild.getId())
-      .add("icon", guild.getIcon().getUrl().split("/")[5])
+      .add("icon", guild.getIcon().getUrl().split("/")[5].split("\\.")[0])
       .build();
   }
 
   public String getEncoded(){
-    return Base64.getEncoder().encodeToString(json.toString());
+    return Base64.getEncoder().encodeToString(json.toString().getBytes());
   }
 }

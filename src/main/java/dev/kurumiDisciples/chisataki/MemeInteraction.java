@@ -162,9 +162,6 @@ public class MemeInteraction extends ListenerAdapter {
     slashCommand.start();
   }
 
-private boolean isCommandAllowedInChannel(SlashCommandInteractionEvent event) {
-        return event.getChannel().getId().equals(BOT_CHANNEL_ID);
-    }
 
   public MessageEmbed buildSus(Member member){
     String format = "";

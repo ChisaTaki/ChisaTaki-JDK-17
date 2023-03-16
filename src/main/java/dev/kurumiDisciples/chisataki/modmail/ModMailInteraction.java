@@ -140,7 +140,7 @@ public class ModMailInteraction extends ListenerAdapter {
   private void sendNotification(Guild guild, Ticket ticket){
     TextChannel ticketLog = guild.getTextChannelById(ChannelEnum.TICKET_LOGS.getId());
     String format = "**Channel**\n%s\n\n**Subject**\n%s\n\n**Body**\n%s\n\n**Member**\n%s";
-    ticketLog.sendMessage("<@&1016048811581382676> **NEW TICKET**").setEmbeds(new EmbedBuilder()
+    ticketLog.sendMessage("<@&1016048811581382676> ** NEW TICKET**").setEmbeds(new EmbedBuilder()
                                         .setColor(new Color(144, 96, 233))
                                         .setTitle("Ticket #"+String.valueOf(ticket.getTicketNumber()))
                                         .setDescription(String.format(format, guild.getTextChannelById(ticket.getTicketId()).getAsMention(),ticket.getSubject(), ticket.getBody(), guild.getMemberById(ticket.getMemberId()).getAsMention()))

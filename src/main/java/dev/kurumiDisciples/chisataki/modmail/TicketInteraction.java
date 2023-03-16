@@ -25,6 +25,9 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.utils.FileUpload;
 
+import dev.kurumiDisciples.chisataki.utils.HTMLUtils;
+import dev.kurumiDisciples.chisataki.modmail.json.*;
+
 public class TicketInteraction extends ListenerAdapter {
 
   @Override
@@ -105,7 +108,7 @@ public class TicketInteraction extends ListenerAdapter {
     }
     event.getGuildChannel().asTextChannel().getManager().removePermissionOverride(ticket.getMemberId()).complete();
     sendTranscript(ticket, event.getGuild(), archive(event.getGuildChannel().asTextChannel()),
-        "ticket-" + ticket.getTicketNumber());
+        "ticket-" + ticket.getTicketNumber(), generateHTMLTranscript(event.getGuildChannel().asTextChannel()));
     event.getHook().editOriginal("Ticket closed").queue();
     event.getGuildChannel().asTextChannel().delete().queueAfter(10, TimeUnit.SECONDS);
 
@@ -117,7 +120,7 @@ public class TicketInteraction extends ListenerAdapter {
     }
     event.getGuildChannel().asTextChannel().getManager().removePermissionOverride(ticket.getMemberId()).complete();
     sendTranscript(ticket, event.getGuild(), archive(event.getGuildChannel().asTextChannel()),
-        "ticket-" + ticket.getTicketNumber());
+        "ticket-" + ticket.getTicketNumber(), generateHTMLTranscript(event.getGuildChannel().asTextChannel()));
     event.getHook().editOriginal("Ticket closed with reason").queue();
     event.getGuildChannel().asTextChannel().delete().queueAfter(10, TimeUnit.SECONDS);
   }
@@ -151,10 +154,11 @@ public class TicketInteraction extends ListenerAdapter {
     return data;
   }
 
-  private void sendTranscript(Ticket ticket, Guild guild, String transcript, String transcriptName) {
+  private void sendTranscript(Ticket ticket, Guild guild, String transcript, String transcriptName, String htmlTranscript) {
     TextChannel transcriptChannel = guild.getTextChannelById(ChannelEnum.TRANSCRIPT_LOGS.getId());
 
     InputStream stream = new ByteArrayInputStream(transcript.getBytes());
+    InputStream htmlStream = new ByteArrayInputStream(htmlTranscript.getBytes());
     MessageEmbed embed = new EmbedBuilder().setColor(new Color(144, 96, 233))
         .setTitle("Ticket #" + String.valueOf(ticket.getTicketNumber())).addField("Subject", ticket.getSubject(), false)
         .addField("Body", ticket.getBody(), false)
@@ -162,9 +166,25 @@ public class TicketInteraction extends ListenerAdapter {
         .addField("Staff", guild.getMemberById(ticket.getStaffId()).getAsMention(), false)
         .addField("Reason", ticket.getReason(), false).build();
 
-    transcriptChannel.sendMessage(" ").addEmbeds(embed).queue();
+    transcriptChannel.sendMessage(" ").addEmbeds(embed).complete();
     transcriptChannel.sendMessage(" ").addFiles(FileUpload.fromData(stream, transcriptName + ".txt")).complete();
+    transcriptChannel.sendMessage(" ").addFiles(FileUpload.fromData(htmlStream, transcriptName + ".html")).complete();
     FileUtils.writeFile("data/tickets/"+transcriptName+".txt", transcript);
   }
 
+  private String generateHTMLTranscript(TextChannel channel){
+    MessageHistory history = MessageHistory.getHistoryFromBeginning(channel).complete();
+
+    String html = HTMLUtils.getTranscriptHTML();
+
+    List<Message> messages = history.getRetrievedHistory();
+
+    String encodedServer = new ServerEncoded(channel.getGuild()).getEncoded();
+    String encodedChannel = new ChannelEncoded(channel).getEncoded();
+    String encodedMessages = new MessagesEncoded(messages).getEncoded();
+
+    html = String.format(html, encodedChannel, encodedServer, encodedMessages);
+
+    return html;
+  }
 }
