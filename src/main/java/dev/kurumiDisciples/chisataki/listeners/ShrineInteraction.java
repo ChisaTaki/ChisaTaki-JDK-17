@@ -8,43 +8,39 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class ShrineInteraction extends ListenerAdapter {
 
-  public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-    Thread shrine = new Thread() {
-      public void run() {
+    private static final ExecutorService shrineExecutor = Executors.newCachedThreadPool();
+
+    public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+        shrineExecutor.submit(() -> handleSlashCommandInteraction(event));
+    }
+
+    public void onMessageReceived(MessageReceivedEvent event) {
+        shrineExecutor.submit(() -> handleShrineMessageReceived(event));
+    }
+
+    private void handleSlashCommandInteraction(SlashCommandInteractionEvent event) {
         if (event.getName().equals("count")) {
-          event.deferReply(true).queue();
-          /* what message will look like */
-          /*
-           * {chiango emote} - (bold{count}) {sakana emote} - (bold{count})
-           */
+            event.deferReply(true).queue();
 
-          int chisatoCount = FileUtils.getFileContent("data/chisatoHeart.json").getInt("count");
-          int takinaCount = FileUtils.getFileContent("data/takina.json").getInt("count");
+            int chisatoCount = FileUtils.getFileContent("data/chisatoHeart.json").getInt("count");
+            int takinaCount = FileUtils.getFileContent("data/takina.json").getInt("count");
 
-          String message = String.format("%s - **%d**\n%s - **%d**", EmojiEnum.CHISATO_HEART.getAsText(), chisatoCount,
-              EmojiEnum.SAKANA.getAsText(), takinaCount);
-          event.getHook().editOriginal(message).queue();
+            String message = String.format("%s - **%d**\n%s - **%d**", EmojiEnum.CHISATO_HEART.getAsText(), chisatoCount,
+                    EmojiEnum.SAKANA.getAsText(), takinaCount);
+            event.getHook().editOriginal(message).queue();
         }
-      }
-    };
-    shrine.setName("Count-Thread");
-    shrine.setPriority(1);
-    shrine.start();
-  }
+    }
 
-  public void onMessageReceived(MessageReceivedEvent event) {
-    Thread shrine = new Thread() {
-      public void run() {
+    private void handleShrineMessageReceived(MessageReceivedEvent event) {
         ShrineInteractionHandler shrineHandler = ShrineInteractionFactory
-            .getShrineInteractionHandler(event.getChannel().getId());
+                .getShrineInteractionHandler(event.getChannel().getId());
         if (shrineHandler != null) {
-          shrineHandler.handleShrineInteraction(event);
+            shrineHandler.handleShrineInteraction(event);
         }
-      }
-    };
-    shrine.setName("Shrine Interaction");
-    shrine.start();
-  }
+    }
 }

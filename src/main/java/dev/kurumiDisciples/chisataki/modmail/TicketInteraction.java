@@ -106,10 +106,11 @@ public class TicketInteraction extends ListenerAdapter {
     if (!ticket.hasStaff()) {
       ticket.setStaff(event.getMember().getId());
     }
+  event.getHook().editOriginal("Ticket closed").queue();    
     event.getGuildChannel().asTextChannel().getManager().removePermissionOverride(ticket.getMemberId()).complete();
     sendTranscript(ticket, event.getGuild(), archive(event.getGuildChannel().asTextChannel()),
         "ticket-" + ticket.getTicketNumber(), generateHTMLTranscript(event.getGuildChannel().asTextChannel()));
-    event.getHook().editOriginal("Ticket closed").queue();
+    
     event.getGuildChannel().asTextChannel().delete().queueAfter(10, TimeUnit.SECONDS);
 
   }
