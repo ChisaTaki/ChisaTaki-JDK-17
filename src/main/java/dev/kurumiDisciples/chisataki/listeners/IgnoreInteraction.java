@@ -26,7 +26,7 @@ public class IgnoreInteraction extends ListenerAdapter {
     private static final ExecutorService ignoreExecutor = Executors.newCachedThreadPool();
 
     public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-        ignoreExecutor.submit(() -> {
+        ignoreExecutor.execute(() -> {
             if (event.getName().equals("ignore-me")) {
                 handleIgnoreMeCommand(event);
             }

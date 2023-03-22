@@ -170,7 +170,7 @@ public class TicketInteraction extends ListenerAdapter {
     transcriptChannel.sendMessage(" ").addEmbeds(embed).complete();
     transcriptChannel.sendMessage(" ").addFiles(FileUpload.fromData(stream, transcriptName + ".txt")).complete();
     transcriptChannel.sendMessage(" ").addFiles(FileUpload.fromData(htmlStream, transcriptName + ".html")).complete();
-    FileUtils.writeFile("data/tickets/"+transcriptName+".txt", transcript);
+    //FileUtils.writeFile("data/tickets/"+transcriptName+".txt", transcript);
   }
 
   private String generateHTMLTranscript(TextChannel channel){
