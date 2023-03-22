@@ -16,11 +16,11 @@ public class ShrineDeletionInteraction extends ListenerAdapter {
     private static final ExecutorService deleteExecutor = Executors.newCachedThreadPool();
 
     public void onMessageReceived(MessageReceivedEvent event) {
-        deleteExecutor.submit(() -> handleReceivedMessage(event));
+        deleteExecutor.execute(() -> handleReceivedMessage(event));
     }
 
     public void onMessageUpdate(MessageUpdateEvent event) {
-        deleteExecutor.submit(() -> handleUpdatedMessage(event));
+        deleteExecutor.execute(() -> handleUpdatedMessage(event));
     }
 
     private void handleReceivedMessage(MessageReceivedEvent event) {

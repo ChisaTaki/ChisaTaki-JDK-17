@@ -91,7 +91,7 @@ public abstract class ShrineInteractionHandler {
     if (!member.getUser().isBot()) {
       message.delete().reason(reason).queueAfter(5, TimeUnit.SECONDS);
       textChannel.sendMessage(member.getAsMention() + " You can't do that.").complete();
-      MessageHistoryUtils.getLastBotMessage(textChannel).delete().reason("clean up").delay(Duration.ofSeconds(5))
+      MessageHistoryUtils.getLastBotMessage(textChannel).delete().reason("clean up").delay(Duration.ofSeconds(10))
           .queue(null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
     }
   }
