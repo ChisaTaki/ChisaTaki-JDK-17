@@ -19,6 +19,8 @@ import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
+import io.github.cdimascio.dotenv.*;
+
 public class Main {
   final static Logger logger = LoggerFactory.getLogger(Main.class);
   final static int gcSec = 3600;
@@ -30,7 +32,10 @@ public class Main {
     // we would use AccountType.CLIENT
 
     try {
-      jda = JDABuilder.createDefault("MTA3MDA3NDk5MTY1MzE2NzE0NA.G1QKcY.XHfp2jt38TuuLgRhKewLgO3ecJMP56zT30xo74")
+      Dotenv env = Dotenv.configure()
+        .directory("crypt/")
+        .load();
+      jda = JDABuilder.createDefault(env.get("TOKEN"))
           .enableIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
           .enableCache(CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY, CacheFlag.EMOJI, CacheFlag.MEMBER_OVERRIDES,
               CacheFlag.STICKER, CacheFlag.ROLE_TAGS, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS,
