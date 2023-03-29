@@ -1,2 +1,5 @@
 /target/
 /dev/
+pom.xml
+.classpath
+.settings/org.eclipse.jdt.core.prefs
