@@ -1,6 +1,6 @@
 # ChisaTaki Bot
 
-The ChisaTaki bot is a bot written for the ChisaTaki server, and its exclusive use. This bot should never be allowed into another server as it could cause unforeseen consequences.
+The ChisaTaki bot is a bot written for the ChisaTaki server, and its exclusive use. This bot should never be allowed into another server as it could cause unforeseen consequences. However, you are allowed to fork this repo and use the code in your own bot.
 
 ## Installation
 
