@@ -62,7 +62,7 @@ How to build the ChisaTaki Bot
 1. Open a File Explorer window and navigate to your target classes folder (i.e.: `target/classes`)
 2. Perform a maven clean
 3. Confirm that no compilation errors appear
-4. Ensure the `.classes` files were regenerated
+4. Ensure the `.class` files were regenerated
 5. In your target classes folder, delete any existing files/folders that do not match the repository's package name (i.e.: "META-INF") if any
 6. Copy-paste the `Manifest.txt` file found at the root of the project
 7. Open a terminal window and type out the following `jar -cvfm ChisaTaki.jar Manifest.txt dev/*`
