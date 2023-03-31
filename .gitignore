@@ -1,5 +1,6 @@
 /target/
 /dev/
+/bin/
 pom.xml
 .classpath
 .settings/org.eclipse.jdt.core.prefs
