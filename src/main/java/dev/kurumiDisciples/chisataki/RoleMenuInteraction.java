@@ -1,36 +1,30 @@
 package dev.kurumiDisciples.chisataki;
-import dev.kurumiDisciples.chisataki.utils.CooldownUtils;
-
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
-import net.dv8tion.jda.api.interactions.components.selections.*;
-import net.dv8tion.jda.api.interactions.components.buttons.*;
-import net.dv8tion.jda.api.interactions.components.*;
-import net.dv8tion.jda.api.interactions.commands.*;
-
-import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.EmbedBuilder;
-
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
-import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-
-import net.dv8tion.jda.api.exceptions.*;
-
-import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.entities.emoji.*;
+import java.awt.Color;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.ArrayList;
-
-import java.awt.Color;
-
-import java.io.FileReader;
-
-import java.time.LocalDateTime;
+import dev.kurumiDisciples.chisataki.enums.RoleEnum;
+import dev.kurumiDisciples.chisataki.utils.CooldownUtils;
+import dev.kurumiDisciples.chisataki.utils.RoleUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.MessageEmbed;
+import net.dv8tion.jda.api.entities.Role;
+import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
+import net.dv8tion.jda.api.exceptions.HierarchyException;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 /* To Do: Add event loggers */
 
@@ -39,11 +33,6 @@ public class RoleMenuInteraction extends ListenerAdapter {
   StringSelectInteractionEvent EVENT;
 
   final static List<String> shrineIDs = List.of(/* chisato */"1013558607213756518", /* takina */ "1013567857075953706");
-  final static List<String> groupIDs = List.of(/* OniMai */ "1056969921201975367",
-      /* Spy Classroom */"1056970881185873990", /* NieR:Automata */ "1056970891575164978",
-      /* Kubo */ "1056970896251818035", /* Magical Revolution */ "1056969596139216967",
-      /* 80,000 Gold */ "1056969931633205290", /* Tomo-Chan */"1056969945495380040", /* Dub */ "1033697196899577866",
-      /* vinland saga */ "1042588408083660852", /* bofuri */ "1042589219333361758");
   final static String chisataki = "1010080294692458496";
   final static List<String> serverIDs = List.of(/* server announcement */ "1013809351108079636",
       /* event */ "1013809301342662726", /* Chisataki */ "1013809402547011616", /* groupwatch */ "1025081700570636318");
@@ -54,7 +43,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
     Thread role = new Thread() {
       public void run() {
         if (event.getName().equals("test-send")) {
-          if (!event.getMember().getId().equals("360241951804620800"))
+          if (!RoleUtils.isMemberBotDev(event.getMember()))
             return;
           event.getGuild().getTextChannelById("1024037775743406111").sendMessage(" ").setEmbeds(getTutorialEmbed())
               .queue();
@@ -85,45 +74,37 @@ public class RoleMenuInteraction extends ListenerAdapter {
           for (String s : event.getValues()) {
 
             switch (s) {
-              case "princessSelect":
-                roleHandle(event.getMember(), guild.getRoleById("1056969596139216967"));
-                roleName += "`MagiRevo`, ";
+              case "birdieSelect":
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.BIRDIE_WING.getId()));
+                roleName += "`Birdie Wing`, ";
                 break;
               case "bofuriSelect":
-                roleHandle(event.getMember(), guild.getRoleById("1042589219333361758"));
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.BOFURI.getId()));
                 roleName += "`Bofuri`, ";
                 break;
-              case "onimaiSelect":
-                roleHandle(event.getMember(), guild.getRoleById("1056969921201975367"));
-                roleName += "`OniMai`, ";
+              case "kuboSelect":
+                  roleHandle(event.getMember(), guild.getRoleById(RoleEnum.KUBO.getId()));
+                  roleName += "`Kubo`, ";
+                  break;
+              case "magicalSelect":
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.MAGICAL_DESTROYERS.getId()));
+                roleName += "`Magical Destroyers`, ";
                 break;
-              case "goldSelect":
-                roleHandle(event.getMember(), guild.getRoleById("1056969931633205290"));
-                roleName += "`80,000 Gold`, ";
+              case "gundamSelect":
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GUNDAM.getId()));
+                roleName += "`Gundam`, ";
                 break;
               case "vinlandSelect":
-                roleHandle(event.getMember(), guild.getRoleById("1042588408083660852"));
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.VINLAND.getId()));
                 roleName += "`Vinland Saga`, ";
                 break;
-              case "tomoSelect":
-                roleHandle(event.getMember(), guild.getRoleById("1056969945495380040"));
-                roleName += "`Tomo-Chan`, ";
+              case "yamadaSelect":
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.YAMADA_KUN.getId()));
+                roleName += "`Yamada-kun`, ";
                 break;
-              case "spySelect":
-                roleHandle(event.getMember(), guild.getRoleById("1056970881185873990"));
-                roleName += "`Spy Classroom`, ";
-                break;
-              case "nierSelect":
-                roleHandle(event.getMember(), guild.getRoleById("1056970891575164978"));
-                roleName += "`NieR:Automata`, ";
-                break;
-              case "kuboSelect":
-                roleHandle(event.getMember(), guild.getRoleById("1056970896251818035"));
-                roleName += "`Kubo`, ";
-                break;
-              case "dubSelect":
-                roleHandle(event.getMember(), guild.getRoleById("1033697196899577866"));
-                roleName += "`Dub`, ";
+              case "yuriSelect":
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.YURI_IS_MY_JOB.getId()));
+                roleName += "`Yuri Is My Job`, ";
                 break;
             }
           }
@@ -310,18 +291,14 @@ public class RoleMenuInteraction extends ListenerAdapter {
 
   private static StringSelectMenu getGroupMenu() {
     StringSelectMenu group = StringSelectMenu.create("menu:role:groupwatch").setPlaceholder("Select Groupwatch Role(s)")
-        .addOption("Magical Revolution of the Reincarnated Princess", "princessSelect", null,
-            Emoji.fromCustom("AniSmug", 1002932728016150670L, false))
-        .addOption("Bofuri", "bofuriSelect", null, Emoji.fromCustom("a_MapleNom", 692821511379222588L, true))
-        .addOption("OniMai", "onimaiSelect", null, Emoji.fromCustom("mahiroAraAra", 1003445149898117150L, false))
-        .addOption("Saving 80,000 Gold in Another World for my Retirement", "goldSelect", null,
-            Emoji.fromCustom("MikuGold", 393591496403582976L, true))
-        .addOption("Vinland Saga", "vinlandSelect", null, Emoji.fromUnicode("U+2693"))
-        .addOption("Tomo-chan is a Girl!", "tomoSelect", null, Emoji.fromUnicode("U+1F467"))
-        .addOption("Spy Classroom", "spySelect", null, Emoji.fromUnicode("U+1F575"))
-        .addOption("NieR: Automata", "nierSelect", null, Emoji.fromUnicode("U+1F916"))
-        .addOption("Kubo Won't Let Me Be Invisible", "kuboSelect", null, Emoji.fromUnicode("U+1FAE5"))
-        .addOption("Dub", "dubSelect", null, Emoji.fromUnicode("U+1F5E3")).setMaxValues(10).setMinValues(0).build();
+        .addOption("BIRDIE WING: Golf Girls' Story Season 2", "birdieSelect", Emoji.fromCustom("AoiLaugh", 981757078173524089L, false))
+        .addOption("Bofuri Season 2", "bofuriSelect", Emoji.fromCustom("a_MapleNom", 692821511379222588L, true))
+        .addOption("Kubo Won't Let Me Be Invisible", "kuboSelect", Emoji.fromCustom("KuboThumbsUp", 1078040901177319595L, false))
+        .addOption("Magical Girl Destroyers", "magicalSelect", Emoji.fromUnicode("U+1FA84"))
+        .addOption("Mobile Suit Gundam: The Witch from Mercury Season 2", "gundamSelect", Emoji.fromCustom("mercurytomato", 1026469176379973632L, false))
+        .addOption("Vinland Saga Season 2", "vinlandSelect", Emoji.fromUnicode("U+2693"))
+        .addOption("Yamada-kun to Lv999", "yamadaSelect", Emoji.fromUnicode("U+1F3AE"))
+        .addOption("Yuri Is My Job!", "yuriSelect", Emoji.fromCustom("HimeSmile2", 1064566199037468734L, false)).setMaxValues(8).setMinValues(0).build();
 
     return group;
   }
@@ -372,7 +349,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
   private static void removeGroupRoles(Member member) {
     Guild guild = member.getGuild();
 
-    for (String id : groupIDs) {
+    for (String id : RoleEnum.getGroupWatchRoles()) {
       Role role = guild.getRoleById(id);
       if (hasRole(member, role)) {
         try {
