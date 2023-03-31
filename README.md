@@ -67,7 +67,6 @@ How to build the ChisaTaki Bot
 6. Copy-paste the `Manifest.txt` file found at the root of the project
 7. Open a terminal window and type out the following `jar -cvfm ChisaTaki.jar Manifest.txt dev/*`
 8. Press Enter and wait for the jar file to build
-9. Replace the `ChisaTaki.jar` found at root level with the one just built
 
 ### Deployment on Sparkedhost
 
