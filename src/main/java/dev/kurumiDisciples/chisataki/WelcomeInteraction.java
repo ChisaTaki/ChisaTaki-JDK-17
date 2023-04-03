@@ -1,5 +1,5 @@
 package dev.kurumiDisciples.chisataki;
-/* Java Color */
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -72,9 +72,7 @@ public class WelcomeInteraction extends ListenerAdapter {
                 event.getGuild().getTextChannelById(WELCOME_CHANNEL).sendMessage("Hello " + event.getMember().getAsMention() + "!").setEmbeds(createEmbedFailure(event)).queue();
             }
 
-            if (event.getUser().getId().equals("249721338044874753")){
-                pingLemons(event);
-            }
+           
         }
     });
 }
@@ -116,10 +114,6 @@ public class WelcomeInteraction extends ListenerAdapter {
 		builder.setColor(new Color(254,57,168));
 
 		return builder.build();
-	}
-
-	private static void pingLemons(GuildMemberJoinEvent event){
-		event.getGuild().getTextChannelById("1010078629344051202").sendMessage("<@263352590534836224> JustW has rejoined the server!").queue();
 	}
 
 	private static BufferedImage makeCircleImage(BufferedImage image) {
