@@ -1,7 +1,10 @@
-target/*
-!target/dependency/
 /dev/
 /bin/
+/crypt/
+
+target/*
+!target/dependency/
+
 pom.xml
 .classpath
 .settings/org.eclipse.jdt.core.prefs
