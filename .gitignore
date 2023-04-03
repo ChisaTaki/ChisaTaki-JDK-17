@@ -1,6 +1,7 @@
-/dev/
 /bin/
 /crypt/
+/dev/
+/data/
 
 target/*
 !target/dependency/
