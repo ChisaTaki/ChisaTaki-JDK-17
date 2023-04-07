@@ -23,6 +23,10 @@ public enum ChannelEnum {
 		return Long.parseLong(this.id);
 	}
 	
+	public String getAsMention() {
+        return "<#" + this.id + '>';
+    }
+	
 	public static boolean areCommandsAllowed(String channelId) {
 		return CHISATAKI.id.equals(channelId) || BOT_HOUSE.id.equals(channelId);
 	}

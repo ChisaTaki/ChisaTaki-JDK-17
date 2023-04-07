@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dev.kurumiDisciples.chisataki.audio.MusicInteraction;
+import dev.kurumiDisciples.chisataki.commands.CommandCenter;
 import dev.kurumiDisciples.chisataki.listeners.IgnoreInteraction;
 import dev.kurumiDisciples.chisataki.listeners.ShrineDeletionInteraction;
 import dev.kurumiDisciples.chisataki.listeners.ShrineInteraction;
@@ -50,6 +51,7 @@ public class Main {
           .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
           .addEventListeners(new Debugger()).addEventListeners(new ModMailInteraction())
           .addEventListeners(new TicketInteraction()).addEventListeners(new MusicInteraction())
+          .addEventListeners(new CommandCenter())
           .setActivity(Activity.of(ActivityType.WATCHING, "ChisaTaki's Wedding", "https://chisatakicopium.com"))
           .build();
       jda.awaitReady(); // awaits for the cache system to build
