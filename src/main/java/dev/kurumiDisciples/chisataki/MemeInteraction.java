@@ -74,43 +74,7 @@ public class MemeInteraction extends ListenerAdapter {
 	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
 		Thread slashCommand = new Thread(){
 			public void run(){
-				if (event.getName().equals("sus")) {
-					if (!event.getChannel().getId().equals(ChannelEnum.BOT_CHANNEL.getId())) {
-						handleForbiddenAccess(event);
-						return;
-					}
-
-					event.deferReply(true).queue();
-
-					OptionMapping userOption = event.getOption("user");
-					if (userOption == null || event.getUser().getId().equals(userOption.getAsUser().getId())) {
-						event.getHook().deleteOriginal().queue();
-						event.getGuildChannel().asTextChannel().sendMessage(" ").setEmbeds(buildSus(event.getMember())).queue();
-					} else if (IgnoreInteraction.inList(userOption.getAsMember())) {
-						event.getHook().editOriginal("This member wishes not to be pinged by other members").queue();
-					} else {
-						event.getHook().deleteOriginal().queue();
-						event.getGuildChannel().asTextChannel().sendMessage(userOption.getAsMember().getAsMention()).setEmbeds(buildSus(userOption.getAsMember())).queue();
-					}
-				} else if (event.getName().equals("cute")) {
-					if (!event.getChannel().getId().equals(ChannelEnum.BOT_CHANNEL.getId())){
-						handleForbiddenAccess(event);
-						return;
-					}
-
-					event.deferReply(true).queue();
-
-					OptionMapping userOption = event.getOption("user");
-					if (userOption == null || userOption.getAsMember().getId().equals(event.getMember().getId())) {
-						event.getHook().deleteOriginal().queue();
-						event.getGuildChannel().asTextChannel().sendMessage(" ").setEmbeds(buildCute(event.getMember())).queue();
-					} else if (IgnoreInteraction.inList(userOption.getAsMember())) {
-						event.getHook().editOriginal("This member wishes not to be pinged by other members").queue();
-					} else {
-						event.getHook().deleteOriginal().queue();
-						event.getGuildChannel().asTextChannel().sendMessage(userOption.getAsMember().getAsMention()).setEmbeds(buildCute(userOption.getAsMember())).queue();
-					}
-				} else if (event.getName().equals("cuddle")) {
+				if (event.getName().equals("cuddle")) {
 					if (!event.getChannel().getId().equals(ChannelEnum.BOT_CHANNEL.getId())){
 						handleForbiddenAccess(event);
 						return;
@@ -179,24 +143,6 @@ public class MemeInteraction extends ListenerAdapter {
 	private void handleForbiddenAccess(SlashCommandInteractionEvent event) {
 		event.deferReply(true).queue();
 		event.getHook().editOriginal("This command can only be used in <#" + ChannelEnum.BOT_CHANNEL.getId() + ">").queue();
-	}
-
-	public MessageEmbed buildSus(Member member) {
-		return new EmbedBuilder()
-				.setColor(ColorUtils.PURPLE)
-				.setImage("https://media.tenor.com/xduDNIZJD2wAAAAC/86anime-frederica.gif")
-				.setDescription("**So, "+member.getEffectiveName()+", we evaluated how sus you are! \n\n"+member.getEffectiveName()+", you're "+String.valueOf(new Random().nextInt(101))+"% sus! How sussy!**")
-				.setFooter("not stolen from another bot at all, i promise")
-				.build();
-	}
-
-	public MessageEmbed buildCute(Member member) {
-		return new EmbedBuilder()
-				.setColor(ColorUtils.PURPLE)
-				.setImage("https://media.tenor.com/3S9l9HzhGVcAAAAC/shake-kaninayuta.gif")
-				.setDescription("**So, "+member.getEffectiveName()+", we evaluated how cute you are! \n\n"+member.getEffectiveName()+", you're "+String.valueOf(new Random().nextInt(101))+"% cute! You're such a cutie pie!**")
-				.setFooter("this is actually original lol")
-				.build();
 	}
 
 	public MessageEmbed buildCuddle(Member memberHugging, Member memberCuddled) {

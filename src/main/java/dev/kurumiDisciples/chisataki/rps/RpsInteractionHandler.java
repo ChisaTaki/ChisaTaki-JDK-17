@@ -19,7 +19,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 public abstract class RpsInteractionHandler {
 	
 	public static MessageEmbed getChallengerEmbed() {
-		return MessageUtils.buildMessageEmbed("> Rock comes first! Rock-Paper-Scissors, go!", GifEnum.ROCK_COMES_FIRST.getUrl(), ColorUtils.PURPLE);
+		return MessageUtils.buildEmbed("> Rock comes first! Rock-Paper-Scissors, go!", GifEnum.ROCK_COMES_FIRST.getUrl(), ColorUtils.PURPLE);
 	}
 	
 	/**

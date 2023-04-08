@@ -58,4 +58,11 @@ public abstract class SlashCommand extends CommandWrapper {
 	public String getErrorMessage() {
 		return "This command can only be used in " + ChannelEnum.CHISATAKI.getAsMention();
 	}
+
+	/**
+	 * Error message to display when member selected is in the ignore list
+	 */
+	public String getIgnoreMessage() {
+		return "> The member you selected wishes not to be pinged by other members.\n> You may pick someone else and try again.";
+	}
 }

@@ -36,6 +36,9 @@ public class Main {
       Dotenv env = Dotenv.configure()
         .directory("crypt/")
         .load();
+
+      CommandCenter commandCenter = new CommandCenter();
+      
       jda = JDABuilder.createDefault(env.get("TOKEN"))
           .enableIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
           .enableCache(CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY, CacheFlag.EMOJI, CacheFlag.MEMBER_OVERRIDES,
@@ -51,13 +54,13 @@ public class Main {
           .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
           .addEventListeners(new Debugger()).addEventListeners(new ModMailInteraction())
           .addEventListeners(new TicketInteraction()).addEventListeners(new MusicInteraction())
-          .addEventListeners(new CommandCenter())
+          .addEventListeners(commandCenter)
           .setActivity(Activity.of(ActivityType.WATCHING, "ChisaTaki's Wedding", "https://chisatakicopium.com"))
           .build();
       jda.awaitReady(); // awaits for the cache system to build
       logger.info("Chisataki Bot successfully built and connected to JDA!");
 
-      CommandCenter.addCommands(getJDA());
+      commandCenter.addCommands(getJDA());
       logger.info("Commands added!");
       MessageCache.setMaxSize(2000);
       logger.info("Message Cache Size: {}", MessageCache.getMaxSize());
