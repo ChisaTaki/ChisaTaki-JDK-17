@@ -8,7 +8,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dev.kurumiDisciples.chisataki.commands.message.MessageCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.PercentageBuilder;
 import dev.kurumiDisciples.chisataki.commands.slash.SlashCommand;
 import dev.kurumiDisciples.chisataki.commands.user.UserCommand;
 import net.dv8tion.jda.api.JDA;
@@ -31,7 +30,7 @@ public class CommandCenter extends ListenerAdapter {
 	private Map<String, MessageCommand> messageCommandsMap = new HashMap<>();
 
 	public CommandCenter() {
-		wrapCommands(PercentageBuilder.buildCommands());
+		wrapCommands(CommandBuilder.buildSlashCommands());
 	}
 
 	private void wrapCommands(CommandWrapper ...commands) {
@@ -138,17 +137,6 @@ public class CommandCenter extends ListenerAdapter {
 //				Commands.user("Give User Shareholder Role")
 //				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
 //						Permission.VIEW_AUDIT_LOGS)),
-//				Commands.slash("cuddle", "cuddle someone")
-//				.addOption(OptionType.USER, "user", "person to cuddle",
-//						/* required */ true)
-//				.setGuildOnly(true),
-//				Commands.slash("bite", "bite someone")
-//				.addOption(OptionType.USER, "user", "person to bite",
-//						/* required */ true),
-//				Commands.slash("kiss", "kiss someone")
-//				.addOption(OptionType.USER, "user", "person to kiss",
-//						/* required */ true)
-//				.setGuildOnly(true),
 //				Commands.slash("test-image", "image generation test")
 //				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
 //						Permission.VIEW_AUDIT_LOGS)),
