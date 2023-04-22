@@ -15,7 +15,8 @@ public enum RoleEnum {
   YURI_IS_MY_JOB("1091172952046850148"),
   BIRDIE_WING("1091173216443191296"),
   YAMADA_KUN("1091173294880862268"),
-  MAGICAL_DESTROYERS("1091173409783808020");
+  MAGICAL_DESTROYERS("1091173409783808020"),
+  OSHI_NO_KO("1099397868122554409");
 
   private String id;
 
@@ -32,6 +33,6 @@ public enum RoleEnum {
   }
   
   public static List<String> getGroupWatchRoles() {
-	    return List.of(GUNDAM.id, VINLAND.id, BOFURI.id, KUBO.id, YURI_IS_MY_JOB.id, BIRDIE_WING.id, YAMADA_KUN.id, MAGICAL_DESTROYERS.id);
+	    return List.of(GUNDAM.id, VINLAND.id, BOFURI.id, KUBO.id, YURI_IS_MY_JOB.id, BIRDIE_WING.id, YAMADA_KUN.id, MAGICAL_DESTROYERS.id, OSHI_NO_KO.id);
   }
 }
