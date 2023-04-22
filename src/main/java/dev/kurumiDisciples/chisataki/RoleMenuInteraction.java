@@ -78,10 +78,6 @@ public class RoleMenuInteraction extends ListenerAdapter {
                 roleHandle(event.getMember(), guild.getRoleById(RoleEnum.BIRDIE_WING.getId()));
                 roleName += "`Birdie Wing`, ";
                 break;
-              case "bofuriSelect":
-                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.BOFURI.getId()));
-                roleName += "`Bofuri`, ";
-                break;
               case "kuboSelect":
                   roleHandle(event.getMember(), guild.getRoleById(RoleEnum.KUBO.getId()));
                   roleName += "`Kubo`, ";
@@ -296,7 +292,6 @@ public class RoleMenuInteraction extends ListenerAdapter {
   private static StringSelectMenu getGroupMenu() {
     StringSelectMenu group = StringSelectMenu.create("menu:role:groupwatch").setPlaceholder("Select Groupwatch Role(s)")
         .addOption("BIRDIE WING: Golf Girls' Story Season 2", "birdieSelect", Emoji.fromCustom("AoiLaugh", 981757078173524089L, false))
-        .addOption("Bofuri Season 2", "bofuriSelect", Emoji.fromCustom("a_MapleNom", 692821511379222588L, true))
         .addOption("Kubo Won't Let Me Be Invisible", "kuboSelect", Emoji.fromCustom("KuboThumbsUp", 1078040901177319595L, false))
         .addOption("Magical Girl Destroyers", "magicalSelect", Emoji.fromUnicode("U+1FA84"))
         .addOption("Mobile Suit Gundam: The Witch from Mercury Season 2", "gundamSelect", Emoji.fromCustom("mercurytomato", 1026469176379973632L, false))
