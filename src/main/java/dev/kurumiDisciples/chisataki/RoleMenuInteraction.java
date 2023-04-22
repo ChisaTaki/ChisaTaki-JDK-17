@@ -43,8 +43,8 @@ public class RoleMenuInteraction extends ListenerAdapter {
     Thread role = new Thread() {
       public void run() {
         if (event.getName().equals("test-send")) {
-          if (!RoleUtils.isMemberBotDev(event.getMember()))
-            return;
+        	if (!RoleUtils.isMemberBotDev(event.getMember()))
+        		return;
           event.getGuild().getTextChannelById("1024037775743406111").sendMessage(" ").setEmbeds(getTutorialEmbed())
               .queue();
           event.getGuild().getTextChannelById("1024037775743406111").sendMessage(" ").setEmbeds(getShrineEmbed())
@@ -91,8 +91,12 @@ public class RoleMenuInteraction extends ListenerAdapter {
                 roleName += "`Magical Destroyers`, ";
                 break;
               case "gundamSelect":
-                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GUNDAM.getId()));
+            	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GUNDAM.getId()));
                 roleName += "`Gundam`, ";
+                break;
+              case "oshiSelect":
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.OSHI_NO_KO.getId()));
+                roleName += "`Oshi no Ko`, ";
                 break;
               case "vinlandSelect":
                 roleHandle(event.getMember(), guild.getRoleById(RoleEnum.VINLAND.getId()));
@@ -296,6 +300,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
         .addOption("Kubo Won't Let Me Be Invisible", "kuboSelect", Emoji.fromCustom("KuboThumbsUp", 1078040901177319595L, false))
         .addOption("Magical Girl Destroyers", "magicalSelect", Emoji.fromUnicode("U+1FA84"))
         .addOption("Mobile Suit Gundam: The Witch from Mercury Season 2", "gundamSelect", Emoji.fromCustom("mercurytomato", 1026469176379973632L, false))
+        .addOption("Oshi no Ko", "oshiSelect", Emoji.fromCustom("AiSmug", 987071360339677285L, false))
         .addOption("Vinland Saga Season 2", "vinlandSelect", Emoji.fromUnicode("U+2693"))
         .addOption("Yamada-kun to Lv999", "yamadaSelect", Emoji.fromUnicode("U+1F3AE"))
         .addOption("Yuri Is My Job!", "yuriSelect", Emoji.fromCustom("HimeSmile2", 1064566199037468734L, false)).setMaxValues(8).setMinValues(0).build();
