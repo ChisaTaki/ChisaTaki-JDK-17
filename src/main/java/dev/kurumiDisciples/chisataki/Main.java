@@ -48,7 +48,7 @@ public class Main {
           .addEventListeners(new MemeInteraction()).addEventListeners(new RpsInteraction())
           .addEventListeners(new EmbedInteraction()).addEventListeners(new SupportInteraction())
           .addEventListeners(new ShrineInteraction()).addEventListeners(new ShrineDeletionInteraction())
-          .addEventListeners(new BotDevContext()).addEventListeners(new GifInteraction())
+          .addEventListeners(new BotDevContext())
           .addEventListeners(new RecordRolesInteraction()).addEventListeners(new RejoinInteraction())
           .addEventListeners(new WelcomeInteraction()).addEventListeners(new IgnoreInteraction())
           .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())

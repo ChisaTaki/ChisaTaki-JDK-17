@@ -90,10 +90,6 @@ public class CommandCenter extends ListenerAdapter {
 //				/* Perm needed to see command = MODERATE_MEMBERS */
 //				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
 //						Permission.CREATE_PRIVATE_THREADS)),
-//				/* Adding the gif command here because why not */
-//				Commands
-//				.slash("gif", /* description for the command */ "send a gif")
-//				.addOption(OptionType.USER, "hug", "user to hug"),
 //				Commands.message("Delete Bot Message")
 //				.setGuildOnly(true)
 //				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
