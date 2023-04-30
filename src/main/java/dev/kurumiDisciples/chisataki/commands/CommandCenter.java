@@ -94,11 +94,6 @@ public class CommandCenter extends ListenerAdapter {
 //				.setGuildOnly(true)
 //				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
 //						Permission.VIEW_AUDIT_LOGS)),
-//				Commands.slash("count", "display the current shrine count")
-//				.setGuildOnly(true)
-//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
-//						Permission.VIEW_AUDIT_LOGS)),
-//				/* A work in progress slash command for rock paper scissors */
 //				Commands.slash("rps", "play rock paper scissors")
 //				.setGuildOnly(true)
 //				.addSubcommands(List.of(

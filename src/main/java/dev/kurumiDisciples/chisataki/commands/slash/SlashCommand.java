@@ -6,7 +6,9 @@ import org.apache.commons.collections4.CollectionUtils;
 
 import dev.kurumiDisciples.chisataki.commands.CommandWrapper;
 import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.Command.Type;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -20,6 +22,12 @@ public abstract class SlashCommand extends CommandWrapper {
 	public SlashCommand(String name, String description) {
 		super(Type.SLASH, name);
 		this.description = description;
+	}
+	
+
+	public SlashCommand(String name, String description, Permission permission) {
+		this(name, description);
+		this.permission = DefaultMemberPermissions.enabledFor(permission);
 	}
 	
 	@Override
