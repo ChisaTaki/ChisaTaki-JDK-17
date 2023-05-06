@@ -4,8 +4,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import dev.kurumiDisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
-import dev.kurumiDisciples.chisataki.listeners.IgnoreInteraction;
 import dev.kurumiDisciples.chisataki.utils.MessageUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -42,7 +42,7 @@ public class RpsInteraction extends ListenerAdapter {
 				} else if (event.getSubcommandName().equals("multiplayer")) {
 					
 					OptionMapping opponentOption = event.getOption("challenge");
-					if (IgnoreInteraction.inList(opponentOption.getAsMember())) {
+					if (IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())) {
 						event.getHook().editOriginal("This member wishes not to be challenged by other members").queue();
 					} else if (opponentOption.getAsUser().isBot()){
 						event.getHook().editOriginal("This member cannot be challenged to a match.").queue();

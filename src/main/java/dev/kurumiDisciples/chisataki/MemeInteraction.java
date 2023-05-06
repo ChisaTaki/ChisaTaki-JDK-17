@@ -2,7 +2,7 @@ package dev.kurumiDisciples.chisataki;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import dev.kurumiDisciples.chisataki.listeners.IgnoreInteraction;
+import dev.kurumiDisciples.chisataki.commands.slash.IgnoreCommand;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -26,7 +26,7 @@ public class MemeInteraction extends ListenerAdapter {
 				if (event.getMessage().isWebhookMessage())
 					return;
 				
-				if (IgnoreInteraction.inList(event.getMember())) {
+				if (IgnoreCommand.isMemberIgnored(event.getMember().getId())) {
 					return;
 				}
 

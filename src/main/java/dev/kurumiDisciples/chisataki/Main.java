@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import dev.kurumiDisciples.chisataki.audio.MusicInteraction;
 import dev.kurumiDisciples.chisataki.commands.CommandCenter;
-import dev.kurumiDisciples.chisataki.listeners.IgnoreInteraction;
 import dev.kurumiDisciples.chisataki.listeners.ShrineDeletionInteraction;
 import dev.kurumiDisciples.chisataki.listeners.ShrineInteraction;
 import dev.kurumiDisciples.chisataki.modmail.ModMailInteraction;
@@ -48,9 +47,8 @@ public class Main {
           .addEventListeners(new MemeInteraction()).addEventListeners(new RpsInteraction())
           .addEventListeners(new EmbedInteraction()).addEventListeners(new SupportInteraction())
           .addEventListeners(new ShrineInteraction()).addEventListeners(new ShrineDeletionInteraction())
-          .addEventListeners(new BotDevContext())
-          .addEventListeners(new RecordRolesInteraction()).addEventListeners(new RejoinInteraction())
-          .addEventListeners(new WelcomeInteraction()).addEventListeners(new IgnoreInteraction())
+          .addEventListeners(new BotDevContext()).addEventListeners(new RecordRolesInteraction())
+          .addEventListeners(new RejoinInteraction()).addEventListeners(new WelcomeInteraction())
           .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
           .addEventListeners(new Debugger()).addEventListeners(new ModMailInteraction())
           .addEventListeners(new TicketInteraction()).addEventListeners(new MusicInteraction())

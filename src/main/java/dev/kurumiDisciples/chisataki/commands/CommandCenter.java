@@ -101,10 +101,6 @@ public class CommandCenter extends ListenerAdapter {
 //						new SubcommandData("multiplayer", "play with other members")
 //						.addOption(OptionType.USER, "challenge",
 //								"user to play with", true))),
-//				Commands
-//				.slash(
-//						"ignore-me", "make the bot ignore you from its shenanigans")
-//				.setGuildOnly(true),
 //				Commands.slash("test-send", "nothing here")
 //				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
 //						Permission.VIEW_AUDIT_LOGS))

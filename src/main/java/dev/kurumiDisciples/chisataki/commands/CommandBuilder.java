@@ -1,6 +1,7 @@
 package dev.kurumiDisciples.chisataki.commands;
 
 import dev.kurumiDisciples.chisataki.commands.slash.GifCommand;
+import dev.kurumiDisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.MentionableCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.PercentageCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.ShrineCountCommand;
@@ -38,7 +39,11 @@ public class CommandBuilder {
 		String susFooter = "Not stolen from another bot at all, I promise";
 		SlashCommand susCmd = new PercentageCommand("sus", "how sus are you?", "might be the imposter", susFormat, susGifUrl, susFooter);
 		
-		return new SlashCommand[] {biteCmd, cuddleCmd, kissCmd, cuteCmd, susCmd, new GifCommand(), new ShrineCountCommand()};
+		return new SlashCommand[] {
+				biteCmd, cuddleCmd, kissCmd, cuteCmd, susCmd, 
+				new GifCommand(), new ShrineCountCommand(),
+				new IgnoreCommand()
+		};
 	}
 
 }

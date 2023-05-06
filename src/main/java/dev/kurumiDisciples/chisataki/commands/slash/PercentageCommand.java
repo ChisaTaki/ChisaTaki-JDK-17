@@ -3,7 +3,6 @@ package dev.kurumiDisciples.chisataki.commands.slash;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import dev.kurumiDisciples.chisataki.listeners.IgnoreInteraction;
 import dev.kurumiDisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
@@ -47,7 +46,7 @@ public class PercentageCommand extends SlashCommand {
 		Member selectedMember = event.getOption("user") == null ? initiator : userOption.getAsMember();
 		boolean isSameMember = initiator.getId().equals(selectedMember.getId());
 		
-		if (!isSameMember && IgnoreInteraction.inList(selectedMember)) {
+		if (!isSameMember && IgnoreCommand.isMemberIgnored(selectedMember.getId())) {
 			event.getHook().sendMessage(getIgnoreMessage()).queue();
 			return;
 		}
