@@ -45,7 +45,7 @@ public class Main {
               CacheFlag.SCHEDULED_EVENTS, CacheFlag.FORUM_TAGS)
           .setMemberCachePolicy(MemberCachePolicy.ALL).setChunkingFilter(ChunkingFilter.ALL)
           .addEventListeners(new MemeInteraction()).addEventListeners(new RpsInteraction())
-          .addEventListeners(new EmbedInteraction()).addEventListeners(new SupportInteraction())
+          .addEventListeners(new SupportInteraction())
           .addEventListeners(new ShrineInteraction()).addEventListeners(new ShrineDeletionInteraction())
           .addEventListeners(new BotDevContext()).addEventListeners(new RecordRolesInteraction())
           .addEventListeners(new RejoinInteraction()).addEventListeners(new WelcomeInteraction())

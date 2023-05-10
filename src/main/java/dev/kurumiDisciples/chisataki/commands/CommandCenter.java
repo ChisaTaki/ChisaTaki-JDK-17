@@ -70,26 +70,6 @@ public class CommandCenter extends ListenerAdapter {
 		// To refactor:
 //		jda.updateCommands()
 //		.addCommands(
-//				Commands
-//				.slash("embed", "create an embed message (mod only)")
-//				/* the channel option is requried for the embed command to work
-//				 */
-//				.addOption(OptionType.CHANNEL, "channel",
-//						"the channel to post to", /* required */ true)
-//
-//				.addOption(OptionType.STRING, "title", "set the title")
-//				.addOption(
-//						OptionType.STRING, "description", "set the description")
-//				.addOption(OptionType.STRING, "author", "set the author")
-//				.addOption(OptionType.STRING, "footer", "set the footer")
-//				.addOption(
-//						OptionType.INTEGER, "color", "int code for the color")
-//				/* This sets it so that only moderators can see and use this
-//                   command */
-//				/* Normal members will never be able to use this what so ever */
-//				/* Perm needed to see command = MODERATE_MEMBERS */
-//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
-//						Permission.CREATE_PRIVATE_THREADS)),
 //				Commands.message("Delete Bot Message")
 //				.setGuildOnly(true)
 //				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
