@@ -10,6 +10,9 @@ import dev.kurumiDisciples.chisataki.listeners.ShrineInteraction;
 import dev.kurumiDisciples.chisataki.modmail.ModMailInteraction;
 import dev.kurumiDisciples.chisataki.modmail.TicketInteraction;
 import dev.kurumiDisciples.chisataki.rps.RpsInteraction;
+import dev.kurumiDisciples.javadex.api.*;
+import dev.kurumiDisciples.javadex.api.manga.*;
+import dev.kurumiDisciples.chisataki.notifications.MangaNotification;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -18,6 +21,8 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
+
+import java.time.Duration;
 
 import io.github.cdimascio.dotenv.*;
 
@@ -59,6 +64,21 @@ public class Main {
       logger.info("Commands added!");
       MessageCache.setMaxSize(2000);
       logger.info("Message Cache Size: {}", MessageCache.getMaxSize());
+
+      JavaDex j = JavaDexBuilder.createGuest()
+        .setEventRefresh(Duration.ofHours(2))
+        .build();
+      logger.info("JavaDex Client Connected!");
+
+      j.addEventListeners(new MangaNotification());
+
+    try{
+      j.addMangaToCheck(j.getMangaById("9c21fbcd-e22e-4e6d-8258-7d580df9fc45").get());
+      logger.info("Manga added");
+       }
+      catch (Exception e){
+        logger.error("Failed to add manga to check", e);  
+      }
 
     }
 
