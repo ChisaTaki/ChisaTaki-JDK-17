@@ -86,14 +86,6 @@ public class CommandCenter extends ListenerAdapter {
 //						Permission.VIEW_AUDIT_LOGS))
 //				.setGuildOnly(true),
 //
-//				Commands.slash("debug", "brings up debugging info for the bot")
-//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
-//						Permission.VIEW_AUDIT_LOGS))
-//				.addSubcommands(List.of(new SubcommandData("performance",
-//						"brings up performance stats"),
-//						new SubcommandData("cache", "view the system cache")
-//						.addOption(OptionType.STRING, "message-id",
-//								"grab message id"))),
 //				Commands.user("Remove Chisato's Solider Role")
 //				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
 //						Permission.VIEW_AUDIT_LOGS)),

@@ -50,7 +50,7 @@ public class Main {
           .addEventListeners(new BotDevContext()).addEventListeners(new RecordRolesInteraction())
           .addEventListeners(new RejoinInteraction()).addEventListeners(new WelcomeInteraction())
           .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
-          .addEventListeners(new Debugger()).addEventListeners(new ModMailInteraction())
+          .addEventListeners(new ModMailInteraction())
           .addEventListeners(new TicketInteraction()).addEventListeners(new MusicInteraction())
           .addEventListeners(commandCenter)
           .setActivity(Activity.of(ActivityType.WATCHING, "ChisaTaki's Wedding", "https://chisatakicopium.com"))

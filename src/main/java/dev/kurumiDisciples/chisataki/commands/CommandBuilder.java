@@ -1,5 +1,6 @@
 package dev.kurumiDisciples.chisataki.commands;
 
+import dev.kurumiDisciples.chisataki.commands.slash.DebugCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.EmbedCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.GifCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.IgnoreCommand;
@@ -43,7 +44,8 @@ public class CommandBuilder {
 		return new SlashCommand[] {
 				biteCmd, cuddleCmd, kissCmd, cuteCmd, susCmd, 
 				new GifCommand(), new ShrineCountCommand(),
-				new IgnoreCommand(), new EmbedCommand()
+				new IgnoreCommand(), new EmbedCommand(),
+				new DebugCommand()
 		};
 	}
 
