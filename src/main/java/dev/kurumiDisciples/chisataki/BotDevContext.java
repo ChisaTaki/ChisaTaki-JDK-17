@@ -1,46 +1,13 @@
 package dev.kurumiDisciples.chisataki;
 
-import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent;
+import java.util.List;
 
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
+import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class BotDevContext extends ListenerAdapter {
-
-  final static Logger logger = LoggerFactory.getLogger(BotDevContext.class);
-
-  public void onMessageContextInteraction(MessageContextInteractionEvent event){
-    Thread botThread = new Thread(){
-      public void run(){
-        if (event.getName().equals("Delete Bot Message")){
-          event.deferReply(true).queue();
-          if (!event.getTarget().getAuthor().getId().equals("1070074991653167144")){
-            event.getHook().editOriginal("Message is not from ChisaTaki.").queue();
-          }
-          else if (canUse(event.getMember())){
-            event.getHook().editOriginal("Message Deleted").queue();
-            event.getTarget().delete().reason("context menu option was used").queue();
-            logger.info("Deleted ChisaTaki Bot message");
-          }
-          else {
-            event.getHook().editOriginal("You can't use this context menu option").queue();
-          }
-        }
-      }
-    };
-    botThread.setName("Delete-Bot-Thread");
-    botThread.setPriority(3);
-    botThread.start();
-  }
-
-
 
   public void onUserContextInteraction(UserContextInteractionEvent event){
     Thread userMenu = new Thread(){
@@ -87,19 +54,7 @@ public class BotDevContext extends ListenerAdapter {
     userMenu.setPriority(1);
     userMenu.start();
   }
-  private static boolean canUse(Member member){
-    /* copied from isExcluded */
-    List<Role> roles = member.getRoles();
-    List<String> excluded = List.of(/*President*/"1016047777098256435", /*Vice President*/ "1016048573621739520", /*Bot Dev*/ "1044358875039666316", /*ChisaTaki Staff*/ "1016048811581382676");
-
-    for (Role role : roles){
-      for (String id : excluded){
-        if (role.getId().equals(id)) return true;
-      }
-    }
-    return false;
-  }
-
+  
    private static boolean hasRole(Member member, Role role) {
     List<Role> memberRoles = member.getRoles();
 

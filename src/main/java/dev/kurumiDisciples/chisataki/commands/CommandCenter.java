@@ -70,10 +70,6 @@ public class CommandCenter extends ListenerAdapter {
 		// To refactor:
 //		jda.updateCommands()
 //		.addCommands(
-//				Commands.message("Delete Bot Message")
-//				.setGuildOnly(true)
-//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
-//						Permission.VIEW_AUDIT_LOGS)),
 //				Commands.slash("rps", "play rock paper scissors")
 //				.setGuildOnly(true)
 //				.addSubcommands(List.of(
