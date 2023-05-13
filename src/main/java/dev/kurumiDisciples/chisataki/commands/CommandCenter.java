@@ -98,13 +98,7 @@ public class CommandCenter extends ListenerAdapter {
 //						Permission.VIEW_AUDIT_LOGS)),
 //				Commands.slash("test-image", "image generation test")
 //				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
-//						Permission.VIEW_AUDIT_LOGS)),
-//				Commands
-//				.slash("start-music",
-//						"calls the bot to start playing music on file")
-//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
-//						Permission.VIEW_AUDIT_LOGS)),
-//				Commands.slash("stop-music", "calls the bot to stop playing music"))
+//						Permission.VIEW_AUDIT_LOGS)))
 //		.queue();
 	}
 

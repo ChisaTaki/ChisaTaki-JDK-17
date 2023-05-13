@@ -3,7 +3,6 @@ package dev.kurumiDisciples.chisataki;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumiDisciples.chisataki.audio.MusicInteraction;
 import dev.kurumiDisciples.chisataki.commands.CommandCenter;
 import dev.kurumiDisciples.chisataki.listeners.ShrineDeletionInteraction;
 import dev.kurumiDisciples.chisataki.listeners.ShrineInteraction;
@@ -50,8 +49,7 @@ public class Main {
           .addEventListeners(new BotDevContext()).addEventListeners(new RecordRolesInteraction())
           .addEventListeners(new RejoinInteraction()).addEventListeners(new WelcomeInteraction())
           .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
-          .addEventListeners(new ModMailInteraction())
-          .addEventListeners(new TicketInteraction()).addEventListeners(new MusicInteraction())
+          .addEventListeners(new ModMailInteraction()).addEventListeners(new TicketInteraction())
           .addEventListeners(commandCenter)
           .setActivity(Activity.of(ActivityType.WATCHING, "ChisaTaki's Wedding", "https://chisatakicopium.com"))
           .build();
