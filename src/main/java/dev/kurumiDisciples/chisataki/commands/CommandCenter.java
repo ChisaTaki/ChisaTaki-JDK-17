@@ -11,16 +11,11 @@ import dev.kurumiDisciples.chisataki.commands.message.MessageCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.SlashCommand;
 import dev.kurumiDisciples.chisataki.commands.user.UserCommand;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
-import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
 public class CommandCenter extends ListenerAdapter {
     private ExecutorService commandExecutor = Executors.newCachedThreadPool();
@@ -78,10 +73,6 @@ public class CommandCenter extends ListenerAdapter {
 //						new SubcommandData("multiplayer", "play with other members")
 //						.addOption(OptionType.USER, "challenge",
 //								"user to play with", true))),
-//				Commands.slash("test-send", "nothing here")
-//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
-//						Permission.VIEW_AUDIT_LOGS))
-//				.setGuildOnly(true),
 //		.queue();
 	}
 

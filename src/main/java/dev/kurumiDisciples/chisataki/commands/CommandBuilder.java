@@ -9,6 +9,7 @@ import dev.kurumiDisciples.chisataki.commands.slash.PercentageCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.ShrineCountCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.SlashCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.TestImageCommand;
+import dev.kurumiDisciples.chisataki.commands.slash.SendRoleEmbedsCommand;
 import dev.kurumiDisciples.chisataki.commands.user.ToggleRoleCommand;
 import dev.kurumiDisciples.chisataki.commands.user.UserCommand;
 import dev.kurumiDisciples.chisataki.enums.RoleEnum;
@@ -49,7 +50,8 @@ public class CommandBuilder {
 				biteCmd, cuddleCmd, kissCmd, cuteCmd, susCmd, 
 				new GifCommand(), new ShrineCountCommand(),
 				new IgnoreCommand(), new EmbedCommand(),
-				new DebugCommand(), new TestImageCommand()
+				new DebugCommand(), new TestImageCommand(),
+				new SendRoleEmbedsCommand()
 		};
 	}
 	
