@@ -8,6 +8,9 @@ import dev.kurumiDisciples.chisataki.commands.slash.MentionableCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.PercentageCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.ShrineCountCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.SlashCommand;
+import dev.kurumiDisciples.chisataki.commands.user.ToggleRoleCommand;
+import dev.kurumiDisciples.chisataki.commands.user.UserCommand;
+import dev.kurumiDisciples.chisataki.enums.RoleEnum;
 
 public class CommandBuilder {
 	public static SlashCommand[] buildSlashCommands() {
@@ -48,5 +51,14 @@ public class CommandBuilder {
 				new DebugCommand()
 		};
 	}
-
+	
+	public static UserCommand[] buildUserCommands() {
+		UserCommand chisatoShrineCmd = new ToggleRoleCommand("Toggle Chisato's Heart Role", RoleEnum.CHISATO_SHRINE);
+		UserCommand takinaShrineCmd = new ToggleRoleCommand("Toggle Sakana Role", RoleEnum.TAKINA_SHRINE);
+		UserCommand shareholderCmd = new ToggleRoleCommand("Toggle Shareholder Role", RoleEnum.SHAREHOLDER);
+		
+		return new UserCommand[] {
+				chisatoShrineCmd, takinaShrineCmd, shareholderCmd
+		};
+	}
 }

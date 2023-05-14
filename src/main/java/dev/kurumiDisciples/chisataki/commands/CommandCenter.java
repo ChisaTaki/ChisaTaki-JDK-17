@@ -31,6 +31,7 @@ public class CommandCenter extends ListenerAdapter {
 
 	public CommandCenter() {
 		wrapCommands(CommandBuilder.buildSlashCommands());
+		wrapCommands(CommandBuilder.buildUserCommands());
 	}
 
 	private void wrapCommands(CommandWrapper ...commands) {
@@ -82,16 +83,6 @@ public class CommandCenter extends ListenerAdapter {
 //						Permission.VIEW_AUDIT_LOGS))
 //				.setGuildOnly(true),
 //
-//				Commands.user("Remove Chisato's Solider Role")
-//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
-//						Permission.VIEW_AUDIT_LOGS)),
-//				Commands.user("Remove Takina's Sakana Role")
-//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
-//						Permission.VIEW_AUDIT_LOGS)),
-//
-//				Commands.user("Give User Shareholder Role")
-//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
-//						Permission.VIEW_AUDIT_LOGS)),
 //				Commands.slash("test-image", "image generation test")
 //				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
 //						Permission.VIEW_AUDIT_LOGS)))

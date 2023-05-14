@@ -16,9 +16,12 @@ public class RoleUtils {
     }
 
     public static boolean isMemberBotDev(Member member) {
-        String botDevRole = RoleEnum.BOT_DEV.getId();
-        return member.getRoles().stream()
-            .map(Role::getId)
-            .anyMatch(botDevRole::equals);
+        return hasRole(member, RoleEnum.BOT_DEV);
+    }
+    
+    public static boolean hasRole(Member member, RoleEnum role) {
+    	return member.getRoles().stream()
+                .map(Role::getId)
+                .anyMatch(role.getId()::equals);
     }
 }

@@ -23,7 +23,6 @@ public abstract class SlashCommand extends CommandWrapper {
 		super(Type.SLASH, name);
 		this.description = description;
 	}
-	
 
 	public SlashCommand(String name, String description, Permission permission) {
 		this(name, description);
