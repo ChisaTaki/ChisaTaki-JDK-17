@@ -47,10 +47,6 @@ public class RoleMenuInteraction extends ListenerAdapter {
                 roleHandle(event.getMember(), guild.getRoleById(RoleEnum.BIRDIE_WING.getId()));
                 roleName += "`Birdie Wing`, ";
                 break;
-              case "bofuriSelect":
-                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.BOFURI.getId()));
-                roleName += "`Bofuri`, ";
-                break;
               case "kuboSelect":
                   roleHandle(event.getMember(), guild.getRoleById(RoleEnum.KUBO.getId()));
                   roleName += "`Kubo`, ";
@@ -60,8 +56,12 @@ public class RoleMenuInteraction extends ListenerAdapter {
                 roleName += "`Magical Destroyers`, ";
                 break;
               case "gundamSelect":
-                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GUNDAM.getId()));
+            	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GUNDAM.getId()));
                 roleName += "`Gundam`, ";
+                break;
+              case "oshiSelect":
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.OSHI_NO_KO.getId()));
+                roleName += "`Oshi no Ko`, ";
                 break;
               case "vinlandSelect":
                 roleHandle(event.getMember(), guild.getRoleById(RoleEnum.VINLAND.getId()));
@@ -178,7 +178,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
     buttonThread.setName("Button-Thread");
     buttonThread.start();
   }
-
+  
   private static void roleHandle(Member member, Role role) {
     Guild guild = member.getGuild();
     try {
