@@ -3,8 +3,7 @@ package dev.kurumiDisciples.chisataki;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumiDisciples.chisataki.audio.MusicInteraction;
-import dev.kurumiDisciples.chisataki.listeners.IgnoreInteraction;
+import dev.kurumiDisciples.chisataki.commands.CommandCenter;
 import dev.kurumiDisciples.chisataki.listeners.ShrineDeletionInteraction;
 import dev.kurumiDisciples.chisataki.listeners.ShrineInteraction;
 import dev.kurumiDisciples.chisataki.modmail.ModMailInteraction;
@@ -40,6 +39,9 @@ public class Main {
       Dotenv env = Dotenv.configure()
         .directory("crypt/")
         .load();
+
+      CommandCenter commandCenter = new CommandCenter();
+      
       jda = JDABuilder.createDefault(env.get("TOKEN"))
           .enableIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
           .enableCache(CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY, CacheFlag.EMOJI, CacheFlag.MEMBER_OVERRIDES,
@@ -47,20 +49,18 @@ public class Main {
               CacheFlag.SCHEDULED_EVENTS, CacheFlag.FORUM_TAGS)
           .setMemberCachePolicy(MemberCachePolicy.ALL).setChunkingFilter(ChunkingFilter.ALL)
           .addEventListeners(new MemeInteraction()).addEventListeners(new RpsInteraction())
-          .addEventListeners(new EmbedInteraction()).addEventListeners(new SupportInteraction())
-          .addEventListeners(new ShrineInteraction()).addEventListeners(new ShrineDeletionInteraction())
-          .addEventListeners(new BotDevContext()).addEventListeners(new GifInteraction())
-          .addEventListeners(new RecordRolesInteraction()).addEventListeners(new RejoinInteraction())
-          .addEventListeners(new WelcomeInteraction()).addEventListeners(new IgnoreInteraction())
+          .addEventListeners(new SupportInteraction()).addEventListeners(new ShrineInteraction())
+          .addEventListeners(new ShrineDeletionInteraction()).addEventListeners(new RecordRolesInteraction())
+          .addEventListeners(new RejoinInteraction()).addEventListeners(new WelcomeInteraction())
           .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
-          .addEventListeners(new Debugger()).addEventListeners(new ModMailInteraction())
-          .addEventListeners(new TicketInteraction()).addEventListeners(new MusicInteraction())
+          .addEventListeners(new ModMailInteraction()).addEventListeners(new TicketInteraction())
+          .addEventListeners(commandCenter)
           .setActivity(Activity.of(ActivityType.WATCHING, "ChisaTaki's Wedding", "https://chisatakicopium.com"))
           .build();
       jda.awaitReady(); // awaits for the cache system to build
       logger.info("Chisataki Bot successfully built and connected to JDA!");
 
-      CommandCenter.addCommands(getJDA());
+      commandCenter.addCommands(getJDA());
       logger.info("Commands added!");
       MessageCache.setMaxSize(2000);
       logger.info("Message Cache Size: {}", MessageCache.getMaxSize());

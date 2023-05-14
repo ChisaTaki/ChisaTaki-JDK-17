@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dev.kurumiDisciples.chisataki.enums.FilePathEnum;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -16,7 +17,7 @@ public class ChisatoShrineInteractionHandler extends ShrineInteractionHandler {
   private static final Logger logger = LoggerFactory.getLogger(ChisatoShrineInteractionHandler.class);
 
   protected ChisatoShrineInteractionHandler() {
-    super(ShrineHelper.CHISATO_EMOJI.getAsText(), "data/chisatoHeart.json", 500);
+    super(ShrineHelper.CHISATO_EMOJI.getAsText(), FilePathEnum.CHISATOHEART.getFilePath(), 500);
   }
 
   @Override

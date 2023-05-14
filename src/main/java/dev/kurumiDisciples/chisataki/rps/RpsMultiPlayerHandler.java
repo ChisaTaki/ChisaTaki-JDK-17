@@ -24,7 +24,7 @@ public class RpsMultiPlayerHandler extends RpsInteractionHandler {
 	
 	public static MessageCreateData getOpponentMessage(Member challenger, Member opponent, long matchStartTime) {
 		String messageTitle = "You have been challenged by " + challenger.getEffectiveName();
-		MessageEmbed opponentEmbed = MessageUtils.buildMessageEmbed(messageTitle, GifEnum.ROCK_COMES_FIRST.getUrl(), ColorUtils.PURPLE);
+		MessageEmbed opponentEmbed = MessageUtils.buildEmbed(messageTitle, GifEnum.ROCK_COMES_FIRST.getUrl(), ColorUtils.PURPLE);
 		String messageContent = opponent.getAsMention() + " you have been challenged! You must respond <t:" + TimeUtils.getUnixTimeIn10Minutes(matchStartTime) + ":R>!";
 		return MessageUtils.buildMessageCreateData(messageContent, opponentEmbed);
 	}

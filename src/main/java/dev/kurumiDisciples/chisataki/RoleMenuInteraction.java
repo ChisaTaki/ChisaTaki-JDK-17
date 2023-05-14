@@ -1,5 +1,4 @@
 package dev.kurumiDisciples.chisataki;
-import java.awt.Color;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -8,23 +7,15 @@ import org.slf4j.LoggerFactory;
 
 import dev.kurumiDisciples.chisataki.enums.RoleEnum;
 import dev.kurumiDisciples.chisataki.utils.CooldownUtils;
-import dev.kurumiDisciples.chisataki.utils.RoleUtils;
-import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.User;
-import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 /* To Do: Add event loggers */
 
@@ -38,28 +29,6 @@ public class RoleMenuInteraction extends ListenerAdapter {
       /* event */ "1013809301342662726", /* Chisataki */ "1013809402547011616", /* groupwatch */ "1025081700570636318");
 
   final static Logger logger = LoggerFactory.getLogger(RoleMenuInteraction.class);
-
-  public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-    Thread role = new Thread() {
-      public void run() {
-        if (event.getName().equals("test-send")) {
-        	if (!RoleUtils.isMemberBotDev(event.getMember()))
-        		return;
-          event.getGuild().getTextChannelById("1024037775743406111").sendMessage(" ").setEmbeds(getTutorialEmbed())
-              .queue();
-          event.getGuild().getTextChannelById("1024037775743406111").sendMessage(" ").setEmbeds(getShrineEmbed())
-              .addActionRow(getShrineMenu()).queue();
-          event.getGuild().getTextChannelById("1024037775743406111").sendMessage(" ").setEmbeds(getChisatakiEmbed())
-              .addActionRow(getChistakiButton()).queue();
-          event.getGuild().getTextChannelById("1024037775743406111").sendMessage(" ").setEmbeds(getServerEmbed())
-              .addActionRow(getServerMenu()).queue();
-          event.getGuild().getTextChannelById("1024037775743406111").sendMessage(" ").setEmbeds(getGroupwatchEmbed())
-              .addActionRow(getGroupMenu()).queue();
-        }
-      }
-    };
-    role.start();
-  }
 
   public void onStringSelectInteraction(StringSelectInteractionEvent event) {
     Thread roleThread = new Thread() {
@@ -209,100 +178,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
     buttonThread.setName("Button-Thread");
     buttonThread.start();
   }
-
-  private static MessageEmbed getChisatakiEmbed() {
-    MessageEmbed chisataki = new EmbedBuilder().addField("**ChisaTaki**",
-        "Click the button below to join the church of ChisaTaki and get access to the exclusive ChisaTaki Chats and channels!",
-        false).addField(" ", "<:ChisaTakiKiss:1013059473167888486> - <@&1010080294692458496>", false)
-        .setColor(new Color(216, 109, 127)).build();
-    return chisataki;
-  }
-
-  private static MessageEmbed getTutorialEmbed() {
-    MessageEmbed tutorial = new EmbedBuilder().setTitle("Role Tutorial").setDescription(
-        "● To get a role, just open the dropdown menu and select the roles you wish to have!.\n\n● For example, select "
-            + Emoji.fromUnicode("U+1F4E2").getAsReactionCode()
-            + " Server Announcement to get the <@&1013809351108079636> role.")
-        .setColor(new Color(216, 109, 127)).build();
-
-    return tutorial;
-  }
-
-  private static MessageEmbed getGroupwatchEmbed() {
-    MessageEmbed groupwatch = new EmbedBuilder().setTitle("Groupwatch Roles").setDescription(
-        "Select the each option that represents a show. Select the show you want to be pinged on when the respective groupwatch starts. Unselect the option to remove it.")
-        .setColor(new Color(216, 109, 127)).build();
-    return groupwatch;
-  }
-
-  private static MessageEmbed getShrineEmbed() {
-    MessageEmbed shrine = new EmbedBuilder().setColor(new Color(216, 109, 127))
-        .addField("Faction Roles", "**__Chisato's Soldier!__**", false)
-        .addField(" ", "<:ChisatoTrain:1013976121253040160> - <@&1013558607213756518>", false)
-        .addField(" ", "This Role provides you access to <#1013939451979911289> and other Chisato related channels.",
-            false)
-        .addField(" ", "**__Takina's Sakana!__**", false)
-        .addField(" ", "<:TakinaTrain:1013976244884344872> - <@&1013567857075953706>", false)
-        .addField(" ", "This role provides you access to <#1013939540420997262> and other Takina related channels.",
-            false)
-        .addField(" ", "**Note: You can only pick one of these roles so choose wisely on whom to follow!**", false)
-        .build();
-    return shrine;
-  }
-
-  private static MessageEmbed getServerEmbed() {
-    MessageEmbed server = new EmbedBuilder().setColor(new Color(216, 109, 127))
-        .addField("**Server Roles**", "📢 - <@&1013809351108079636> : Get pinged for server updates/announcements.",
-            false)
-        .addField(" ", "🎁 - <@&1013809301342662726>: Get pinged for event news/announcements.", false)
-        .addField(" ",
-            "<a:EDFlower:1014474116692181082> - <@&1013809402547011616>: Get pinged for special ChisaTaki announcements/updates.",
-            false)
-        .addField(" ", "<:WasabiNoriko:1016648327208648704> - <@&1025081700570636318> : Get pinged for groupwatches.",
-            false)
-        .build();
-    return server;
-  }
-
-  private static StringSelectMenu getShrineMenu() {
-    StringSelectMenu shrine = StringSelectMenu.create("menu:role:shrine")
-        .addOption("Chisato's Soldier", "chisatoSelect", null,
-            Emoji.fromCustom("ChisaTakiHeart2", 1023727380038176849L, false))
-        .addOption("Takina's Sakana", "takinaSelect", null, Emoji.fromCustom("Sakana", 1016650006662496326L, false))
-        .setPlaceholder("Select Your Faction").setMinValues(0).build();
-    return shrine;
-  }
-
-  private static StringSelectMenu getServerMenu() {
-    StringSelectMenu server = StringSelectMenu.create("menu:role:server").setPlaceholder("Select Server Role(s)")
-        .addOption("Server Announcement", "announceSelect", null, Emoji.fromUnicode("U+1F4E2"))
-        .addOption("Event Announcement", "eventSelect", null, Emoji.fromUnicode("U+1F381"))
-        .addOption("ChisaTaki Announcement", "chisaSelect", null,
-            Emoji.fromCustom("EDFlower", 1014474116692181082L, true))
-        .addOption("Groupwatch", "groupSelect", null, Emoji.fromCustom("WasabiNoriko", 1016648327208648704L, false))
-        .setMaxValues(4).setMinValues(0).build();
-    return server;
-  }
-
-  private static Button getChistakiButton() {
-    return Button.of(ButtonStyle.SECONDARY, "chisaButton", "ChisaTaki Worshipper",
-        Emoji.fromCustom("ChisaTakiKiss", 1014257843974721606L, false));
-  }
-
-  private static StringSelectMenu getGroupMenu() {
-    StringSelectMenu group = StringSelectMenu.create("menu:role:groupwatch").setPlaceholder("Select Groupwatch Role(s)")
-        .addOption("BIRDIE WING: Golf Girls' Story Season 2", "birdieSelect", Emoji.fromCustom("AoiLaugh", 981757078173524089L, false))
-        .addOption("Kubo Won't Let Me Be Invisible", "kuboSelect", Emoji.fromCustom("KuboThumbsUp", 1078040901177319595L, false))
-        .addOption("Magical Girl Destroyers", "magicalSelect", Emoji.fromUnicode("U+1FA84"))
-        .addOption("Mobile Suit Gundam: The Witch from Mercury Season 2", "gundamSelect", Emoji.fromCustom("mercurytomato", 1026469176379973632L, false))
-        .addOption("Oshi no Ko", "oshiSelect", Emoji.fromCustom("AiSmug", 987071360339677285L, false))
-        .addOption("Vinland Saga Season 2", "vinlandSelect", Emoji.fromUnicode("U+2693"))
-        .addOption("Yamada-kun to Lv999", "yamadaSelect", Emoji.fromUnicode("U+1F3AE"))
-        .addOption("Yuri Is My Job!", "yuriSelect", Emoji.fromCustom("HimeSmile2", 1064566199037468734L, false)).setMaxValues(8).setMinValues(0).build();
-
-    return group;
-  }
-
+  
   private static void roleHandle(Member member, Role role) {
     Guild guild = member.getGuild();
     try {
