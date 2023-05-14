@@ -30,7 +30,7 @@ public enum ChannelEnum {
         return "<#" + this.id + '>';
     }
 	
-	public static boolean areCommandsAllowed(String channelId) {
+	public static boolean areSlashCommandsAllowed(String channelId) {
 		return CHISATAKI.id.equals(channelId) || BOT_HOUSE.id.equals(channelId);
 	}
 }

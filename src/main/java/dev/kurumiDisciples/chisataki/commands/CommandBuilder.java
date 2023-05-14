@@ -6,6 +6,7 @@ import dev.kurumiDisciples.chisataki.commands.slash.GifCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.MentionableCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.PercentageCommand;
+import dev.kurumiDisciples.chisataki.commands.slash.RpsCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.ShrineCountCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.SlashCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.TestImageCommand;
@@ -48,10 +49,14 @@ public class CommandBuilder {
 		
 		return new SlashCommand[] {
 				biteCmd, cuddleCmd, kissCmd, cuteCmd, susCmd, 
-				new GifCommand(), new ShrineCountCommand(),
-				new IgnoreCommand(), new EmbedCommand(),
-				new DebugCommand(), new TestImageCommand(),
-				new SendRoleEmbedsCommand()
+				new DebugCommand(),
+				new EmbedCommand(), 
+				new GifCommand(), 
+				new IgnoreCommand(),
+				new RpsCommand(),
+				new SendRoleEmbedsCommand(), 
+				new ShrineCountCommand(), 
+				new TestImageCommand() 
 		};
 	}
 	

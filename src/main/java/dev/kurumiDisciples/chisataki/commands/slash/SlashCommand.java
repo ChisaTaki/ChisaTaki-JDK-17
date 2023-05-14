@@ -56,7 +56,7 @@ public abstract class SlashCommand extends CommandWrapper {
 	 */
 	public boolean isAllowed(SlashCommandInteractionEvent event) {
 		String channelId = event.getChannel().getId();
-		return ChannelEnum.CHISATAKI.getId().equals(channelId) || ChannelEnum.BOT_HOUSE.getId().equals(channelId);
+		return ChannelEnum.areSlashCommandsAllowed(channelId);
 	}
 
 	/**

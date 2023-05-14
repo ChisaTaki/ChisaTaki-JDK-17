@@ -62,18 +62,6 @@ public class CommandCenter extends ListenerAdapter {
 
 	public void addCommands(JDA jda) {
 		jda.updateCommands().addCommands(unwrapCommands()).queue();
-		
-		// To refactor:
-//		jda.updateCommands()
-//		.addCommands(
-//				Commands.slash("rps", "play rock paper scissors")
-//				.setGuildOnly(true)
-//				.addSubcommands(List.of(
-//						new SubcommandData("singleplayer", "play with the bot"),
-//						new SubcommandData("multiplayer", "play with other members")
-//						.addOption(OptionType.USER, "challenge",
-//								"user to play with", true))),
-//		.queue();
 	}
 
 	@Override
