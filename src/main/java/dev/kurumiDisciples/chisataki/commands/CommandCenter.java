@@ -82,10 +82,6 @@ public class CommandCenter extends ListenerAdapter {
 //				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
 //						Permission.VIEW_AUDIT_LOGS))
 //				.setGuildOnly(true),
-//
-//				Commands.slash("test-image", "image generation test")
-//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(
-//						Permission.VIEW_AUDIT_LOGS)))
 //		.queue();
 	}
 
