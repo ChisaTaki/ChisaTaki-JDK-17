@@ -1,6 +1,7 @@
 package dev.kurumiDisciples.chisataki.commands.slash;
 
 import java.awt.Color;
+import java.util.List;
 
 import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
 import dev.kurumiDisciples.chisataki.utils.RoleUtils;
@@ -10,6 +11,8 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.commands.OptionType;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
@@ -20,17 +23,25 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 
 	public SendRoleEmbedsCommand() {
 		super("send-role-embeds", "send the embeds for the roles channel (bot dev only)", Permission.VIEW_AUDIT_LOGS);
+		this.options = List.of(
+				new OptionData(OptionType.BOOLEAN, "testing", "Embeds are sent to #bot-house when true, and to #roles when false", true)
+				);
 	}
 
 	@Override
 	public void execute(SlashCommandInteractionEvent event) {
+		event.deferReply(true).queue();
 		
-		TextChannel rolesChannel = event.getGuild().getTextChannelById(ChannelEnum.ROLES.getId());
+		ChannelEnum channelEnum = event.getOption("testing").getAsBoolean() ? ChannelEnum.BOT_HOUSE : ChannelEnum.ROLES;
+		TextChannel rolesChannel = event.getGuild().getTextChannelById(channelEnum.getId());
+		
 		rolesChannel.sendMessage(" ").setEmbeds(getTutorialEmbed()).queue();
 		rolesChannel.sendMessage(" ").setEmbeds(getShrineEmbed()).addActionRow(getShrineMenu()).queue();
 		rolesChannel.sendMessage(" ").setEmbeds(getChisatakiEmbed()).addActionRow(getChistakiButton()).queue();
 		rolesChannel.sendMessage(" ").setEmbeds(getServerEmbed()).addActionRow(getServerMenu()).queue();
 		rolesChannel.sendMessage(" ").setEmbeds(getGroupwatchEmbed()).addActionRow(getGroupMenu()).queue();
+		
+		event.getHook().editOriginal("Role embeds sent successfully.").queue();
 	}
 	
 	@Override
@@ -92,13 +103,17 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 
 	private MessageEmbed getServerEmbed() {
 		MessageEmbed server = new EmbedBuilder().setColor(EMBED_COLOR)
-				.addField("**Server Roles**", "📢 - <@&1013809351108079636> : Get pinged for server updates/announcements.",
+				.addField("**Server Roles**", "📢 - <@&1013809351108079636> : Get pinged for server announcements/updates.",
 						false)
 				.addField(" ", "🎁 - <@&1013809301342662726>: Get pinged for event news/announcements.", false)
 				.addField(" ",
 						"<a:EDFlower:1014474116692181082> - <@&1013809402547011616>: Get pinged for special ChisaTaki announcements/updates.",
 						false)
+				.addField(" ", "<:KurumiGaming:1031632598386081882> - <@&1107470054829862972> : Get pinged for ChisaTaki bot announcements/updates.",
+						false)
 				.addField(" ", "<:WasabiNoriko:1016648327208648704> - <@&1025081700570636318> : Get pinged for groupwatches.",
+						false)
+				.addField(" ", "<:ChisatoCallingTakina:1056043645112959096> - <@&1107471038981361744> : Get pinged for gartic phone sessions.",
 						false)
 				.build();
 		return server;
@@ -110,7 +125,9 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 				.addOption("Event Announcement", "eventSelect", null, Emoji.fromUnicode("U+1F381"))
 				.addOption("ChisaTaki Announcement", "chisaSelect", null,
 						Emoji.fromCustom("EDFlower", 1014474116692181082L, true))
+				.addOption("Bot Announcement", "botSelect", null, Emoji.fromCustom("KurumiGaming", 1031632598386081882L, false))
 				.addOption("Groupwatch", "groupSelect", null, Emoji.fromCustom("WasabiNoriko", 1016648327208648704L, false))
+				.addOption("Gartic Player", "garticSelect", null, Emoji.fromCustom("ChisatoCallingTakina", 1056043645112959096L, false))
 				.setMaxValues(4).setMinValues(0).build();
 		return server;
 	}
@@ -124,7 +141,7 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 				.addOption("Mobile Suit Gundam: The Witch from Mercury Season 2", "gundamSelect", Emoji.fromCustom("mercurytomato", 1026469176379973632L, false))
 				.addOption("Vinland Saga Season 2", "vinlandSelect", Emoji.fromUnicode("U+2693"))
 				.addOption("Yamada-kun to Lv999", "yamadaSelect", Emoji.fromUnicode("U+1F3AE"))
-				.addOption("Yuri Is My Job!", "yuriSelect", Emoji.fromCustom("HimeSmile2", 1064566199037468734L, false)).setMaxValues(8).setMinValues(0).build();
+				.setMaxValues(7).setMinValues(0).build();
 
 		return group;
 	}
