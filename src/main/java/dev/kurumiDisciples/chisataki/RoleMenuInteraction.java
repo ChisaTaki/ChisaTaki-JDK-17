@@ -23,10 +23,10 @@ public class RoleMenuInteraction extends ListenerAdapter {
 
   StringSelectInteractionEvent EVENT;
 
-  final static List<String> shrineIDs = List.of(/* chisato */"1013558607213756518", /* takina */ "1013567857075953706");
-  final static String chisataki = "1010080294692458496";
-  final static List<String> serverIDs = List.of(/* server announcement */ "1013809351108079636",
-      /* event */ "1013809301342662726", /* Chisataki */ "1013809402547011616", /* groupwatch */ "1025081700570636318");
+  private static final List<String> shrineIDs = List.of(/* chisato */"1013558607213756518", /* takina */ "1013567857075953706");
+  private static final List<String> serverIDs = List.of(/* server announcement */ "1013809351108079636",
+      /* event */ "1013809301342662726", /* Chisataki */ "1013809402547011616", RoleEnum.BOT_ANNOUNCEMENT.getId(), 
+      /* groupwatch */ "1025081700570636318", RoleEnum.GARTIC_PLAYER.getId());
 
   final static Logger logger = LoggerFactory.getLogger(RoleMenuInteraction.class);
 
@@ -51,10 +51,6 @@ public class RoleMenuInteraction extends ListenerAdapter {
                   roleHandle(event.getMember(), guild.getRoleById(RoleEnum.KUBO.getId()));
                   roleName += "`Kubo`, ";
                   break;
-              case "magicalSelect":
-                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.MAGICAL_DESTROYERS.getId()));
-                roleName += "`Magical Destroyers`, ";
-                break;
               case "gundamSelect":
             	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GUNDAM.getId()));
                 roleName += "`Gundam`, ";
@@ -70,10 +66,6 @@ public class RoleMenuInteraction extends ListenerAdapter {
               case "yamadaSelect":
                 roleHandle(event.getMember(), guild.getRoleById(RoleEnum.YAMADA_KUN.getId()));
                 roleName += "`Yamada-kun`, ";
-                break;
-              case "yuriSelect":
-                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.YURI_IS_MY_JOB.getId()));
-                roleName += "`Yuri Is My Job`, ";
                 break;
             }
           }
@@ -106,10 +98,18 @@ public class RoleMenuInteraction extends ListenerAdapter {
                 roleHandle(event.getMember(), guild.getRoleById("1013809402547011616"));
                 roleName += "`ChisaTaki Announcement`, ";
                 break;
+              case "botSelect":
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.BOT_ANNOUNCEMENT.getId()));
+                roleName += "`Bot Announcement`, ";
+                break;
               case "groupSelect":
                 roleHandle(event.getMember(), guild.getRoleById("1025081700570636318"));
                 roleName += "`Groupwatch`, ";
                 break;
+              case "garticSelect":
+                  roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GARTIC_PLAYER.getId()));
+                  roleName += "`Groupwatch`, ";
+                  break;
             }
           }
           try{
