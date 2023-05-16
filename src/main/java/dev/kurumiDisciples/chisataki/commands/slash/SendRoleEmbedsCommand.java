@@ -136,11 +136,12 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 		StringSelectMenu group = StringSelectMenu.create("menu:role:groupwatch").setPlaceholder("Select Groupwatch Role(s)")
 				.addOption("BIRDIE WING: Golf Girls' Story Season 2", "birdieSelect", Emoji.fromCustom("AoiLaugh", 981757078173524089L, false))
 				.addOption("Kubo Won't Let Me Be Invisible", "kuboSelect", Emoji.fromCustom("KuboThumbsUp", 1078040901177319595L, false))
+				.addOption("Madoka Magica", "madokaSelect", Emoji.fromCustom("MadokamiStare_MM", 675807581419339790L, true))
 				.addOption("Mobile Suit Gundam: The Witch from Mercury Season 2", "gundamSelect", Emoji.fromCustom("mercurytomato", 1026469176379973632L, false))
 				.addOption("Oshi no Ko", "oshiSelect", Emoji.fromCustom("AiSmug", 987071360339677285L, false))
 				.addOption("Vinland Saga Season 2", "vinlandSelect", Emoji.fromUnicode("U+2693"))
 				.addOption("Yamada-kun to Lv999", "yamadaSelect", Emoji.fromUnicode("U+1F3AE"))
-				.setMaxValues(6).setMinValues(0).build();
+				.setMaxValues(7).setMinValues(0).build();
 
 		return group;
 	}

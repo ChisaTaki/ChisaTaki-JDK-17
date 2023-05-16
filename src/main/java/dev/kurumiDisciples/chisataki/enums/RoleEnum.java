@@ -15,6 +15,7 @@ public enum RoleEnum {
   BIRDIE_WING("1091173216443191296"),
   KUBO("1056970896251818035"),
   GUNDAM("1033859722723467422"),
+  MADOKA("1107998895184826469"),
   OSHI_NO_KO("1099397868122554409"),
   VINLAND("1042588408083660852"),
   YAMADA_KUN("1091173294880862268"),
@@ -38,6 +39,6 @@ public enum RoleEnum {
   }
   
   public static List<String> getGroupWatchRoles() {
-	    return List.of(GUNDAM.id, VINLAND.id, KUBO.id, BIRDIE_WING.id, YAMADA_KUN.id, OSHI_NO_KO.id);
+	    return List.of(GUNDAM.id, VINLAND.id, KUBO.id, BIRDIE_WING.id, YAMADA_KUN.id, OSHI_NO_KO.id, MADOKA.id);
   }
 }
