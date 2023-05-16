@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki;
+package dev.kurumiDisciples.chisataki.listeners;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;

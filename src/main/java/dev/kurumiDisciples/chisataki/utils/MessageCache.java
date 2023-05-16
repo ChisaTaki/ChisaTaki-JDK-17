@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki;
+package dev.kurumiDisciples.chisataki.utils;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

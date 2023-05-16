@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import dev.kurumiDisciples.chisataki.MessageCache;
+import dev.kurumiDisciples.chisataki.utils.MessageCache;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;
