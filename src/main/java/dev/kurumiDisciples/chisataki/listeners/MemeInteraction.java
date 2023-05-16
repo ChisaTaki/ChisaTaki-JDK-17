@@ -1,8 +1,9 @@
-package dev.kurumiDisciples.chisataki;
+package dev.kurumiDisciples.chisataki.listeners;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dev.kurumiDisciples.chisataki.commands.slash.IgnoreCommand;
+import dev.kurumiDisciples.chisataki.utils.MessageCache;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki;
+package dev.kurumiDisciples.chisataki.listeners;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

@@ -1,8 +1,8 @@
 package dev.kurumiDisciples.chisataki.commands.slash;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import dev.kurumiDisciples.chisataki.enums.GifEnum;
-import io.netty.util.internal.ThreadLocalRandom;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

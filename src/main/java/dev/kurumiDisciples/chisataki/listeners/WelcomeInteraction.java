@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki;
+package dev.kurumiDisciples.chisataki.listeners;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 import javax.imageio.ImageIO;
 
 import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
+import dev.kurumiDisciples.chisataki.utils.AnimatedGifEncoder;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
