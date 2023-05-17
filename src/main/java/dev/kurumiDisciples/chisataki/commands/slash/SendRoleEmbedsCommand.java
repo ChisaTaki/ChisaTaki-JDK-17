@@ -5,6 +5,7 @@ import java.util.List;
 
 import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
 import dev.kurumiDisciples.chisataki.utils.RoleUtils;
+import dev.kurumiDisciples.chisataki.utils.UserUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -56,9 +57,12 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 
 	private MessageEmbed getTutorialEmbed() {
 		MessageEmbed tutorial = new EmbedBuilder().setTitle("Role Tutorial").setDescription(
-				"● To get a role, just open the dropdown menu and select the roles you wish to have!.\n\n● For example, select "
+				"● To add a role, open the dropdown menu and select the roles you wish to have!\n\n● For example, select "
 						+ Emoji.fromUnicode("U+1F4E2").getAsReactionCode()
-						+ " Server Announcement to get the <@&1013809351108079636> role.")
+						+ " Server Announcement to get the <@&1013809351108079636> role.\n\n"
+						+ "● To remove a role, open the dropdown menu and unselect the undesired roles.\n\n"
+						+ "● Warning: Discord will unselect all roles when opening the dropdown after a client restart (i.e.: when using `CTRL + R`).\n\n"
+						+ "**Note: Select ALL roles that apply. The bot will remove all unselected roles.**")
 				.setColor(EMBED_COLOR).build();
 
 		return tutorial;
@@ -109,11 +113,13 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 				.addField(" ",
 						"<a:EDFlower:1014474116692181082> - <@&1013809402547011616>: Get pinged for special ChisaTaki announcements/updates.",
 						false)
-				.addField(" ", "<:KurumiGaming:1031632598386081882> - <@&1107470054829862972> : Get pinged for ChisaTaki bot announcements/updates.",
+				.addField(" ", "<:KurumiGaming:1031632598386081882> - <@&1107470054829862972> : Get pinged for <@" + UserUtils.CHISATAKI_BOT_ID + "> feature updates and maintenance status",
 						false)
-				.addField(" ", "<:WasabiNoriko:1016648327208648704> - <@&1025081700570636318> : Get pinged for groupwatches.",
+				.addField(" ", "<:WasabiNoriko:1016648327208648704> - <@&1025081700570636318> : Get pinged for groupwatches schedule coordination (usually when a new season begins).",
 						false)
-				.addField(" ", "<:ChisatoCallingTakina:1056043645112959096> - <@&1107471038981361744> : Get pinged for gartic phone sessions.",
+				.addField(" ", "<:ChisatoCallingTakina:1056043645112959096> - <@&1107471038981361744> : Get pinged for gartic phone sessions and schedule coordination.",
+						false)
+				.addField(" ", "**Note: Select ALL roles that apply. The bot will remove all unselected roles.**",
 						false)
 				.build();
 		return server;
@@ -136,19 +142,19 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 		StringSelectMenu group = StringSelectMenu.create("menu:role:groupwatch").setPlaceholder("Select Groupwatch Role(s)")
 				.addOption("BIRDIE WING: Golf Girls' Story Season 2", "birdieSelect", Emoji.fromCustom("AoiLaugh", 981757078173524089L, false))
 				.addOption("Kubo Won't Let Me Be Invisible", "kuboSelect", Emoji.fromCustom("KuboThumbsUp", 1078040901177319595L, false))
-				.addOption("Madoka Magica", "madokaSelect", Emoji.fromCustom("MadokamiStare_MM", 675807581419339790L, true))
 				.addOption("Mobile Suit Gundam: The Witch from Mercury Season 2", "gundamSelect", Emoji.fromCustom("mercurytomato", 1026469176379973632L, false))
 				.addOption("Oshi no Ko", "oshiSelect", Emoji.fromCustom("AiSmug", 987071360339677285L, false))
 				.addOption("Vinland Saga Season 2", "vinlandSelect", Emoji.fromUnicode("U+2693"))
 				.addOption("Yamada-kun to Lv999", "yamadaSelect", Emoji.fromUnicode("U+1F3AE"))
-				.setMaxValues(7).setMinValues(0).build();
+				.setMaxValues(6).setMinValues(0).build();
 
 		return group;
 	}
 
 	private MessageEmbed getGroupwatchEmbed() {
 		MessageEmbed groupwatch = new EmbedBuilder().setTitle("Groupwatch Roles").setDescription(
-				"Select the each option that represents a show. Select the show you want to be pinged on when the respective groupwatch starts. Unselect the option to remove it.")
+				"Select a show to be notified when the group watch starts or when there's a stream schedule change.\n\n"
+				+ "**Note: Select ALL roles that apply. The bot will remove all unselected roles.**")
 				.setColor(EMBED_COLOR).build();
 		return groupwatch;
 	}

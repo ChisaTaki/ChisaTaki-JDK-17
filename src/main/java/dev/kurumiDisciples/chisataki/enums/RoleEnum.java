@@ -39,6 +39,6 @@ public enum RoleEnum {
   }
   
   public static List<String> getGroupWatchRoles() {
-	    return List.of(GUNDAM.id, VINLAND.id, KUBO.id, BIRDIE_WING.id, YAMADA_KUN.id, OSHI_NO_KO.id, MADOKA.id);
+	    return List.of(GUNDAM.id, VINLAND.id, KUBO.id, BIRDIE_WING.id, YAMADA_KUN.id, OSHI_NO_KO.id);
   }
 }
