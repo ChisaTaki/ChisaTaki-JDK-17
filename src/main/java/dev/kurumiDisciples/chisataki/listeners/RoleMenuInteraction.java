@@ -35,7 +35,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
       public void run() {
         EVENT = event;
         if (event.getComponentId().equals("menu:role:groupwatch")) {
-          String format = "I've added: %s to you!";
+          String format = "Your groupwatch roles now are: %s to you!";
           Guild guild = event.getGuild();
           event.deferReply(true).queue();
           removeGroupRoles(event.getMember());
@@ -54,10 +54,6 @@ public class RoleMenuInteraction extends ListenerAdapter {
               case "gundamSelect":
             	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GUNDAM.getId()));
                 roleName += "`Gundam`, ";
-                break;
-              case "madokaSelect":
-            	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.MADOKA.getId()));
-                roleName += "`Madoka Magica`, ";
                 break;
               case "oshiSelect":
                 roleHandle(event.getMember(), guild.getRoleById(RoleEnum.OSHI_NO_KO.getId()));
@@ -82,7 +78,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
           }
           event.getHook().editOriginal(format).queue();
         } else if (event.getComponentId().equals("menu:role:server")) {
-          String format = "I've added: %s to you!";
+          String format = "Your server roles now are: %s to you!";
           Guild guild = event.getGuild();
           event.deferReply(true).queue();
           removeServerRoles(event.getMember());
