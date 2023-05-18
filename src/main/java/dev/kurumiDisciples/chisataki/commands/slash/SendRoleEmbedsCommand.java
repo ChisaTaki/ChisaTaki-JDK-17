@@ -72,11 +72,11 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 		MessageEmbed shrine = new EmbedBuilder().setColor(EMBED_COLOR)
 				.addField("Faction Roles", "**__Chisato's Soldier!__**", false)
 				.addField(" ", "<:ChisatoTrain:1013976121253040160> - <@&1013558607213756518>", false)
-				.addField(" ", "This Role provides you access to <#1013939451979911289> and other Chisato related channels.",
+				.addField(" ", "This Role provides you access to `#chisato-shrine` (<#1013939451979911289>) and other Chisato related channels.",
 						false)
 				.addField(" ", "**__Takina's Sakana!__**", false)
 				.addField(" ", "<:TakinaTrain:1013976244884344872> - <@&1013567857075953706>", false)
-				.addField(" ", "This role provides you access to <#1013939540420997262> and other Takina related channels.",
+				.addField(" ", "This role provides you access to `#takina-shrine` (<#1013939540420997262>) and other Takina related channels.",
 						false)
 				.addField(" ", "**Note: You can only pick one of these roles so choose wisely on whom to follow!**", false)
 				.build();
@@ -134,7 +134,7 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 				.addOption("Bot Announcement", "botSelect", null, Emoji.fromCustom("KurumiGaming", 1031632598386081882L, false))
 				.addOption("Groupwatch", "groupSelect", null, Emoji.fromCustom("WasabiNoriko", 1016648327208648704L, false))
 				.addOption("Gartic Player", "garticSelect", null, Emoji.fromCustom("ChisatoCallingTakina", 1056043645112959096L, false))
-				.setMaxValues(4).setMinValues(0).build();
+				.setMaxValues(6).setMinValues(0).build();
 		return server;
 	}
 

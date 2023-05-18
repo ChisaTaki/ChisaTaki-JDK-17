@@ -35,7 +35,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
       public void run() {
         EVENT = event;
         if (event.getComponentId().equals("menu:role:groupwatch")) {
-          String format = "Your groupwatch roles now are: %s to you!";
+          String format = "Your groupwatch roles are now: %s!";
           Guild guild = event.getGuild();
           event.deferReply(true).queue();
           removeGroupRoles(event.getMember());
@@ -74,11 +74,11 @@ public class RoleMenuInteraction extends ListenerAdapter {
           format = String.format(format, roleName);
           }
           catch(StringIndexOutOfBoundsException e){
-            format = "I've removed all roles from you!";
+            format = "I've removed all groupwatch roles from you!";
           }
           event.getHook().editOriginal(format).queue();
         } else if (event.getComponentId().equals("menu:role:server")) {
-          String format = "Your server roles now are: %s to you!";
+          String format = "Your server roles are now: %s!";
           Guild guild = event.getGuild();
           event.deferReply(true).queue();
           removeServerRoles(event.getMember());
@@ -108,7 +108,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
                 break;
               case "garticSelect":
                   roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GARTIC_PLAYER.getId()));
-                  roleName += "`Groupwatch`, ";
+                  roleName += "`Gartic Player`, ";
                   break;
             }
           }
@@ -117,7 +117,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
             format = String.format(format, roleName);
           }
           catch(StringIndexOutOfBoundsException e){
-            format = "I've removed all roles from you!";
+            format = "I've removed all server roles from you!";
           }
           event.getHook().editOriginal(format).queue();
         } else if (event.getComponentId().equals("menu:role:shrine")) {
