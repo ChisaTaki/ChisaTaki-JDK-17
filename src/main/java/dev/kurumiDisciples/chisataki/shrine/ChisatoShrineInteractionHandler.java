@@ -35,7 +35,7 @@ public class ChisatoShrineInteractionHandler extends ShrineInteractionHandler {
   @Override
   protected String getCongratsMessage(MessageReceivedEvent event, int shrineCount) {
     return String.format("Congrats to %s for being our %d%s", event.getMember().getAsMention(), shrineCount,
-        "th Chianango's Heart");
+        "th Chinanago's Heart");
   }
 
   @Override
