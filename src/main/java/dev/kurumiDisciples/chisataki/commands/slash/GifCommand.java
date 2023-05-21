@@ -31,6 +31,6 @@ public class GifCommand extends SlashCommand {
 	@Override
 	public void execute(SlashCommandInteractionEvent event) {
 		event.deferReply().queue();
-		event.getHook().editOriginal("").setEmbeds(getRandomGif()).queue();
+		event.getHook().sendMessage("").setEmbeds(getRandomGif()).queue();
 	}
 }
