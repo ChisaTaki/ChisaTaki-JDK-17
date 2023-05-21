@@ -19,7 +19,9 @@ import javax.json.JsonValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dev.kurumiDisciples.chisataki.enums.RoleEnum;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.exceptions.ErrorResponseException;
 import net.dv8tion.jda.api.exceptions.HierarchyException;
@@ -77,7 +79,14 @@ public class RejoinInteraction extends ListenerAdapter {
   private static void addRolesBackToMember(Member member, JsonArray roles){
     for (int i = 0; i < roles.size(); i++){
       try{
-        member.getGuild().addRoleToMember(member, member.getGuild().getRoleById(roles.getString(i))).reason("Adding role back to member after they left").queue();
+        Role role = member.getGuild().getRoleById(roles.getString(i));
+        
+        if (RoleEnum.TAKINA_SHRINE.getId().equals(role.getId()) || RoleEnum.CHISATO_SHRINE.getId().equals(role.getId())) {
+            logger.info("Role " + role.getName() + "was skipped.");      
+        } else {
+    		member.getGuild().addRoleToMember(member, role).reason("Adding role back to member after they left").queue();
+        }
+        
       }
       catch (InsufficientPermissionException e){
         logger.error("ChisaTaki lacks the Permissions to perform this action. Reason: {}", e.getMessage());       
