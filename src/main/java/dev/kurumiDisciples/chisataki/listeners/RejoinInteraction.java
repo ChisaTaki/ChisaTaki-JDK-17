@@ -82,7 +82,7 @@ public class RejoinInteraction extends ListenerAdapter {
         Role role = member.getGuild().getRoleById(roles.getString(i));
         
         if (RoleEnum.TAKINA_SHRINE.getId().equals(role.getId()) || RoleEnum.CHISATO_SHRINE.getId().equals(role.getId())) {
-            logger.info("Role " + role.getName() + "was skipped.");      
+            logger.info("Role " + role.getName() + " was skipped.");
         } else {
     		member.getGuild().addRoleToMember(member, role).reason("Adding role back to member after they left").queue();
         }
