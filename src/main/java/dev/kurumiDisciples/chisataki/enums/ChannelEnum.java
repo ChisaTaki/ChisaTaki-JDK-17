@@ -6,6 +6,7 @@ public enum ChannelEnum {
 	CHISATAKI("1018915242027266129"),
 	CHISATO_SHRINE("1013939451979911289"),
 	ROLES("1024037775743406111"),
+	RULES("1010080963927232573"),
 	SERVER_LOGS("1010094270033711175"),
 	TAKINA_SHRINE("1013939540420997262"),
 	TICKET_LOGS("1063866445861245128"),
@@ -22,10 +23,6 @@ public enum ChannelEnum {
 		return this.id;
 	}
 
-	public long getIdLong(){
-		return Long.parseLong(this.id);
-	}
-	
 	public String getAsMention() {
         return "<#" + this.id + '>';
     }
