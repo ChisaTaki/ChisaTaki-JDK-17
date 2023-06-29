@@ -11,6 +11,7 @@ import dev.kurumiDisciples.chisataki.commands.slash.ShrineCountCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.SlashCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.TestImageCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.SendRoleEmbedsCommand;
+import dev.kurumiDisciples.chisataki.commands.slash.SendRulesEmbed;
 import dev.kurumiDisciples.chisataki.commands.user.ToggleRoleCommand;
 import dev.kurumiDisciples.chisataki.commands.user.UserCommand;
 import dev.kurumiDisciples.chisataki.enums.RoleEnum;
@@ -54,9 +55,10 @@ public class CommandBuilder {
 				new GifCommand(), 
 				new IgnoreCommand(),
 				new RpsCommand(),
-				new SendRoleEmbedsCommand(), 
+				new SendRoleEmbedsCommand(),
+				new SendRulesEmbed(),
 				new ShrineCountCommand(), 
-				new TestImageCommand() 
+				new TestImageCommand()
 		};
 	}
 	
