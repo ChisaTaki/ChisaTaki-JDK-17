@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -35,7 +36,7 @@ public class WelcomeInteraction extends ListenerAdapter {
 	SlashCommandInteractionEvent event;
 
 	private static Font font = null;
-
+	private static Random random = new Random();
 
 	public void onGuildMemberJoin(GuildMemberJoinEvent event){
 		threadPool.execute(() -> {
@@ -130,11 +131,10 @@ public class WelcomeInteraction extends ListenerAdapter {
 		return inputStream;
 	}
 
-	public static ArrayList<BufferedImage> gifToBufferedImages(String filePath) throws Exception {
+	public static ArrayList<BufferedImage> gifToBufferedImages(String filePath, int numberOfFrames, int frameWidth) throws Exception {
 		ArrayList<BufferedImage> frames = new ArrayList<>();
 		BufferedImage gifImage = ImageIO.read(new File(filePath));
-		int numberOfFrames = 93;
-		int frameWidth = 46314 / numberOfFrames;
+		frameWidth = frameWidth / numberOfFrames;
 		int frameHeight = 290;
 		for (int i = 0; i < numberOfFrames; i++) {
 			int x = i * frameWidth;
@@ -150,7 +150,14 @@ public class WelcomeInteraction extends ListenerAdapter {
 	}
 
 	public static InputStream createWelcomeGif(Member member) throws Exception {
-		ArrayList<BufferedImage> bufferedImages = gifToBufferedImages("data/images/outline.png");
+		ArrayList<BufferedImage> bufferedImages = new ArrayList<>();
+		 int chance = random.nextInt(100);
+		 if (chance == 0) {
+			 bufferedImages = gifToBufferedImages("data/images/random.png", 30, 14940);
+		 } else {
+			 bufferedImages = gifToBufferedImages("data/images/outline.png", 93, 46314);
+		 }
+
 		ArrayList<BufferedImage> generateFrames = new ArrayList<>(bufferedImages.size());
 		for (BufferedImage img : bufferedImages) {
 			generateFrames.add(modifyFrame(img, member));
