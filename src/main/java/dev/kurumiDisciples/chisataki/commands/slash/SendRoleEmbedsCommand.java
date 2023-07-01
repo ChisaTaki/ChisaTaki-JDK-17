@@ -86,7 +86,7 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 	private StringSelectMenu getShrineMenu() {
 		StringSelectMenu shrine = StringSelectMenu.create("menu:role:shrine")
 				.addOption("Chisato's Soldier", "chisatoSelect", null,
-						Emoji.fromCustom("ChisaTakiHeart2", 1023727380038176849L, false))
+						Emoji.fromCustom("Chinanago", 1120915801680134185L, false))
 				.addOption("Takina's Sakana", "takinaSelect", null, Emoji.fromCustom("Sakana", 1016650006662496326L, false))
 				.setPlaceholder("Select Your Faction").setMinValues(0).build();
 		return shrine;
@@ -140,14 +140,12 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 
 	private StringSelectMenu getGroupMenu() {
 		StringSelectMenu group = StringSelectMenu.create("menu:role:groupwatch").setPlaceholder("Select Groupwatch Role(s)")
-				.addOption("BIRDIE WING: Golf Girls' Story Season 2", "birdieSelect", Emoji.fromCustom("AoiLaugh", 981757078173524089L, false))
-				.addOption("Kubo Won't Let Me Be Invisible", "kuboSelect", Emoji.fromCustom("KuboThumbsUp", 1078040901177319595L, false))
-				.addOption("Madoka Magica", "madokaSelect", Emoji.fromCustom("MadokamiStare_MM", 675807581419339790L, true))
+				.addOption("Atelier Ryza: Ever Darkness & the Secret Hideout", "birdieSelect", Emoji.fromCustom("I_HUNGER_ryza", 808126051963895838L, false))
 				.addOption("Mobile Suit Gundam: The Witch from Mercury Season 2", "gundamSelect", Emoji.fromCustom("mercurytomato", 1026469176379973632L, false))
-				.addOption("Oshi no Ko", "oshiSelect", Emoji.fromCustom("AiSmug", 987071360339677285L, false))
-				.addOption("Vinland Saga Season 2", "vinlandSelect", Emoji.fromUnicode("U+2693"))
-				.addOption("Yamada-kun to Lv999", "yamadaSelect", Emoji.fromUnicode("U+1F3AE"))
-				.setMaxValues(7).setMinValues(0).build();
+				.addOption("Horimiya: The Missing Pieces", "horiSelect", Emoji.fromCustom("Hori_smileL", 828673882679410698L, true))
+				.addOption("Saint Cecilia and Pastor Lawrence ", "saintSelect", Emoji.fromCustom("Cecilia", 1036198550184398918L, false))
+				.addOption("Yohane the Parhelion", "yohaneSelect", Emoji.fromCustom("yohaPeek", 633434978385920010L, true))
+				.setMaxValues(5).setMinValues(0).build();
 
 		return group;
 	}
