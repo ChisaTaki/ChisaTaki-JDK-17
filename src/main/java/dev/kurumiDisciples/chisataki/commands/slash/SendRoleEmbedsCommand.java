@@ -140,7 +140,7 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 
 	private StringSelectMenu getGroupMenu() {
 		StringSelectMenu group = StringSelectMenu.create("menu:role:groupwatch").setPlaceholder("Select Groupwatch Role(s)")
-				.addOption("Atelier Ryza: Ever Darkness & the Secret Hideout", "birdieSelect", Emoji.fromCustom("I_HUNGER_ryza", 808126051963895838L, false))
+				.addOption("Atelier Ryza: Ever Darkness & the Secret Hideout", "ryzaSelect", Emoji.fromCustom("I_HUNGER_ryza", 808126051963895838L, false))
 				.addOption("Mobile Suit Gundam: The Witch from Mercury Season 2", "gundamSelect", Emoji.fromCustom("mercurytomato", 1026469176379973632L, false))
 				.addOption("Horimiya: The Missing Pieces", "horiSelect", Emoji.fromCustom("Hori_smileL", 828673882679410698L, true))
 				.addOption("Saint Cecilia and Pastor Lawrence ", "saintSelect", Emoji.fromCustom("Cecilia", 1036198550184398918L, false))
