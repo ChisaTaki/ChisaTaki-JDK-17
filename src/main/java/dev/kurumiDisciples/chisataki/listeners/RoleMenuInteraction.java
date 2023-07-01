@@ -43,33 +43,25 @@ public class RoleMenuInteraction extends ListenerAdapter {
           for (String s : event.getValues()) {
 
             switch (s) {
-              case "birdieSelect":
-                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.BIRDIE_WING.getId()));
-                roleName += "`Birdie Wing`, ";
-                break;
-              case "kuboSelect":
-                  roleHandle(event.getMember(), guild.getRoleById(RoleEnum.KUBO.getId()));
-                  roleName += "`Kubo`, ";
-                  break;
               case "gundamSelect":
             	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GUNDAM.getId()));
                 roleName += "`Gundam`, ";
                 break;
-              case "madokaSelect":
-              	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.MADOKA.getId()));
-                  roleName += "`Madoka Magica`, ";
+              case "horiSelect":
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.HORIMIYA.getId()));
+                roleName += "`Horimiya`, ";
+                break;
+              case "ryzaSelect":
+                  roleHandle(event.getMember(), guild.getRoleById(RoleEnum.ATELIER_RYZA.getId()));
+                  roleName += "`Atelier Ryza`, ";
                   break;
-              case "oshiSelect":
-                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.OSHI_NO_KO.getId()));
-                roleName += "`Oshi no Ko`, ";
+              case "saintSelect":
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.SAINT_CECILIA.getId()));
+                roleName += "`Saint Cecilia and Pastor Lawrence`, ";
                 break;
-              case "vinlandSelect":
-                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.VINLAND.getId()));
-                roleName += "`Vinland Saga`, ";
-                break;
-              case "yamadaSelect":
-                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.YAMADA_KUN.getId()));
-                roleName += "`Yamada-kun`, ";
+              case "yohaneSelect":
+                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.YOHANE.getId()));
+                roleName += "`Yohane the Parhelion`, ";
                 break;
             }
           }
