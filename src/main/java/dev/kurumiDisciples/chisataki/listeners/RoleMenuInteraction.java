@@ -41,12 +41,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
           removeGroupRoles(event.getMember());
           String roleName = "";
           for (String s : event.getValues()) {
-
             switch (s) {
-              case "gundamSelect":
-            	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GUNDAM.getId()));
-                roleName += "`Gundam`, ";
-                break;
               case "horiSelect":
                 roleHandle(event.getMember(), guild.getRoleById(RoleEnum.HORIMIYA.getId()));
                 roleName += "`Horimiya`, ";
