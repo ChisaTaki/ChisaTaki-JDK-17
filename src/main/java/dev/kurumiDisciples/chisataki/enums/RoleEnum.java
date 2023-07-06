@@ -13,7 +13,6 @@ public enum RoleEnum {
   GARTIC_PLAYER("1107471038981361744"),
   
   ATELIER_RYZA("1124366142320947422"),
-  GUNDAM("1033859722723467422"),
   HORIMIYA("1124366185601978438"),
   SAINT_CECILIA("1124366357232885820"),
   YOHANE("1124366881919340684"),
@@ -37,6 +36,6 @@ public enum RoleEnum {
   }
   
   public static List<String> getGroupWatchRoles() {
-	    return List.of(GUNDAM.id, ATELIER_RYZA.id, HORIMIYA.id, SAINT_CECILIA.id, YOHANE.id);
+	    return List.of(ATELIER_RYZA.id, HORIMIYA.id, SAINT_CECILIA.id, YOHANE.id);
   }
 }
