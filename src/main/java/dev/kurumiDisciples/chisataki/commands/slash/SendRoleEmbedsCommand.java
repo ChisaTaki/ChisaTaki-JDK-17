@@ -117,7 +117,7 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 						false)
 				.addField(" ", "<:WasabiNoriko:1016648327208648704> - <@&1025081700570636318> : Get pinged for groupwatches schedule coordination (usually when a new season begins).",
 						false)
-				.addField(" ", "<:TakinaCheckingYourPhone:1114920842564993144L> - <@&1139737288520249414> : Get pinged when a new manga chapter of Lycoris Recoil gets released.",
+				.addField(" ", "<:TakinaCheckingYourPhone:1114920842564993144> - <@&1139737288520249414> : Get pinged when a new manga chapter of Lycoris Recoil gets released.",
 						false)
 				.addField(" ", "**Note: Select ALL roles that apply. The bot will remove all unselected roles.**",
 						false)
