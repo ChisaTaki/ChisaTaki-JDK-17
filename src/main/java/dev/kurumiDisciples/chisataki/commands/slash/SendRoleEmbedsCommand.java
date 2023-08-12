@@ -117,7 +117,7 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 						false)
 				.addField(" ", "<:WasabiNoriko:1016648327208648704> - <@&1025081700570636318> : Get pinged for groupwatches schedule coordination (usually when a new season begins).",
 						false)
-				.addField(" ", "<:ChisatoCallingTakina:1056043645112959096> - <@&1107471038981361744> : Get pinged for gartic phone sessions and schedule coordination.",
+				.addField(" ", "<:TakinaCheckingYourPhone:1114920842564993144L> - <@&1139737288520249414> : Get pinged when a new manga chapter of Lycoris Recoil gets released.",
 						false)
 				.addField(" ", "**Note: Select ALL roles that apply. The bot will remove all unselected roles.**",
 						false)
@@ -133,18 +133,17 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 						Emoji.fromCustom("EDFlower", 1014474116692181082L, true))
 				.addOption("Bot Announcement", "botSelect", null, Emoji.fromCustom("KurumiGaming", 1031632598386081882L, false))
 				.addOption("Groupwatch", "groupSelect", null, Emoji.fromCustom("WasabiNoriko", 1016648327208648704L, false))
-				.addOption("Gartic Player", "garticSelect", null, Emoji.fromCustom("ChisatoCallingTakina", 1056043645112959096L, false))
+				.addOption("Manga Updates", "mangaSelect", null, Emoji.fromCustom("TakinaCheckingYourPhone", 1114920842564993144L, false))
 				.setMaxValues(6).setMinValues(0).build();
 		return server;
 	}
 
 	private StringSelectMenu getGroupMenu() {
 		StringSelectMenu group = StringSelectMenu.create("menu:role:groupwatch").setPlaceholder("Select Groupwatch Role(s)")
-				.addOption("Atelier Ryza: Ever Darkness & the Secret Hideout", "ryzaSelect", Emoji.fromCustom("I_HUNGER_ryza", 808126051963895838L, false))
 				.addOption("Horimiya: The Missing Pieces", "horiSelect", Emoji.fromCustom("Hori_smileL", 828673882679410698L, true))
 				.addOption("Saint Cecilia and Pastor Lawrence ", "saintSelect", Emoji.fromCustom("Cecilia", 1036198550184398918L, false))
 				.addOption("Yohane the Parhelion", "yohaneSelect", Emoji.fromCustom("yohaPeek", 633434978385920010L, true))
-				.setMaxValues(4).setMinValues(0).build();
+				.setMaxValues(3).setMinValues(0).build();
 
 		return group;
 	}
