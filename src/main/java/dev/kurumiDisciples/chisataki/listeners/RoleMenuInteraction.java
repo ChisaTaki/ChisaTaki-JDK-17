@@ -26,7 +26,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
   private static final List<String> shrineIDs = List.of(/* chisato */"1013558607213756518", /* takina */ "1013567857075953706");
   private static final List<String> serverIDs = List.of(/* server announcement */ "1013809351108079636",
       /* event */ "1013809301342662726", /* Chisataki */ "1013809402547011616", RoleEnum.BOT_ANNOUNCEMENT.getId(), 
-      /* groupwatch */ "1025081700570636318", RoleEnum.GARTIC_PLAYER.getId());
+      /* groupwatch */ "1025081700570636318", RoleEnum.MANGA_UPDATES.getId());
 
   final static Logger logger = LoggerFactory.getLogger(RoleMenuInteraction.class);
 
@@ -46,10 +46,6 @@ public class RoleMenuInteraction extends ListenerAdapter {
                 roleHandle(event.getMember(), guild.getRoleById(RoleEnum.HORIMIYA.getId()));
                 roleName += "`Horimiya`, ";
                 break;
-              case "ryzaSelect":
-                  roleHandle(event.getMember(), guild.getRoleById(RoleEnum.ATELIER_RYZA.getId()));
-                  roleName += "`Atelier Ryza`, ";
-                  break;
               case "saintSelect":
                 roleHandle(event.getMember(), guild.getRoleById(RoleEnum.SAINT_CECILIA.getId()));
                 roleName += "`Saint Cecilia and Pastor Lawrence`, ";
@@ -97,9 +93,9 @@ public class RoleMenuInteraction extends ListenerAdapter {
                 roleHandle(event.getMember(), guild.getRoleById("1025081700570636318"));
                 roleName += "`Groupwatch`, ";
                 break;
-              case "garticSelect":
-                  roleHandle(event.getMember(), guild.getRoleById(RoleEnum.GARTIC_PLAYER.getId()));
-                  roleName += "`Gartic Player`, ";
+              case "mangaSelect":
+                  roleHandle(event.getMember(), guild.getRoleById(RoleEnum.MANGA_UPDATES.getId()));
+                  roleName += "`Manga Updates`, ";
                   break;
             }
           }
