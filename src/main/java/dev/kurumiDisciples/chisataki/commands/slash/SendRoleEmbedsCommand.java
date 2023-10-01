@@ -140,10 +140,8 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 
 	private StringSelectMenu getGroupMenu() {
 		StringSelectMenu group = StringSelectMenu.create("menu:role:groupwatch").setPlaceholder("Select Groupwatch Role(s)")
-				.addOption("Horimiya: The Missing Pieces", "horiSelect", Emoji.fromCustom("Hori_smileL", 828673882679410698L, true))
-				.addOption("Saint Cecilia and Pastor Lawrence ", "saintSelect", Emoji.fromCustom("Cecilia", 1036198550184398918L, false))
-				.addOption("Yohane the Parhelion", "yohaneSelect", Emoji.fromCustom("yohaPeek", 633434978385920010L, true))
-				.setMaxValues(3).setMinValues(0).build();
+				.addOption("WataOshi", "wataoshiSelect", Emoji.fromCustom("Claire", 825854942136238141L, false))
+				.setMaxValues(1).setMinValues(0).build();
 
 		return group;
 	}
