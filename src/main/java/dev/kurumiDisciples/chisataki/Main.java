@@ -55,7 +55,7 @@ public class Main {
           .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
           .addEventListeners(new ModMailInteraction()).addEventListeners(new TicketInteraction())
           .addEventListeners(commandCenter)
-          .setActivity(Activity.of(ActivityType.WATCHING, "ChisaTaki's Wedding", "https://chisatakicopium.com"))
+          .setActivity(Activity.customStatus("Attending ChisaTaki Wedding"))
           .build();
       jda.awaitReady(); // awaits for the cache system to build
       logger.info("Chisataki Bot successfully built and connected to JDA!");
@@ -65,20 +65,9 @@ public class Main {
       MessageCache.setMaxSize(2000);
       logger.info("Message Cache Size: {}", MessageCache.getMaxSize());
 
-      JavaDex j = JavaDexBuilder.createGuest()
-        .setEventRefresh(Duration.ofHours(2))
-        .build();
+      
       logger.info("JavaDex Client Connected!");
 
-      j.addEventListeners(new MangaNotification());
-
-    try{
-      j.addMangaToCheck(j.getMangaById("9c21fbcd-e22e-4e6d-8258-7d580df9fc45").get());
-      logger.info("Manga added");
-       }
-      catch (Exception e){
-        logger.error("Failed to add manga to check", e);  
-      }
 
     }
 
