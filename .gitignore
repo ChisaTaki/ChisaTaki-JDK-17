@@ -11,3 +11,4 @@ pom.xml
 .settings/org.eclipse.jdt.core.prefs
 ChisaTaki.jar
 /target/
+/.vscode/
