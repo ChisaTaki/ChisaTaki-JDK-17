@@ -9,19 +9,13 @@ import dev.kurumiDisciples.chisataki.modmail.ModMailInteraction;
 import dev.kurumiDisciples.chisataki.modmail.TicketInteraction;
 import dev.kurumiDisciples.chisataki.rps.RpsInteraction;
 import dev.kurumiDisciples.chisataki.utils.MessageCache;
-import dev.kurumiDisciples.javadex.api.*;
-import dev.kurumiDisciples.javadex.api.manga.*;
-import dev.kurumiDisciples.chisataki.notifications.MangaNotification;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.Activity.ActivityType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-
-import java.time.Duration;
 
 import io.github.cdimascio.dotenv.*;
 
