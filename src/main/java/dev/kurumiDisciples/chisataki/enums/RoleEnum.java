@@ -12,6 +12,9 @@ public enum RoleEnum {
   BOT_ANNOUNCEMENT("1107470054829862972"),
   MANGA_UPDATES("1139737288520249414"),
   
+  SPY_X_FAMILY("1159136433286692935"),
+  STARDUST("1159136281423523910"),
+  VAMPIRE("1159136328127094865"),
   WATAOSHI("1158137539027279943"),
   
   CHISATO_SHRINE("1023697460763303936"),
@@ -33,6 +36,6 @@ public enum RoleEnum {
   }
   
   public static List<String> getGroupWatchRoles() {
-	    return List.of(WATAOSHI.id);
+	    return List.of(SPY_X_FAMILY.id, STARDUST.id, VAMPIRE.id, WATAOSHI.id);
   }
 }
