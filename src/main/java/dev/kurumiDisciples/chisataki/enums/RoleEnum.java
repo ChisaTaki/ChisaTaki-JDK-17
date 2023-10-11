@@ -14,7 +14,6 @@ public enum RoleEnum {
   
   SPY_X_FAMILY("1159136433286692935"),
   STARDUST("1159136281423523910"),
-  VAMPIRE("1159136328127094865"),
   WATAOSHI("1158137539027279943"),
   
   CHISATO_SHRINE("1023697460763303936"),
@@ -36,6 +35,6 @@ public enum RoleEnum {
   }
   
   public static List<String> getGroupWatchRoles() {
-	    return List.of(SPY_X_FAMILY.id, STARDUST.id, VAMPIRE.id, WATAOSHI.id);
+	    return List.of(SPY_X_FAMILY.id, STARDUST.id, WATAOSHI.id);
   }
 }
