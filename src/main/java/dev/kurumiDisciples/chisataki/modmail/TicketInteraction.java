@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 
 import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
 import dev.kurumiDisciples.chisataki.enums.StatusType;
-import dev.kurumiDisciples.chisataki.utils.FileUtils;
 import dev.kurumiDisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -58,6 +57,11 @@ public class TicketInteraction extends ListenerAdapter {
           ticket.setStaff(event.getMember().getId()).setStatus(StatusType.ANSWERED);
           event.getHook().editOriginal(event.getMember().getAsMention() + " has claimed this ticket!").queue();
 
+          //disable the claim ticket button
+          event.getHook().editOriginalEmbeds(event.getMessage().getEmbeds().get(0)).setActionRow(
+              List.of(event.getMessage().getButtons().get(0).asDisabled(), event.getMessage().getButtons().get(1), event.getMessage().getButtons().get(2)))
+              .queue(); 
+            
         } else if (event.getComponentId().startsWith("closereason-")) {
           String ticketNumber = event.getComponentId().split("-")[1];
           event.replyModal(getReasonModal(ticketNumber)).queue();
