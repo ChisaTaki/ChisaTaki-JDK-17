@@ -14,6 +14,7 @@ import dev.kurumiDisciples.chisataki.commands.slash.SendRoleEmbedsCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.SendRulesEmbed;
 import dev.kurumiDisciples.chisataki.commands.user.ToggleRoleCommand;
 import dev.kurumiDisciples.chisataki.commands.user.UserCommand;
+import dev.kurumiDisciples.chisataki.commands.slash.ChristmasCommand;
 import dev.kurumiDisciples.chisataki.enums.RoleEnum;
 
 public class CommandBuilder {
@@ -58,7 +59,8 @@ public class CommandBuilder {
 				new SendRoleEmbedsCommand(),
 				new SendRulesEmbed(),
 				new ShrineCountCommand(), 
-				new TestImageCommand()
+				new TestImageCommand(),
+				new ChristmasCommand()
 		};
 	}
 	
