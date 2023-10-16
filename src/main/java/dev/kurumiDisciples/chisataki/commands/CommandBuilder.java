@@ -9,6 +9,7 @@ import dev.kurumiDisciples.chisataki.commands.slash.PercentageCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.RpsCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.ShrineCountCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.SlashCommand;
+import dev.kurumiDisciples.chisataki.commands.slash.TTTCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.TestImageCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.SendRoleEmbedsCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.SendRulesEmbed;
@@ -60,7 +61,8 @@ public class CommandBuilder {
 				new SendRulesEmbed(),
 				new ShrineCountCommand(), 
 				new TestImageCommand(),
-				new ChristmasCommand()
+				new ChristmasCommand(),
+				new TTTCommand()
 		};
 	}
 	
