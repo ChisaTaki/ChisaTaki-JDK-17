@@ -59,9 +59,6 @@ public class Main {
       MessageCache.setMaxSize(2000);
       logger.info("Message Cache Size: {}", MessageCache.getMaxSize());
 
-      
-      logger.info("JavaDex Client Connected!");
-
 
     }
 

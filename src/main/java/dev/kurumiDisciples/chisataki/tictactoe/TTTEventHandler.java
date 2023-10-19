@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -15,17 +16,31 @@ import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 
 public class TTTEventHandler extends ListenerAdapter{
     
+    private static final String TTT_PREFIX = "TTT-";
+    private static final String TTT_REQ_AP_PREFIX = "TTTReqAp-";
+    private static final String TTT_REQ_RE_PREFIX = "TTTReqRe-";
+
     private final static ExecutorService tttExecutor = Executors.newCachedThreadPool();
 
     @Override
-    public void onButtonInteraction(ButtonInteractionEvent event){
+    public void onButtonInteraction(ButtonInteractionEvent event) {
         tttExecutor.execute(() -> {
-            if (event.getButton().getId().startsWith("TTT-")){
-               event.deferEdit().queue();
-               handleTTTSelection(event);
+            String buttonId = event.getButton().getId();
+
+            event.deferEdit().queue();
+
+            if (buttonId.startsWith(TTT_PREFIX)) {
+                handleTTTSelection(event);
+            } else if (buttonId.startsWith(TTT_REQ_AP_PREFIX)) {
+                handleTTTRequestAcceptance(event);
+            } else if (buttonId.startsWith(TTT_REQ_RE_PREFIX)) {
+                handleTTTRequestRejection(event);
             }
-            else if (event.getButton().getId().startsWith("TTTReqAp-")){
-                event.deferEdit().queue();
+        });
+    }
+
+        private void handleTTTRequestAcceptance(ButtonInteractionEvent event) {
+           event.deferEdit().queue();
                 TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getId());
                 event.getHook().deleteOriginal().queue();
                 List<List<ItemComponent>> ttt = createTicTacToeBoard(setup, /* Player1 is always the player that goes first */setup.getPlayer1());
@@ -33,10 +48,11 @@ public class TTTEventHandler extends ListenerAdapter{
                 .addActionRow(ttt.get(0))
                 .addActionRow(ttt.get(1))
                 .addActionRow(ttt.get(2))
-                .queue();
-            }
-            else if (event.getButton().getId().startsWith("TTTReqRe-")){
-                event.deferEdit().queue();
+                .queue(); 
+        }
+    
+        private void handleTTTRequestRejection(ButtonInteractionEvent event) {
+           event.deferEdit().queue();
                 TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getId());
                 event.getHook().deleteOriginal().queue();
                 Member player1 = setup.getPlayer1();
@@ -46,8 +62,6 @@ public class TTTEventHandler extends ListenerAdapter{
                     });
                 });
             }
-        });
-        }
 
 
      private List<List<ItemComponent>> createTicTacToeBoard(TTTGameSetup setup, Member currentPlayer) {
@@ -82,56 +96,69 @@ public class TTTEventHandler extends ListenerAdapter{
     }
 
 
-    private void handleTTTSelection(ButtonInteractionEvent event){
+    private void handleTTTSelection(ButtonInteractionEvent event) {
         TTTGameSetup setup = TTTUtils.rebuildGameSetupFromButton(event, event.getButton().getId());
-
-        /* Grab all buttons from message */
-
-        List<List<Button>> buttons = new ArrayList<>();
-        for (int o = 0; o < event.getMessage().getActionRows().size(); o++){
-            buttons.add(event.getMessage().getActionRows().get(o).getButtons());
-        }
-
-        /* Grab the button that was pressed */
         Button pressedButton = event.getButton();
-        
-        /* Grab the row and column of the button that was pressed */
-        int row = Integer.valueOf(pressedButton.getId().split("-")[1]);
-        int column = Integer.valueOf(pressedButton.getId().split("-")[2]);
-
-        /* Compile into ButtonInfo Class */
+        int row = Integer.parseInt(pressedButton.getId().split("-")[1]);
+        int column = Integer.parseInt(pressedButton.getId().split("-")[2]);
         ButtonInfo buttonInfo = new ButtonInfo(pressedButton, row, column);
-
-        /* Grab the player who pressed the button */
         Member player = event.getMember();
-
-        /* Check if the player who pressed the button is the person whos turn it is */
         Member currentPlayer = TTTUtils.getCurrentPlayerFromTTTBoard(event, buttonInfo.getButton());
-
-        /* Does currentplayer match player who pressed button? */
-        if (!currentPlayer.getId().equals(player.getId())){
-            /* do nothing */
+    
+        if (!isCurrentPlayer(player, currentPlayer)) {
             return;
         }
-        List<List<Button>> updatedBoard = new ArrayList<>(); 
-        /* Identify Player in game setup */
-        if (player.getId().equals(setup.getPlayer1().getId())){
-            /* Player 1 */
+    
+        List<List<Button>> buttons = extractButtonsFromMessage(event.getMessage());
+        List<List<Button>> updatedBoard;
+        Member nextPlayer;
+    
+        if (isPlayer1(player, setup)) {
             updatedBoard = modifyBoard(buttons, setup, buttonInfo, setup.getPlayer1Choice().getEmoji(), setup.getPlayer2());
-        }
-        else if (player.getId().equals(setup.getPlayer2().getId())){
-            /* Player 2 */
+            nextPlayer = setup.getPlayer2();
+        } else {
             updatedBoard = modifyBoard(buttons, setup, buttonInfo, setup.getPlayer2Choice().getEmoji(), setup.getPlayer1());
+            nextPlayer = setup.getPlayer1();
         }
-
-        /* Check if the game is over */
+    
+        updateMessageAndCheckWinner(event, updatedBoard, nextPlayer, setup);
+    }
+    
+    private boolean isCurrentPlayer(Member player, Member currentPlayer) {
+        return currentPlayer.getId().equals(player.getId());
+    }
+    
+    private List<List<Button>> extractButtonsFromMessage(Message message) {
+        List<List<Button>> buttons = new ArrayList<>();
+        message.getActionRows().forEach(actionRow -> buttons.add(actionRow.getButtons()));
+        return buttons;
+    }
+    
+    private boolean isPlayer1(Member player, TTTGameSetup setup) {
+        return player.getId().equals(setup.getPlayer1().getId());
+    }
+    
+    private void updateMessageAndCheckWinner(ButtonInteractionEvent event, List<List<Button>> updatedBoard, Member nextPlayer, TTTGameSetup setup) {
+        event.getHook().deleteOriginal().queue();
+        Message message = event.getChannel()
+                .sendMessage(nextPlayer.getAsMention() + " its your turn!")
+                .addActionRow(updatedBoard.get(0))
+                .addActionRow(updatedBoard.get(1))
+                .addActionRow(updatedBoard.get(2))
+                .complete();
+    
         char[][] charBoard = TTTUtils.discordButtonsToCharBoardFromButton(updatedBoard);
-        if (TTTLogic.isWin(charBoard)){
-            /* Determine who winner is  */
-
+    
+        if (TTTLogic.isWin(charBoard)) {
             Member winner = setup.getPlayerFromChoice(TTTLogic.getWinner(charBoard));
-            
+            announceWinner(event, winner);
+            message.delete().queueAfter(10L, java.util.concurrent.TimeUnit.SECONDS);
         }
     }
+    
+    private void announceWinner(ButtonInteractionEvent event, Member winner) {
+        event.getChannel().sendMessage(winner.getAsMention() + " has won the game!").queue();
+    }
+    
 
 }
