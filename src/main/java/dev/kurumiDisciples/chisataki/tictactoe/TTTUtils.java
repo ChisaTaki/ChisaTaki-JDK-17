@@ -1,8 +1,8 @@
 package dev.kurumiDisciples.chisataki.tictactoe;
 
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.Interaction;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.ItemComponent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.util.ArrayList;
@@ -47,5 +47,27 @@ public class TTTUtils {
             }
         }
         return board;
+    }
+
+    public static char[][] discordButtonsToCharBoardFromButton(List<List<Button>> buttons){
+        // ActionRow to Buttons to char[][]
+        char[][] board = new char[3][3];
+        for (int i = 0; i < buttons.size(); i++) {
+            for (int j = 0; j < buttons.get(i).size(); j++) {
+                if (buttons.get(i).get(j).getEmoji() == null) {
+                    board[i][j] = ' ';
+                } else if (buttons.get(i).get(j).getEmoji().getAsReactionCode().equals("<:Chinanago:1120915801680134185>")) {
+                    board[i][j] = 'o';
+                } else if (buttons.get(i).get(j).getEmoji().getAsReactionCode().equals("<:Sakana:1016650006662496326>")) {
+                    board[i][j] = 'x';
+                }
+            }
+        }
+        return board;
+    }
+
+    public static Member getCurrentPlayerFromTTTBoard(Interaction event, Button button){
+        String[] ids = button.getId().split("-");
+        return event.getGuild().getMemberById(ids[7]);
     }
 }

@@ -9,6 +9,7 @@ public class TTTGameSetup {
     private Member player1;
     // if player2 is the chisataki bot then the game is single player and the bot will be the second player
     private Member player2;
+    private Member currentPlayer;
 
     public TTTGameSetup(Member player1, Member player2) {
         this.player1 = player1;
@@ -39,5 +40,14 @@ public class TTTGameSetup {
 
     public boolean isSinglePlayer() {
         return this.player2.getUser().isBot();
+    }
+
+    public Member getPlayerFromChoice(TTTChoice choice){
+        if (this.player1Choice.equals(choice)) {
+            return this.player1;
+        } else if (this.player2Choice.equals(choice)) {
+            return this.player2;
+        }
+        return null;
     }
 }

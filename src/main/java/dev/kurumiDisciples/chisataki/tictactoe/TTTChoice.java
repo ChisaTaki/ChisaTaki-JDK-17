@@ -1,5 +1,7 @@
 package dev.kurumiDisciples.chisataki.tictactoe;
 
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+
 public enum TTTChoice {
     O("o", "<:Chinanago:1120915801680134185>"),
     X("x", "<:Sakana:1016650006662496326>");
@@ -37,6 +39,10 @@ public enum TTTChoice {
 
     public String getEmojString() {
         return this.emojString;
+    }
+
+    public Emoji getEmoji(){
+        return Emoji.fromFormatted(this.emojString);
     }
 
     public static TTTChoice getChoiceFromEmoji(String emojString) {
