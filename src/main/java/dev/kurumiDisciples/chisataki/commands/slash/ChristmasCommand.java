@@ -23,7 +23,7 @@ public class ChristmasCommand extends SlashCommand {
         });
     }
 
-     private static int calculateDaysUntilChristmas() {
+     public static int calculateDaysUntilChristmas() {
         LocalDate currentDate = LocalDate.now();
         LocalDate christmasDate = LocalDate.of(currentDate.getYear(), Month.DECEMBER, 25);
 

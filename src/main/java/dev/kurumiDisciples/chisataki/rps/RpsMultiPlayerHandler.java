@@ -39,6 +39,6 @@ public class RpsMultiPlayerHandler extends RpsInteractionHandler {
 	
 		MessageEmbed embed = getMatchResultEmbed(challengerChoice, opponentChoice, challenger, opponent);
 		event.getHook().deleteOriginal().complete();
-		event.getGuildChannel().sendMessage("").setEmbeds(embed).queue();
+		event.getGuildChannel().sendMessageEmbeds(embed).queue();
 	}
 }

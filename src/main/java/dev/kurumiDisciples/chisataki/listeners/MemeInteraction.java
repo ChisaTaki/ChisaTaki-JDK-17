@@ -2,11 +2,16 @@ package dev.kurumiDisciples.chisataki.listeners;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import dev.kurumiDisciples.chisataki.commands.slash.ChristmasCommand;
 import dev.kurumiDisciples.chisataki.commands.slash.IgnoreCommand;
+import dev.kurumiDisciples.chisataki.enums.NumberEnums;
 import dev.kurumiDisciples.chisataki.utils.MessageCache;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+
+import java.util.List;
+import java.util.ArrayList;
 
 /* To do */
 //1. remove the opposing emotes from the respective shrines;
@@ -50,6 +55,12 @@ public class MemeInteraction extends ListenerAdapter {
 					event.getMessage().reply("Don’t you dare hurt Chisato or I’ll CRRRUSSH YOU " + MAD_DOG_TAKINA).queue();
 				} else if (userMessage.contains(CHISATAKI_KISS)) {
 					event.getMessage().addReaction(Emoji.fromFormatted(CHISATAKI_KISS)).queue();
+				} else if (userMessage.toLowerCase().contains("christmas")){
+					List<NumberEnums> numberEnums = getNumberEnumsFromInt(ChristmasCommand.calculateDaysUntilChristmas());
+					numberEnums.forEach(numEmoji -> {
+						event.getMessage().addReaction(numEmoji.getEmoji()).complete();
+					});
+					event.getMessage().addReaction(Emoji.fromUnicode("🎄")).complete();
 				}
 
 			}
@@ -58,4 +69,14 @@ public class MemeInteraction extends ListenerAdapter {
 		messageThread.setPriority(4);
 		messageThread.start();
 	}
+
+	private List<NumberEnums> getNumberEnumsFromInt(int days){
+		List<NumberEnums> numberEnums = new ArrayList<>();
+		for (char c : String.valueOf(days).toCharArray()){
+			numberEnums.add(NumberEnums.getEnumFromInt(Integer.parseInt(String.valueOf(c))));
+		}
+		return numberEnums;
+	}
+
+
 }

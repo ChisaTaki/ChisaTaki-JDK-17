@@ -28,7 +28,12 @@ public class TTTEventHandler extends ListenerAdapter{
                 event.deferEdit().queue();
                 TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getId());
                 event.getHook().deleteOriginal().queue();
-                event.getHook().editOriginal("Request Accepted").queue();
+                List<List<ItemComponent>> ttt = createTicTacToeBoard(setup);
+                event.getChannel().sendMessage(setup.getPlayer1().getAsMention() + " its your turn!")
+                .addActionRow(ttt.get(0))
+                .addActionRow(ttt.get(1))
+                .addActionRow(ttt.get(2))
+                .queue();
             }
             else if (event.getButton().getId().startsWith("TTTReqRe-")){
                 event.deferEdit().queue();
@@ -36,13 +41,13 @@ public class TTTEventHandler extends ListenerAdapter{
                 event.getHook().deleteOriginal().queue();
                 Member player1 = setup.getPlayer1();
                 player1.getUser().openPrivateChannel().queue((channel) -> {
-                    channel.sendMessage("Your request to play Tic Tac Toe with " + setup.getPlayer2().getAsMention() + " has been rejected.").queue(null, {} -> {
-                        System.out.println("Failed to send Tic Tac Toe request rejection message to " + player1.getUser().getAsTag() + " (" + player1.getId() + ")");
-                    });;
+                    channel.sendMessage("Your request to play Tic Tac Toe with " + setup.getPlayer2().getAsMention() + " has been rejected.").queue(null, (error) -> {
+                        System.out.println("Failed to send Tic Tac Toe request rejection message to " + player1.getUser().getAsMention()+ " (" + player1.getId() + ")");
+                    });
                 });
             }
         });
-    }
+        }
 
 
      private List<List<ItemComponent>> createTicTacToeBoard(TTTGameSetup setup) {
