@@ -58,7 +58,7 @@ public class TicketInteraction extends ListenerAdapter {
           event.getHook().editOriginal(event.getMember().getAsMention() + " has claimed this ticket!").queue();
 
           //disable the claim ticket button
-          event.getHook().editOriginalEmbeds(event.getMessage().getEmbeds().get(0)).setActionRow(
+          event.getMessage().editMessageEmbeds(event.getMessage().getEmbeds().get(0)).setActionRow(
               List.of(event.getMessage().getButtons().get(0).asDisabled(), event.getMessage().getButtons().get(1), event.getMessage().getButtons().get(2)))
               .queue(); 
             
