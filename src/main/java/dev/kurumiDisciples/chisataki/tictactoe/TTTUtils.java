@@ -22,6 +22,11 @@ public class TTTUtils {
         return setup;
     }
 
+    public static TTTGameSetup rebuildGameSetupFromRequest(Interaction event, String id){
+        String[] ids = id.split("-");
+        return new TTTGameSetup(event.getGuild().getMemberById(ids[1]), event.getGuild().getMemberById(ids[3]));
+    }
+
 
     public static char[][] discordButtonsToCharBoard(List<ActionRow> actionRows){
         // ActionRow to Buttons to char[][]
