@@ -50,7 +50,6 @@ public class TTTUtils {
     }
 
     public static char[][] discordButtonsToCharBoardFromButton(List<List<Button>> buttons){
-        // ActionRow to Buttons to char[][]
         char[][] board = new char[3][3];
         for (int i = 0; i < buttons.size(); i++) {
             for (int j = 0; j < buttons.get(i).size(); j++) {

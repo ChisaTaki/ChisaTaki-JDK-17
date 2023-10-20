@@ -1,11 +1,15 @@
 package dev.kurumiDisciples.chisataki.commands.slash;
 
+import java.util.List;
+
+import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
+import dev.kurumiDisciples.chisataki.tictactoe.TTTChoice;
+import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-
-import java.util.List;
+import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
+import net.dv8tion.jda.api.entities.Member;
 
 public class TTTCommand extends SlashCommand {
     
@@ -16,7 +20,7 @@ public class TTTCommand extends SlashCommand {
         );
     }
 
-
+    @Override
     public void execute(SlashCommandInteractionEvent event) {
         event.deferReply(true).queue();
         if (event.getSubcommandName().equals("multiplayer")){
@@ -25,10 +29,24 @@ public class TTTCommand extends SlashCommand {
             OptionMapping opponentOption = event.getOption("opponent");
             if (IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())) {
                event.getHook().editOriginal("This member wishes not to be challenged by other members").queue();
-               return;
             } else {
-                event.getHook().editOriginal("This command is not available yet").queue();
+               event.getHook().editOriginal("Please select your Game Piece first!").setActionRow(generateChoiceMenu(event.getMember(), opponentOption.getAsMember())).queue();
             }
         }
+    }
+
+    private StringSelectMenu generateChoiceMenu(Member player1, Member player2){
+        return StringSelectMenu.create("menu:TTT-" + player1.getId() + "-" + player2.getId())
+        .setPlaceholder("Choose your game piece!")
+        .addOption("X", "x", TTTChoice.X.getEmoji())
+        .addOption("O", "o", TTTChoice.O.getEmoji())
+        .setRequiredRange(1, 1)
+        .build();
+    }
+
+    @Override
+    public boolean isAllowed(SlashCommandInteractionEvent event) {
+        /* Temporary method */
+        return event.getChannel().getId().equals(ChannelEnum.BOT_HOUSE.getId());
     }
 }
