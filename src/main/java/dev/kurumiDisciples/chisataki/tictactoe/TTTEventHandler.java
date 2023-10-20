@@ -9,10 +9,12 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.ItemComponent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.requests.ErrorResponse;
 
 public class TTTEventHandler extends ListenerAdapter{
     
@@ -54,12 +56,11 @@ public class TTTEventHandler extends ListenerAdapter{
         private void handleTTTRequestRejection(ButtonInteractionEvent event) {
            event.deferEdit().queue();
                 TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getId());
-                event.getHook().deleteOriginal().queue();
+                event.getHook().deleteOriginal().queue(null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE, ErrorResponse.MISSING_PERMISSIONS));
                 Member player1 = setup.getPlayer1();
                 player1.getUser().openPrivateChannel().queue((channel) -> {
-                    channel.sendMessage("Your request to play Tic Tac Toe with " + setup.getPlayer2().getAsMention() + " has been rejected.").queue(null, (error) -> {
-                        System.out.println("Failed to send Tic Tac Toe request rejection message to " + player1.getUser().getAsMention()+ " (" + player1.getId() + ")");
-                    });
+                    channel.sendMessage("Your request to play Tic Tac Toe with " + setup.getPlayer2().getAsMention() + " has been rejected.").queue(null, 
+                    new ErrorHandler().ignore(ErrorResponse.CANNOT_SEND_TO_USER, ErrorResponse.UNKNOWN_USER));
                 });
             }
 
@@ -139,7 +140,7 @@ public class TTTEventHandler extends ListenerAdapter{
     }
     
     private void updateMessageAndCheckWinner(ButtonInteractionEvent event, List<List<Button>> updatedBoard, Member nextPlayer, TTTGameSetup setup) {
-        event.getHook().deleteOriginal().queue();
+        event.getHook().deleteOriginal().queue(null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
         Message message = event.getChannel()
                 .sendMessage(nextPlayer.getAsMention() + " its your turn!")
                 .addActionRow(updatedBoard.get(0))
@@ -152,7 +153,7 @@ public class TTTEventHandler extends ListenerAdapter{
         if (TTTLogic.isWin(charBoard)) {
             Member winner = setup.getPlayerFromChoice(TTTLogic.getWinner(charBoard));
             announceWinner(event, winner);
-            message.delete().queueAfter(10L, java.util.concurrent.TimeUnit.SECONDS);
+            message.delete().queueAfter(10L, java.util.concurrent.TimeUnit.SECONDS, null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
         }
     }
     

@@ -31,7 +31,7 @@ public class WelcomeInteraction extends ListenerAdapter {
 
 	private static final int THREAD_POOL_SIZE = 10;
 
-	private ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
+	private static final ExecutorService threadPool = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
 
 	SlashCommandInteractionEvent event;
 

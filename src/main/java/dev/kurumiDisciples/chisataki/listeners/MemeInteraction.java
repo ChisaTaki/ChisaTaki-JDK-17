@@ -1,4 +1,6 @@
 package dev.kurumiDisciples.chisataki.listeners;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -9,9 +11,6 @@ import dev.kurumiDisciples.chisataki.utils.MessageCache;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
-import java.util.List;
-import java.util.ArrayList;
 
 /* To do */
 //1. remove the opposing emotes from the respective shrines;
@@ -25,6 +24,7 @@ public class MemeInteraction extends ListenerAdapter {
 
 	private static final ExecutorService THREAD_POOL_EXECUTOR = Executors.newFixedThreadPool(5);
 
+	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
 		Thread messageThread = new Thread() {
 			public void run() {
