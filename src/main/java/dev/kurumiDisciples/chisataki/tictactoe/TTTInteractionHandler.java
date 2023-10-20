@@ -33,9 +33,7 @@ public class TTTInteractionHandler extends ListenerAdapter{
         }); 
     }
 
-    
-
-   private MessageEmbed createRequestEmbed(TTTGameSetup setup){
+    private MessageEmbed createRequestEmbed(TTTGameSetup setup){
         return new EmbedBuilder()
                 .setTitle("Tic Tac Toe")
                 .setDescription(setup.getPlayer1().getAsMention() + " has requested to play Tic Tac Toe with you.")
@@ -46,14 +44,22 @@ public class TTTInteractionHandler extends ListenerAdapter{
                 .setImage("https://tenor.com/bgSGg.gif")
                 .setColor(ColorUtils.PURPLE)
                 .build();
-   }
+    }
 
-   private List<Button> createRequestButtons(TTTGameSetup setup){
-         return List.of(Button.of(ButtonStyle.SUCCESS, generateButtonIdForReq("TTTReqAp", setup) , "Accept", Emoji.fromUnicode("✔️")),
-         Button.of(ButtonStyle.DANGER, generateButtonIdForReq("TTTReqRe", setup), "Reject", Emoji.fromUnicode("❌")));
-   }
+    private List<Button> createRequestButtons(TTTGameSetup setup){
+        String acceptButtonId = generateButtonIdForReq("TTTReqAp", setup);
+        String rejectButtonId = generateButtonIdForReq("TTTReqRe", setup);
+        return List.of(
+            Button.of(ButtonStyle.SUCCESS, acceptButtonId, "Accept", Emoji.fromUnicode("✔️")),
+            Button.of(ButtonStyle.DANGER, rejectButtonId, "Reject", Emoji.fromUnicode("❌"))
+        );
+    }
 
-   private String generateButtonIdForReq(String front, TTTGameSetup setup){
-        return front + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString().toLowerCase() + "-" + setup.getPlayer2().getId() + "-" + setup.getPlayer2Choice().getString();
-   }
+    private String generateButtonIdForReq(String front, TTTGameSetup setup){
+        String player1Id = setup.getPlayer1().getId();
+        String player1Choice = setup.getPlayer1Choice().getString().toLowerCase();
+        String player2Id = setup.getPlayer2().getId();
+        String player2Choice = setup.getPlayer2Choice().getString();
+        return String.format("%s-%s-%s-%s-%s", front, player1Id, player1Choice, player2Id, player2Choice);
+    }
 }
