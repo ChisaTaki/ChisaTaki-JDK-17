@@ -1,12 +1,12 @@
 package dev.kurumiDisciples.chisataki.tictactoe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.Interaction;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class TTTUtils {
     
@@ -55,10 +55,15 @@ public class TTTUtils {
             for (int j = 0; j < buttons.get(i).size(); j++) {
                 if (buttons.get(i).get(j).getEmoji() == null) {
                     board[i][j] = ' ';
-                } else if (buttons.get(i).get(j).getEmoji().getAsReactionCode().equals("<:Chinanago:1120915801680134185>")) {
-                    board[i][j] = 'o';
-                } else if (buttons.get(i).get(j).getEmoji().getAsReactionCode().equals("<:Sakana:1016650006662496326>")) {
-                    board[i][j] = 'x';
+                } else {
+                    String reactionCode = buttons.get(i).get(j).getEmoji().getAsReactionCode();
+                    if (reactionCode != null) {
+                        if (reactionCode.equals("<:Chinanago:1120915801680134185>")) {
+                            board[i][j] = 'o';
+                        } else if (reactionCode.equals("<:Sakana:1016650006662496326>")) {
+                            board[i][j] = 'x';
+                        }
+                    }
                 }
             }
         }
