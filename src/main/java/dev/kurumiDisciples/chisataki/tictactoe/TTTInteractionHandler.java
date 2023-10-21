@@ -8,22 +8,24 @@ import dev.kurumiDisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectInteraction;
 
 public class TTTInteractionHandler extends ListenerAdapter{
 
     private final static ExecutorService tttExecutor = Executors.newCachedThreadPool();
 
-    public void onStringSelectInteraction(StringSelectInteraction event){
+    @Override
+    public void onStringSelectInteraction(StringSelectInteractionEvent event){
+        System.out.println(event.getComponentId());
         tttExecutor.execute(() -> {
-            if (event.getComponentId().startsWith("menu:TTT-")){
+            System.out.println(event.getComponentId());
+            if (event.getComponent().getId().startsWith("menu:TTT-")){
                 event.deferEdit().queue();
                 TTTGameSetup setup = TTTUtils.rebuildGameSetupFromMenu(event, event.getComponentId());
                 setup.setPlayer1Choice(TTTChoice.getChoice(event.getSelectedOptions().get(0).getValue()));
-                event.getMessage().delete().queue();
                 
                 event.getChannel().sendMessage(setup.getPlayer2().getAsMention() + " you've been requested to play Tic Tac Toe by " + setup.getPlayer1().getAsMention() + ".")
                 .setEmbeds(createRequestEmbed(setup))
@@ -39,9 +41,7 @@ public class TTTInteractionHandler extends ListenerAdapter{
                 .setDescription(setup.getPlayer1().getAsMention() + " has requested to play Tic Tac Toe with you.")
                 .addField("Player 1", setup.getPlayer1().getAsMention(), true)
                 .addField("Player 2", setup.getPlayer2().getAsMention(), true)
-                .addField("Player 1 Choice", setup.getPlayer1Choice().getEmojString(), true)
-                .addField("Player 2 Choice", setup.getPlayer2Choice().getEmojString(), true)
-                .setImage("https://tenor.com/bgSGg.gif")
+                .setImage("https://media.tenor.com/RFanknJESW4AAAAd/tic-tac-toe-kyper.gif")
                 .setColor(ColorUtils.PURPLE)
                 .build();
     }

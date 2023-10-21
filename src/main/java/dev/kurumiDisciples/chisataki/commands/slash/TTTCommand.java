@@ -4,12 +4,12 @@ import java.util.List;
 
 import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
 import dev.kurumiDisciples.chisataki.tictactoe.TTTChoice;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
-import net.dv8tion.jda.api.entities.Member;
 
 public class TTTCommand extends SlashCommand {
     
@@ -22,16 +22,19 @@ public class TTTCommand extends SlashCommand {
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        event.deferReply(true).queue();
         if (event.getSubcommandName().equals("multiplayer")){
             //check if member is not in ingnore list
-            
+            event.deferReply(true).queue();
+            System.out.println("Slash recieved");
             OptionMapping opponentOption = event.getOption("opponent");
+            event.getHook().editOriginal("Please select your Game Piece first!").setActionRow(generateChoiceMenu(event.getMember(), opponentOption.getAsMember())).queue();
+             /* 
             if (IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())) {
                event.getHook().editOriginal("This member wishes not to be challenged by other members").queue();
             } else {
                event.getHook().editOriginal("Please select your Game Piece first!").setActionRow(generateChoiceMenu(event.getMember(), opponentOption.getAsMember())).queue();
             }
+            */
         }
     }
 
@@ -48,5 +51,10 @@ public class TTTCommand extends SlashCommand {
     public boolean isAllowed(SlashCommandInteractionEvent event) {
         /* Temporary method */
         return event.getChannel().getId().equals(ChannelEnum.BOT_HOUSE.getId());
+    }
+
+    @Override
+    public String getErrorMessage() {
+        return "This command is not avaliable yet!";
     }
 }

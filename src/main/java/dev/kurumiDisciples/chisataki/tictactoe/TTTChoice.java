@@ -12,6 +12,7 @@ public enum TTTChoice {
 
     private TTTChoice(String string, String emojString) {
         this.string = string;
+        this.emojString = emojString;
     }
 
 
