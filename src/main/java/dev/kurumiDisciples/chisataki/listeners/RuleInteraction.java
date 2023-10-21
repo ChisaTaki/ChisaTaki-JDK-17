@@ -19,16 +19,16 @@ public class RuleInteraction extends ListenerAdapter {
           String selectedValue = event.getValues().get(0);
           switch (selectedValue){
             case "adminSelect":
-              event.getHook().editOriginal(" ").setEmbeds(getStaffEmbed()).queue();
+              event.getHook().editOriginalEmbeds(getStaffEmbed()).queue();
               break;
             case "sisterSelect":
-              event.getHook().editOriginal(" ").setEmbeds(getSisterServer()).queue();
+              event.getHook().editOriginalEmbeds(getSisterServer()).queue();
               break;
             case "shrineSelect":
-              event.getHook().editOriginal(" ").setEmbeds(getShrineMenu()).queue();
+              event.getHook().editOriginalEmbeds(getShrineMenu()).queue();
               break; 
             case "xpSystem":
-              event.getHook().editOriginal(" ").setEmbeds(getXPSystemEmbed()).queue();
+              event.getHook().editOriginalEmbeds(getXPSystemEmbed()).queue();
               break;
           }
         }
@@ -121,7 +121,7 @@ public class RuleInteraction extends ListenerAdapter {
       .setTitle("Community Staff Members")
       .setDescription("🔸Do not ping Staff Roles for minor cases. Only mention this role if there is a dire emergency, such as a server raid.\n🔸Any misuse of pinging the Staff Roles may be punished.\n🔸Please treat mods with respect, remember, we're only humans as well.")
       .addField("President", "🔹<@422176394575872001>\n🔹<@263352590534836224>\n🔹<@258118512575381506>", true)
-      .addField("Vice-President", "🔹<@944156317399011388>\n🔹<@838708612402249740>", true)
+      .addField("Vice-President", "🔹<@838708612402249740>", true)
       .addBlankField(true) // simulate 2 columns
       .addField("ChisaTaki Staff", "🔹<@360241951804620800>\n🔹<@330540834753740810>", true)
       .addField("ChisaTaki Guards", "🔹<@599973543672938511>\n🔹<@119142790537019392>", true)
