@@ -19,16 +19,16 @@ public class RuleInteraction extends ListenerAdapter {
           String selectedValue = event.getValues().get(0);
           switch (selectedValue){
             case "adminSelect":
-              event.getHook().editOriginal(" ").setEmbeds(getStaffEmbed()).queue();
+              event.getHook().editOriginalEmbeds(getStaffEmbed()).queue();
               break;
             case "sisterSelect":
-              event.getHook().editOriginal(" ").setEmbeds(getSisterServer()).queue();
+              event.getHook().editOriginalEmbeds(getSisterServer()).queue();
               break;
             case "shrineSelect":
-              event.getHook().editOriginal(" ").setEmbeds(getShrineMenu()).queue();
+              event.getHook().editOriginalEmbeds(getShrineMenu()).queue();
               break; 
             case "xpSystem":
-              event.getHook().editOriginal(" ").setEmbeds(getXPSystemEmbed()).queue();
+              event.getHook().editOriginalEmbeds(getXPSystemEmbed()).queue();
               break;
           }
         }
