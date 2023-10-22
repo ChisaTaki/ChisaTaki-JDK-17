@@ -215,6 +215,7 @@ public class TTTEventHandler extends ListenerAdapter{
     private MessageEmbed generateWinnerEmbed(TTTGameSetup setup, Member winner, List<List<Button>> board){
         return new EmbedBuilder()
         .setTitle(winner.getEffectiveName() + " has won the game!")
+        .addField("Players", setup.getPlayer1().getEffectiveName() + " vs " + setup.getPlayer2().getEffectiveName(), true)
         .addField("Game results", boardToString(board), true)
         .setImage(GifEnum.CHISATO_SIP.getUrl())
         .setColor(ColorUtils.PURPLE)
