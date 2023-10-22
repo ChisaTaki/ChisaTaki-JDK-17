@@ -87,7 +87,7 @@ public class TTTEventHandler extends ListenerAdapter{
 
 
         private void cannotInteract(ButtonInteractionEvent event){
-            event.deferReply().queue();
+            event.deferReply(true).queue();
             event.getHook().sendMessage("You cannot interact with this button.").queue();
         }
 
@@ -174,6 +174,8 @@ public class TTTEventHandler extends ListenerAdapter{
                 .addActionRow(updatedBoard.get(1))
                 .addActionRow(updatedBoard.get(2))
                 .complete();
+
+        message.delete().queueAfter(10L, java.util.concurrent.TimeUnit.MINUTES, null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
     
         char[][] charBoard = TTTUtils.discordButtonsToCharBoardFromButton(updatedBoard);
         /* print charboard */
