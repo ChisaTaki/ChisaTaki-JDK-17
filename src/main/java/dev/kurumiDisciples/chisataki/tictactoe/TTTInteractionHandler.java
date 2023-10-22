@@ -39,8 +39,8 @@ public class TTTInteractionHandler extends ListenerAdapter{
         return new EmbedBuilder()
                 .setTitle("Tic Tac Toe")
                 .setDescription(setup.getPlayer1().getAsMention() + " has requested to play Tic Tac Toe with you.")
-                .addField("Player 1", setup.getPlayer1().getAsMention(), true)
-                .addField("Player 2", setup.getPlayer2().getAsMention(), true)
+                .addField("Player 1", setup.getPlayer1Choice().getEmojString(), true)
+                .addField("Player 2", setup.getPlayer2Choice().getEmojString(), true)
                 .setImage("https://media.tenor.com/RFanknJESW4AAAAd/tic-tac-toe-kyper.gif")
                 .setColor(ColorUtils.PURPLE)
                 .build();

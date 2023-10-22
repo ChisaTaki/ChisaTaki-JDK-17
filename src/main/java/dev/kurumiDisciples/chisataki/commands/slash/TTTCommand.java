@@ -27,14 +27,17 @@ public class TTTCommand extends SlashCommand {
             event.deferReply(true).queue();
             System.out.println("Slash recieved");
             OptionMapping opponentOption = event.getOption("opponent");
-            event.getHook().editOriginal("Please select your Game Piece first!").setActionRow(generateChoiceMenu(event.getMember(), opponentOption.getAsMember())).queue();
-             /* 
+            
             if (IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())) {
                event.getHook().editOriginal("This member wishes not to be challenged by other members").queue();
+            } else if (opponentOption.getAsMember().getId().equals(event.getMember().getId())){
+                event.getHook().editOriginal("You cannot challenge yourself!").queue();
+            } else if (opponentOption.getAsUser().isBot()){
+                event.getHook().editOriginal("You cannot challenge a bot!").queue();
             } else {
                event.getHook().editOriginal("Please select your Game Piece first!").setActionRow(generateChoiceMenu(event.getMember(), opponentOption.getAsMember())).queue();
             }
-            */
+            
         }
     }
 

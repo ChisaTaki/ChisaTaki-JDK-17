@@ -26,4 +26,19 @@ public class TTTLogic {
 
         return null;
     }
+
+    public static boolean isDraw(char[][] board) {
+        return !isWin(board) && isFull(board);
+    }
+
+    public static boolean isFull(char[][] board) {
+        for (char[] chars : board) {
+            for (char aChar : chars) {
+                if (aChar == ' ') {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }

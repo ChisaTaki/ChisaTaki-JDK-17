@@ -24,7 +24,10 @@ public class TTTUtils {
 
     public static TTTGameSetup rebuildGameSetupFromRequest(Interaction event, String id){
         String[] ids = id.split("-");
-        return new TTTGameSetup(event.getGuild().getMemberById(ids[1]), event.getGuild().getMemberById(ids[3]));
+        System.out.println(id);
+        TTTGameSetup setup = new TTTGameSetup(event.getGuild().getMemberById(ids[1]), event.getGuild().getMemberById(ids[3]));
+        setup.setPlayer1Choice(TTTChoice.getChoice(ids[2]));
+        return setup;
     }
 
 
@@ -50,20 +53,17 @@ public class TTTUtils {
     }
 
     public static char[][] discordButtonsToCharBoardFromButton(List<List<Button>> buttons){
+        // ActionRow to Buttons to char[][]
         char[][] board = new char[3][3];
         for (int i = 0; i < buttons.size(); i++) {
             for (int j = 0; j < buttons.get(i).size(); j++) {
+                System.out.println(buttons.get(i).get(j).getEmoji());
                 if (buttons.get(i).get(j).getEmoji() == null) {
                     board[i][j] = ' ';
-                } else {
-                    String reactionCode = buttons.get(i).get(j).getEmoji().getAsReactionCode();
-                    if (reactionCode != null) {
-                        if (reactionCode.equals("<:Chinanago:1120915801680134185>")) {
-                            board[i][j] = 'o';
-                        } else if (reactionCode.equals("<:Sakana:1016650006662496326>")) {
-                            board[i][j] = 'x';
-                        }
-                    }
+                } else if (buttons.get(i).get(j).getEmoji().getFormatted().equals("<:Chinanago:1120915801680134185>")) {
+                    board[i][j] = 'o';
+                } else if (buttons.get(i).get(j).getEmoji().getFormatted().equals("<:Sakana:1016650006662496326>")) {
+                    board[i][j] = 'x';
                 }
             }
         }

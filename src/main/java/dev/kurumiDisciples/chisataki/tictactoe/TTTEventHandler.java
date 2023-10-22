@@ -5,13 +5,18 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import dev.kurumiDisciples.chisataki.enums.GifEnum;
+import dev.kurumiDisciples.chisataki.rps.RpsLogic;
+import dev.kurumiDisciples.chisataki.rps.RpsResult;
+import dev.kurumiDisciples.chisataki.utils.ColorUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.ItemComponent;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.requests.ErrorResponse;
@@ -28,7 +33,7 @@ public class TTTEventHandler extends ListenerAdapter{
     public void onButtonInteraction(ButtonInteractionEvent event) {
         tttExecutor.execute(() -> {
             String buttonId = event.getButton().getId();
-
+            System.out.println(buttonId);
             event.deferEdit().queue();
 
             if (buttonId.startsWith(TTT_PREFIX)) {
@@ -41,11 +46,21 @@ public class TTTEventHandler extends ListenerAdapter{
         });
     }
 
+        private boolean TTTRequestCurrentMember(Member member, TTTGameSetup setup) {
+            return member.getId().equals(setup.getPlayer2().getId());
+        }
+
         private void handleTTTRequestAcceptance(ButtonInteractionEvent event) {
+            TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getId());
+            Member member = event.getMember();
+            if (!TTTRequestCurrentMember(member, setup)){
+                cannotInteract(event);
+                return;
+            }
            event.deferEdit().queue();
-                TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getId());
+                
                 event.getHook().deleteOriginal().queue();
-                List<List<ItemComponent>> ttt = createTicTacToeBoard(setup, /* Player1 is always the player that goes first */setup.getPlayer1());
+                List<List<Button>> ttt = createTicTacToeBoard(setup, /* Player1 is always the player that goes first */setup.getPlayer1());
                 event.getChannel().sendMessage(setup.getPlayer1().getAsMention() + " its your turn!")
                 .addActionRow(ttt.get(0))
                 .addActionRow(ttt.get(1))
@@ -54,8 +69,14 @@ public class TTTEventHandler extends ListenerAdapter{
         }
     
         private void handleTTTRequestRejection(ButtonInteractionEvent event) {
+            TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getId());
+            Member member = event.getMember();
+            if (!TTTRequestCurrentMember(member, setup)){
+                cannotInteract(event);
+                return;
+            }
            event.deferEdit().queue();
-                TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getId());
+                
                 event.getHook().deleteOriginal().queue(null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE, ErrorResponse.MISSING_PERMISSIONS));
                 Member player1 = setup.getPlayer1();
                 player1.getUser().openPrivateChannel().queue((channel) -> {
@@ -65,13 +86,19 @@ public class TTTEventHandler extends ListenerAdapter{
             }
 
 
-     private List<List<ItemComponent>> createTicTacToeBoard(TTTGameSetup setup, Member currentPlayer) {
-        List<List<ItemComponent>> ttt = new ArrayList<>();
+        private void cannotInteract(ButtonInteractionEvent event){
+            event.deferReply().queue();
+            event.getHook().sendMessage("You cannot interact with this button.").queue();
+        }
+
+
+     private List<List<Button>> createTicTacToeBoard(TTTGameSetup setup, Member currentPlayer) {
+        List<List<Button>> ttt = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
-            List<ItemComponent> row = new ArrayList<>();
+            List<Button> row = new ArrayList<>();
             for (int j = 0; j < 3; j++) {
                 // i represents the row, j represents the column
-                row.add(Button.of(ButtonStyle.SECONDARY, "TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + currentPlayer.getId(), " "));
+                row.add(Button.of(ButtonStyle.SECONDARY, "TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + currentPlayer.getId(), "‎"));
             }
             ttt.add(row);
         }
@@ -149,17 +176,66 @@ public class TTTEventHandler extends ListenerAdapter{
                 .complete();
     
         char[][] charBoard = TTTUtils.discordButtonsToCharBoardFromButton(updatedBoard);
-    
-        if (TTTLogic.isWin(charBoard)) {
+        /* print charboard */
+        for (int i = 0; i < charBoard.length; i++) {
+            for (int j = 0; j < charBoard[i].length; j++) {
+                System.out.print(charBoard[i][j]);
+            }
+            System.out.println("break");
+        }
+        /* check if the board is a draw  */
+        if (TTTLogic.isDraw(charBoard)) {
+            message.delete().queue();
+            sendDrawMessage(event, setup, updatedBoard);
+        }
+        else if (TTTLogic.isWin(charBoard)) {
             Member winner = setup.getPlayerFromChoice(TTTLogic.getWinner(charBoard));
-            announceWinner(event, winner);
-            message.delete().queueAfter(10L, java.util.concurrent.TimeUnit.SECONDS, null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
+            announceWinner(event, winner, updatedBoard, setup);
+            message.delete().queue();
         }
     }
     
-    private void announceWinner(ButtonInteractionEvent event, Member winner) {
-        event.getChannel().sendMessage(winner.getAsMention() + " has won the game!").queue();
+    private void sendDrawMessage(ButtonInteractionEvent event, TTTGameSetup setup, List<List<Button>> board) {
+        event.getChannel().sendMessageEmbeds(generateDrawEmbed(setup, board)).queue();
     }
-    
 
+    private MessageEmbed generateDrawEmbed(TTTGameSetup setup, List<List<Button>> board){
+        return new EmbedBuilder()
+        .setTitle(setup.getPlayer1().getEffectiveName() + " vs " + setup.getPlayer2().getEffectiveName())
+        .addField("Game results", "The game has ended in a draw!", true)
+        .addField("Board", boardToString(board), true)
+        .setImage(RpsLogic.TIE_GIF.getUrl())
+        .setColor(RpsResult.TIE.getColor())
+        .build();
+    }
+    private void announceWinner(ButtonInteractionEvent event, Member winner, List<List<Button>> board, TTTGameSetup setup) {
+        event.getChannel().sendMessageEmbeds(generateWinnerEmbed(setup, winner, board)).queue();
+    }
+
+    private MessageEmbed generateWinnerEmbed(TTTGameSetup setup, Member winner, List<List<Button>> board){
+        return new EmbedBuilder()
+        .setTitle(winner.getEffectiveName() + " has won the game!")
+        .addField("Game results", boardToString(board), true)
+        .setImage(GifEnum.CHISATO_SIP.getUrl())
+        .setColor(ColorUtils.PURPLE)
+        .build();
+    }
+
+    private String boardToString(List<List<Button>> board){
+        // empty space is a _
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < board.size(); i++) {
+            sb.append("|");
+            for (int j = 0; j < board.get(i).size(); j++) {
+                if (board.get(i).get(j).getEmoji() == null) {
+                    sb.append("()");
+                } else {
+                    sb.append(board.get(i).get(j).getEmoji().getFormatted());
+                }
+                sb.append("|");
+            }
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
 }
