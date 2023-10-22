@@ -231,7 +231,7 @@ public class TTTEventHandler extends ListenerAdapter{
             sb.append("|");
             for (int j = 0; j < board.get(i).size(); j++) {
                 if (board.get(i).get(j).getEmoji() == null) {
-                    sb.append("()");
+                    sb.append(" ");
                 } else {
                     sb.append(board.get(i).get(j).getEmoji().getFormatted());
                 }
