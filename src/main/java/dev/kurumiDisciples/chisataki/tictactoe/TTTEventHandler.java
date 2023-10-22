@@ -34,9 +34,9 @@ public class TTTEventHandler extends ListenerAdapter{
         tttExecutor.execute(() -> {
             String buttonId = event.getButton().getId();
             System.out.println(buttonId);
-            event.deferEdit().queue();
 
             if (buttonId.startsWith(TTT_PREFIX)) {
+                event.deferEdit().queue();
                 handleTTTSelection(event);
             } else if (buttonId.startsWith(TTT_REQ_AP_PREFIX)) {
                 handleTTTRequestAcceptance(event);
