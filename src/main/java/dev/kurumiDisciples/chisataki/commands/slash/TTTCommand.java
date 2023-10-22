@@ -2,7 +2,6 @@ package dev.kurumiDisciples.chisataki.commands.slash;
 
 import java.util.List;
 
-import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
 import dev.kurumiDisciples.chisataki.tictactoe.TTTChoice;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -25,10 +24,9 @@ public class TTTCommand extends SlashCommand {
         if (event.getSubcommandName().equals("multiplayer")){
             //check if member is not in ingnore list
             event.deferReply(true).queue();
-            System.out.println("Slash recieved");
             OptionMapping opponentOption = event.getOption("opponent");
             
-            if (IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())) {
+            if (/*IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())*/ false) {
                event.getHook().editOriginal("This member wishes not to be challenged by other members").queue();
             } else if (opponentOption.getAsMember().getId().equals(event.getMember().getId())){
                 event.getHook().editOriginal("You cannot challenge yourself!").queue();
@@ -48,16 +46,5 @@ public class TTTCommand extends SlashCommand {
         .addOption("O", "o", TTTChoice.O.getEmoji())
         .setRequiredRange(1, 1)
         .build();
-    }
-
-    @Override
-    public boolean isAllowed(SlashCommandInteractionEvent event) {
-        /* Temporary method */
-        return event.getChannel().getId().equals(ChannelEnum.BOT_HOUSE.getId());
-    }
-
-    @Override
-    public String getErrorMessage() {
-        return "This command is not avaliable yet!";
     }
 }

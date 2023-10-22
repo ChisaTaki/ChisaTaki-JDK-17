@@ -204,8 +204,8 @@ public class TTTEventHandler extends ListenerAdapter{
     private MessageEmbed generateDrawEmbed(TTTGameSetup setup, List<List<Button>> board){
         return new EmbedBuilder()
         .setTitle(setup.getPlayer1().getEffectiveName() + " vs " + setup.getPlayer2().getEffectiveName())
-        .addField("Game results", "The game has ended in a draw!", true)
-        .addField("Board", boardToString(board), true)
+        .addField("Game results", "The game has ended in a draw!", false)
+        .addField("Board", boardToString(board), false)
         .setImage(RpsLogic.TIE_GIF.getUrl())
         .setColor(RpsResult.TIE.getColor())
         .build();
@@ -218,7 +218,7 @@ public class TTTEventHandler extends ListenerAdapter{
         return new EmbedBuilder()
         .setTitle(winner.getEffectiveName() + " has won the game!")
         .addField("Players", setup.getPlayer1().getEffectiveName() + " vs " + setup.getPlayer2().getEffectiveName(), true)
-        .addField("Game results", boardToString(board), true)
+        .addField("Game results", boardToString(board), false)
         .setImage(GifEnum.CHISATO_SIP.getUrl())
         .setColor(ColorUtils.PURPLE)
         .build();

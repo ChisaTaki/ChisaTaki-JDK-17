@@ -57,7 +57,6 @@ public class TTTUtils {
         char[][] board = new char[3][3];
         for (int i = 0; i < buttons.size(); i++) {
             for (int j = 0; j < buttons.get(i).size(); j++) {
-                System.out.println(buttons.get(i).get(j).getEmoji());
                 if (buttons.get(i).get(j).getEmoji() == null) {
                     board[i][j] = ' ';
                 } else if (buttons.get(i).get(j).getEmoji().getFormatted().equals("<:Chinanago:1120915801680134185>")) {
