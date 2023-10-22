@@ -8,6 +8,8 @@ import dev.kurumiDisciples.chisataki.listeners.*;
 import dev.kurumiDisciples.chisataki.modmail.ModMailInteraction;
 import dev.kurumiDisciples.chisataki.modmail.TicketInteraction;
 import dev.kurumiDisciples.chisataki.rps.RpsInteraction;
+import dev.kurumiDisciples.chisataki.tictactoe.TTTEventHandler;
+import dev.kurumiDisciples.chisataki.tictactoe.TTTInteractionHandler;
 import dev.kurumiDisciples.chisataki.utils.MessageCache;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -47,7 +49,7 @@ public class Main {
           .addEventListeners(new ShrineDeletionInteraction()).addEventListeners(new RecordRolesInteraction())
           .addEventListeners(new RejoinInteraction()).addEventListeners(new WelcomeInteraction())
           .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
-          .addEventListeners(new ModMailInteraction()).addEventListeners(new TicketInteraction())
+          .addEventListeners(new ModMailInteraction()).addEventListeners(new TicketInteraction(), new TTTInteractionHandler(), new TTTEventHandler())
           .addEventListeners(commandCenter)
           .setActivity(Activity.customStatus("Attending ChisaTaki Wedding"))
           .build();
@@ -58,9 +60,6 @@ public class Main {
       logger.info("Commands added!");
       MessageCache.setMaxSize(2000);
       logger.info("Message Cache Size: {}", MessageCache.getMaxSize());
-
-      
-      logger.info("JavaDex Client Connected!");
 
 
     }

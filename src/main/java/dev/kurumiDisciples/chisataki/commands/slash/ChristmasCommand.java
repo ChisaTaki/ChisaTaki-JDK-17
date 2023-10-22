@@ -4,23 +4,26 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.concurrent.TimeUnit;
 import java.time.temporal.ChronoUnit;
 
 public class ChristmasCommand extends SlashCommand {
     
 
     public ChristmasCommand() {
-        super("chritmas-countdown", "Countdown to Christmas");
+        super("christmas-countdown", "Countdown to Christmas");
     }
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
         event.deferReply(false).queue();
         int daysUntilChristmas = calculateDaysUntilChristmas();
-        event.getHook().sendMessage("There are " + daysUntilChristmas + " days until Christmas!").queue();
+        event.getHook().sendMessage("There are " + daysUntilChristmas + " days until Christmas!").queue(response -> {
+            event.getHook().deleteOriginal().queueAfter(10L, TimeUnit.MINUTES);
+        });
     }
 
-     private static int calculateDaysUntilChristmas() {
+     public static int calculateDaysUntilChristmas() {
         LocalDate currentDate = LocalDate.now();
         LocalDate christmasDate = LocalDate.of(currentDate.getYear(), Month.DECEMBER, 25);
 
