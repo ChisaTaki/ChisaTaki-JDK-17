@@ -24,7 +24,6 @@ public class TTTUtils {
 
     public static TTTGameSetup rebuildGameSetupFromRequest(Interaction event, String id){
         String[] ids = id.split("-");
-        System.out.println(id);
         TTTGameSetup setup = new TTTGameSetup(event.getGuild().getMemberById(ids[1]), event.getGuild().getMemberById(ids[3]));
         setup.setPlayer1Choice(TTTChoice.getChoice(ids[2]));
         return setup;

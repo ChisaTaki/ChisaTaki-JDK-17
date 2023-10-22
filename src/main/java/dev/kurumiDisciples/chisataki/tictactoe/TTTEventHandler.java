@@ -33,7 +33,6 @@ public class TTTEventHandler extends ListenerAdapter{
     public void onButtonInteraction(ButtonInteractionEvent event) {
         tttExecutor.execute(() -> {
             String buttonId = event.getButton().getId();
-            System.out.println(buttonId);
 
             if (buttonId.startsWith(TTT_PREFIX)) {
                 event.deferEdit().queue();
@@ -178,13 +177,6 @@ public class TTTEventHandler extends ListenerAdapter{
         message.delete().queueAfter(10L, java.util.concurrent.TimeUnit.MINUTES, null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
     
         char[][] charBoard = TTTUtils.discordButtonsToCharBoardFromButton(updatedBoard);
-        /* print charboard */
-        for (int i = 0; i < charBoard.length; i++) {
-            for (int j = 0; j < charBoard[i].length; j++) {
-                System.out.print(charBoard[i][j]);
-            }
-            System.out.println("break");
-        }
         /* check if the board is a draw  */
         if (TTTLogic.isDraw(charBoard)) {
             message.delete().queue();

@@ -21,9 +21,7 @@ public class TTTInteractionHandler extends ListenerAdapter{
 
     @Override
     public void onStringSelectInteraction(StringSelectInteractionEvent event){
-        System.out.println(event.getComponentId());
         tttExecutor.execute(() -> {
-            System.out.println(event.getComponentId());
             if (event.getComponent().getId().startsWith("menu:TTT-")){
                 event.deferEdit().queue();
                 TTTGameSetup setup = TTTUtils.rebuildGameSetupFromMenu(event, event.getComponentId());
