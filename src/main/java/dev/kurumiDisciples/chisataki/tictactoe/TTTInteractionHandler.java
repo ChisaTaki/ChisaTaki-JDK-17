@@ -26,6 +26,7 @@ public class TTTInteractionHandler extends ListenerAdapter{
             System.out.println(event.getComponentId());
             if (event.getComponent().getId().startsWith("menu:TTT-")){
                 event.deferEdit().queue();
+                event.getHook().deleteOriginal().queue();
                 TTTGameSetup setup = TTTUtils.rebuildGameSetupFromMenu(event, event.getComponentId());
                 setup.setPlayer1Choice(TTTChoice.getChoice(event.getSelectedOptions().get(0).getValue()));
                 
