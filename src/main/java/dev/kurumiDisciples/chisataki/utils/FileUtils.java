@@ -14,6 +14,12 @@ import javax.json.JsonReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * This class is used to read and write files.
+ * @author @shimdevkun
+ * @deprecated This class is deprecated and will be removed in the future, since the bot will be using a database instead of files.
+ */
+@Deprecated
 public class FileUtils {
 	private static final Logger logger = LoggerFactory.getLogger(FileUtils.class);
 	private static final int MAX_RETRIES = 50;

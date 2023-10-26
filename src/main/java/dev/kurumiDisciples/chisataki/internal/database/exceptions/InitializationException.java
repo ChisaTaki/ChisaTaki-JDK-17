@@ -1,5 +1,7 @@
 package dev.kurumiDisciples.chisataki.internal.database.exceptions;
 
+import java.sql.SQLException;
+
 import dev.kurumiDisciples.chisataki.internal.database.Database;
 
 /**
@@ -15,6 +17,11 @@ public class InitializationException extends Exception{
     public InitializationException(String message, Database database) {
         super(message);
         this.database = database;
+    }
+
+    public InitializationException(String messsage){
+        super(messsage);
+        this.database = null;
     }
 
     public Database getDatabase() {
