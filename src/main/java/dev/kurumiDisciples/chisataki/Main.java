@@ -1,16 +1,28 @@
 package dev.kurumiDisciples.chisataki;
 
+import java.sql.DriverManager;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dev.kurumiDisciples.chisataki.commands.CommandCenter;
-import dev.kurumiDisciples.chisataki.listeners.*;
+import dev.kurumiDisciples.chisataki.internal.database.Database;
+import dev.kurumiDisciples.chisataki.listeners.MemeInteraction;
+import dev.kurumiDisciples.chisataki.listeners.RecordRolesInteraction;
+import dev.kurumiDisciples.chisataki.listeners.RejoinInteraction;
+import dev.kurumiDisciples.chisataki.listeners.RoleMenuInteraction;
+import dev.kurumiDisciples.chisataki.listeners.RuleInteraction;
+import dev.kurumiDisciples.chisataki.listeners.ShrineDeletionInteraction;
+import dev.kurumiDisciples.chisataki.listeners.ShrineInteraction;
+import dev.kurumiDisciples.chisataki.listeners.SupportInteraction;
+import dev.kurumiDisciples.chisataki.listeners.WelcomeInteraction;
 import dev.kurumiDisciples.chisataki.modmail.ModMailInteraction;
 import dev.kurumiDisciples.chisataki.modmail.TicketInteraction;
 import dev.kurumiDisciples.chisataki.rps.RpsInteraction;
 import dev.kurumiDisciples.chisataki.tictactoe.TTTEventHandler;
 import dev.kurumiDisciples.chisataki.tictactoe.TTTInteractionHandler;
 import dev.kurumiDisciples.chisataki.utils.MessageCache;
+import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
@@ -18,8 +30,6 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-
-import io.github.cdimascio.dotenv.*;
 
 public class Main {
   final static Logger logger = LoggerFactory.getLogger(Main.class);
@@ -30,14 +40,16 @@ public class Main {
     // We construct a builder for a BOT account. If we wanted to use a CLIENT
     // account
     // we would use AccountType.CLIENT
-
+    
     try {
       Dotenv env = Dotenv.configure()
         .directory("crypt/")
         .load();
-
+        //Class.forName("com.mysql.cj.jdbc.Driver");
+        DriverManager.setLoginTimeout(60);
+        logger.info(String.valueOf(DriverManager.getLoginTimeout()));
       CommandCenter commandCenter = new CommandCenter();
-      
+      Database.init();
       jda = JDABuilder.createDefault(env.get("TOKEN"))
           .enableIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
           .enableCache(CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY, CacheFlag.EMOJI, CacheFlag.MEMBER_OVERRIDES,
@@ -65,6 +77,9 @@ public class Main {
     }
 
     catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+    catch (Exception e) {
       e.printStackTrace();
     }
   }

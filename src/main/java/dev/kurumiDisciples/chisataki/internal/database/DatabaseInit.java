@@ -45,9 +45,8 @@ public class DatabaseInit {
     protected static void createTables(List<GenericDatabaseTable> tables){
         try(Connection connection = Database.getConnection()) {
             for (GenericDatabaseTable table : tables){
-                if (!tableExists(table)){
-                    createTable(table);
-                }
+                    LOGGER.info("Creating table: " + table.getTableName());
+                    createTable(connection, table);
             }
         } catch (SQLException | InitializationException e) {
             LOGGER.error("Failed to create tables.", e);
@@ -80,21 +79,18 @@ public class DatabaseInit {
      * @throws InitializationException If the database is not initialized.
      * @see dev.kurumiDisciples.chisataki.internal.database.middlemen.GenericDatabaseTable
      */
-    private static void createTable(GenericDatabaseTable table) throws SQLException, InitializationException {
-        try(Connection connection = Database.getConnection()) {
-            StringBuilder sql = new StringBuilder("CREATE TABLE " + table.getTableName() + " (");
-            for (String column : table.getDefinedColumns().keySet()){
-                sql.append(column).append(" ").append(table.getDefinedColumns().get(column)).append(", ");
+    private static void createTable(Connection connection, GenericDatabaseTable table) throws SQLException, InitializationException {
+        try {
+            if (connection == null || connection.isClosed()) {
+                LOGGER.debug("Connection to database is closed. Reopening...");
+                connection = DatabaseInit.createConnection();
             }
-            sql.append("PRIMARY KEY (").append(table.getPrimaryKey()).append("));");
-            LOGGER.info("Creating table: " + table.getTableName());
-            LOGGER.info("Final SQL creation string: {}", sql.toString());
-            connection.prepareStatement(sql.toString()).execute();
-            LOGGER.info("Table created successfully: " + table.getTableName());
-        } catch (SQLException | InitializationException e) {
+            connection.prepareStatement(table.getTableSchema()).execute();
+            LOGGER.info("Table created: " + table.getTableName());
+        }
+        catch (SQLException e){
             LOGGER.error("Failed to create table: " + table.getTableName(), e);
-            LOGGER.info("Database could not be initialized. Shutting down bot.");
-            System.exit(0);
+            throw e;
         }
     }
 }

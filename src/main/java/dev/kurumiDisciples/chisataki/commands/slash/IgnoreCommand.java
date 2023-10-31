@@ -130,4 +130,9 @@ public class IgnoreCommand extends SlashCommand implements GenericDatabaseTable 
 	public Integer getPrimaryKeyType(){
 		return Types.VARCHAR;
 	}
+
+	@Override
+	public String getTableSchema(){
+		return "CREATE TABLE IF NOT EXISTS ignore_list (guild_id VARCHAR(20) NOT NULL, member_id VARCHAR(20) NOT NULL, PRIMARY KEY (guild_id))";
+	}
 }

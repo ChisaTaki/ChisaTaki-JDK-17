@@ -1,7 +1,5 @@
 package dev.kurumiDisciples.chisataki.internal.database.middlemen;
 
-import java.sql.Struct;
-import java.sql.Types;
 import java.util.HashMap;
 
 /**
@@ -37,4 +35,6 @@ public interface GenericDatabaseTable {
      * @return The type of the primary key of the table.
      */
     public abstract Integer getPrimaryKeyType();
+
+    public abstract String getTableSchema();
 }

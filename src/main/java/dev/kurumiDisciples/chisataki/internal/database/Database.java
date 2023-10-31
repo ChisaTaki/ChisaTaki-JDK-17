@@ -2,7 +2,6 @@ package dev.kurumiDisciples.chisataki.internal.database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -27,7 +26,6 @@ public class Database {
     private static final Logger LOGGER = LoggerFactory.getLogger(Database.class); // The logger used to log errors and warnings.
 
     static {
-        init();
         createTables(TableCollection.getTables());
     }
 
@@ -36,7 +34,7 @@ public class Database {
      * The database used is a SQL database and is connected to the sparkedhost database platform.
      * Sharding is not supported at the moment.
      */
-    private static void init() {
+    public static void init() {
         if (connection == null){
             connection = DatabaseInit.createConnection();
         } else {
@@ -73,9 +71,10 @@ public class Database {
      * @throws InitializationException - If the database is not initialized.
      * @return The connection to the database.
      */
-    public static Connection getConnection() throws InitializationException {
-        if (connection == null){
-            throw new InitializationException("Database not initialized.");
+    public static Connection getConnection() throws InitializationException, SQLException{
+        if (connection == null || connection.isClosed()){
+            LOGGER.debug("Connection to database is closed. Reopening...");
+            connection = DatabaseInit.createConnection();
         }
         return connection;
     }
