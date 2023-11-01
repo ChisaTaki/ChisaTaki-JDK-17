@@ -18,6 +18,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 
 public class IgnoreCommand extends SlashCommand implements GenericDatabaseTable {
 	private static final String FILE_PATH = "data/ignore.json";
+
 	private static final String GET_ALL_IGNORED_USERS = "SELECT * FROM ignore_list WHERE guild_id = ?";
 	private static final String SELECT_IGNORED_USERS = "SELECT * FROM ignore_list WHERE guild_id = ? AND member_id = ?";
 	private static final String INSERT_IGNORED_USERS = "INSERT INTO ignore_list (guild_id, member_id) VALUES (?, ?)";
@@ -44,10 +45,16 @@ public class IgnoreCommand extends SlashCommand implements GenericDatabaseTable 
 			message = "You are now excluded from ChisaTaki's interactions";
 		}
 
+
 		//JsonObject updatedJson = Json.createObjectBuilder().add("ignore", updatedArray).build();
 		//FileUtils.updateFileContent(FILE_PATH, updatedJson);
 
 		event.getHook().editOriginal(message).queue();
+	}
+
+	@Override
+	public boolean isAllowed(SlashCommandInteractionEvent event) {
+		return true;
 	}
 	
 	/* FIX ME!!!!!!!!!! */
@@ -74,6 +81,7 @@ public class IgnoreCommand extends SlashCommand implements GenericDatabaseTable 
 			statement.setLong(1, guildId);
 			statement.setLong(2, memberId);
 			statement.executeUpdate();
+			LOGGER.info("Removed member {} from ignore list", memberId);
 		}
 		catch (SQLException | InitializationException e){
 			LOGGER.error("An error occured in IgnoreCommand when removing from table", e);

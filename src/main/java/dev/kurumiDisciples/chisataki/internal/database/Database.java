@@ -26,6 +26,7 @@ public class Database {
     private static final Logger LOGGER = LoggerFactory.getLogger(Database.class); // The logger used to log errors and warnings.
 
     static {
+        init();
         createTables(TableCollection.getTables());
     }
 
@@ -34,12 +35,16 @@ public class Database {
      * The database used is a SQL database and is connected to the sparkedhost database platform.
      * Sharding is not supported at the moment.
      */
-    public static void init() {
+    protected static void init() {
         if (connection == null){
             connection = DatabaseInit.createConnection();
         } else {
             LOGGER.warn("Database already initialized. Skipping init.");
         }
+    }
+
+    public static int start(){
+        return 0;
     }
     
     /**

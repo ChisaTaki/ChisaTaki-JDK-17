@@ -1,7 +1,5 @@
 package dev.kurumiDisciples.chisataki;
 
-import java.sql.DriverManager;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,11 +43,8 @@ public class Main {
       Dotenv env = Dotenv.configure()
         .directory("crypt/")
         .load();
-        //Class.forName("com.mysql.cj.jdbc.Driver");
-        DriverManager.setLoginTimeout(60);
-        logger.info(String.valueOf(DriverManager.getLoginTimeout()));
       CommandCenter commandCenter = new CommandCenter();
-      Database.init();
+      Database.start();
       jda = JDABuilder.createDefault(env.get("TOKEN"))
           .enableIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
           .enableCache(CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY, CacheFlag.EMOJI, CacheFlag.MEMBER_OVERRIDES,

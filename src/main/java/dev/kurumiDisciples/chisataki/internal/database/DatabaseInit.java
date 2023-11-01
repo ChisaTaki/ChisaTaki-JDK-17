@@ -3,6 +3,7 @@ package dev.kurumiDisciples.chisataki.internal.database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.SQLNonTransientConnectionException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -28,16 +29,18 @@ public class DatabaseInit {
      * @return The connection to the database.
      */
     protected static Connection createConnection() {
-        try(Connection connection = DriverManager.getConnection(DatabaseValues.getDatabaseUrl(), DatabaseValues.getDatabaseUsername(), DatabaseValues.getDatabasePassword())) {
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection(DatabaseValues.getDatabaseUrl(), DatabaseValues.getDatabaseUsername(), DatabaseValues.getDatabasePassword());
             LOGGER.info("Connection to database established successfully.");
-            return connection;
         } catch (SQLException | NullPointerException e) {
             LOGGER.error("Failed to create connection to database.", e);
             LOGGER.info("Database could not be initialized. Shutting down bot.");
             System.exit(0);
         }
-        return null;
+        return connection;
     }
+    
     /**
      * This method is used to create the tables in the database if they do not already exist, if they do exist, they are not created.
      * @param tables The tables to create.
@@ -48,7 +51,8 @@ public class DatabaseInit {
                     LOGGER.info("Creating table: " + table.getTableName());
                     createTable(connection, table);
             }
-        } catch (SQLException | InitializationException e) {
+        }
+        catch (SQLException | InitializationException e) {
             LOGGER.error("Failed to create tables.", e);
             LOGGER.info("Database could not be initialized. Shutting down bot.");
             System.exit(0);
@@ -83,10 +87,15 @@ public class DatabaseInit {
         try {
             if (connection == null || connection.isClosed()) {
                 LOGGER.debug("Connection to database is closed. Reopening...");
-                connection = DatabaseInit.createConnection();
+                connection = Database.getConnection();
             }
             connection.prepareStatement(table.getTableSchema()).execute();
             LOGGER.info("Table created: " + table.getTableName());
+        }
+        catch (SQLNonTransientConnectionException e ){
+            LOGGER.warn("Connection to database is closed. Retrying...");
+            connection = createConnection();
+            createTable(connection, table);
         }
         catch (SQLException e){
             LOGGER.error("Failed to create table: " + table.getTableName(), e);
