@@ -26,7 +26,7 @@ public class TTTCommand extends SlashCommand {
             event.deferReply(true).queue();
             OptionMapping opponentOption = event.getOption("opponent");
             
-            if (/*IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())*/ false) {
+            if (IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())) {
                event.getHook().editOriginal("This member wishes not to be challenged by other members").queue();
             } else if (opponentOption.getAsMember().getId().equals(event.getMember().getId())){
                 event.getHook().editOriginal("You cannot challenge yourself!").queue();
