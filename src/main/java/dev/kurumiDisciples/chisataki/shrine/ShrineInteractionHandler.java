@@ -3,10 +3,6 @@ package dev.kurumiDisciples.chisataki.shrine;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-
-import dev.kurumiDisciples.chisataki.utils.FileUtils;
 import dev.kurumiDisciples.chisataki.utils.MessageHistoryUtils;
 import dev.kurumiDisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.entities.Guild;
@@ -47,7 +43,7 @@ public abstract class ShrineInteractionHandler {
   }
   
   private void handleShrineCount(MessageReceivedEvent event) {
-    int newCount = FileUtils.getFileContent(this.filePath).getInt("count") + 1; /* Replace with getCount() */
+    int newCount = getShrineCount();
     boolean isNewRecord = newCount % this.recurrence == 0;
     Member member = event.getMember();
 
@@ -56,8 +52,7 @@ public abstract class ShrineInteractionHandler {
       return;
     }
 
-    JsonObject updatedJson = Json.createObjectBuilder().add("count", newCount).build();
-    FileUtils.updateFileContent(this.filePath, updatedJson); /* Replace with updateCount(int newCount) */
+    updateCount();
     logCount(member);
 
     if (isNewRecord) {
@@ -107,4 +102,8 @@ public abstract class ShrineInteractionHandler {
   protected abstract void rewardShrineRole(Guild guild, Member memberToReward);
 
   protected abstract boolean isDifferentShrineEmoji(Message message);
+
+  protected abstract int getShrineCount();
+
+  protected abstract void updateCount();
 }

@@ -46,6 +46,8 @@ public class Ticket implements GenericDatabaseTable{
     this.body = body;
     this.status = status;
   }
+
+  
   /* This one has reason and staff */
   @Nullable
   protected Ticket(ResultSet set){
@@ -53,7 +55,11 @@ public class Ticket implements GenericDatabaseTable{
       this.ticketNumber = set.getInt("ticket");
       this.ticketId = set.getLong("ticket_id");
       this.memberId = String.valueOf(set.getLong("member_id"));
-      this.staffId = String.valueOf(set.getLong("staff_id"));
+      if (set.getLong("staff_id") == 0) {
+              this.staffId = null;
+            } else {
+              this.staffId = String.valueOf(set.getLong("staff_id"));
+            }
       this.subject = set.getString("subject");
       this.body = set.getString("body");
       this.status = StatusType.valueOfLabel(set.getString("status"));
@@ -81,7 +87,11 @@ public class Ticket implements GenericDatabaseTable{
             this.ticketNumber = ticketNumber;
             this.ticketId = set.getLong("ticket_id");
             this.memberId = String.valueOf(set.getLong("member_id"));
-            this.staffId = String.valueOf(set.getLong("staff_id"));
+            if (set.getLong("staff_id") == 0) {
+              this.staffId = null;
+            } else {
+              this.staffId = String.valueOf(set.getLong("staff_id"));
+            }
             this.subject = set.getString("subject");
             this.body = set.getString("body");
             this.status = StatusType.valueOfLabel(set.getString("status"));
@@ -150,6 +160,7 @@ public class Ticket implements GenericDatabaseTable{
     return this;
   }
 
+  @Deprecated
   public String getJsonPath() {
     return "data/tickets/ticket-" + this.ticketNumber + ".json";
   }
@@ -162,6 +173,7 @@ public class Ticket implements GenericDatabaseTable{
     return getStatus() == StatusType.CLOSED;
   }
 
+  @Deprecated
   private static int countFiles() {
     return TicketDatabaseUtils.countTickets();
   }

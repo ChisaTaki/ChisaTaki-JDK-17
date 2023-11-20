@@ -58,7 +58,7 @@ public class Main {
           .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
           .addEventListeners(new ModMailInteraction()).addEventListeners(new TicketInteraction(), new TTTInteractionHandler(), new TTTEventHandler())
           .addEventListeners(commandCenter)
-          .setActivity(Activity.customStatus("Attending ChisaTaki Wedding"))
+          .setActivity(Activity.customStatus("IN DATABASE TEST PHASE"))
           .build();
       jda.awaitReady(); // awaits for the cache system to build
       logger.info("Chisataki Bot successfully built and connected to JDA!");
