@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.modmail;
+package dev.kurumidisciples.chisataki.modmail;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,8 +8,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.json.JsonObject;
 
-import dev.kurumiDisciples.chisataki.enums.StatusType;
-import dev.kurumiDisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
+import dev.kurumidisciples.chisataki.enums.StatusType;
+import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 
 public class Ticket implements GenericDatabaseTable{
 

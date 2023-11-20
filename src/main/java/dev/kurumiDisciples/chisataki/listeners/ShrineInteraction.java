@@ -1,10 +1,10 @@
-package dev.kurumiDisciples.chisataki.listeners;
+package dev.kurumidisciples.chisataki.listeners;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import dev.kurumiDisciples.chisataki.shrine.ShrineInteractionFactory;
-import dev.kurumiDisciples.chisataki.shrine.ShrineInteractionHandler;
+import dev.kurumidisciples.chisataki.shrine.ShrineInteractionFactory;
+import dev.kurumidisciples.chisataki.shrine.ShrineInteractionHandler;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 

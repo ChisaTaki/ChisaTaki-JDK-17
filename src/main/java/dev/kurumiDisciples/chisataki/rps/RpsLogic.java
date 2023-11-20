@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.rps;
+package dev.kurumidisciples.chisataki.rps;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-import dev.kurumiDisciples.chisataki.enums.GifEnum;
-import dev.kurumiDisciples.chisataki.utils.ColorUtils;
-import dev.kurumiDisciples.chisataki.utils.UserUtils;
+import dev.kurumidisciples.chisataki.enums.GifEnum;
+import dev.kurumidisciples.chisataki.utils.ColorUtils;
+import dev.kurumidisciples.chisataki.utils.UserUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;

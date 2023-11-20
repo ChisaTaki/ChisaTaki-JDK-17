@@ -1,11 +1,11 @@
-package dev.kurumiDisciples.chisataki.commands.slash;
+package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.util.List;
 
-import dev.kurumiDisciples.chisataki.rps.RpsLogic;
-import dev.kurumiDisciples.chisataki.rps.RpsMultiPlayerHandler;
-import dev.kurumiDisciples.chisataki.rps.RpsSinglePlayerHandler;
-import dev.kurumiDisciples.chisataki.utils.MessageUtils;
+import dev.kurumidisciples.chisataki.rps.RpsLogic;
+import dev.kurumidisciples.chisataki.rps.RpsMultiPlayerHandler;
+import dev.kurumidisciples.chisataki.rps.RpsSinglePlayerHandler;
+import dev.kurumidisciples.chisataki.utils.MessageUtils;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;

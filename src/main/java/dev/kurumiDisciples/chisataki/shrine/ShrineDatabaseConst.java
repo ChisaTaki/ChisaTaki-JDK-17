@@ -1,9 +1,9 @@
-package dev.kurumiDisciples.chisataki.shrine;
+package dev.kurumidisciples.chisataki.shrine;
 
 import java.sql.Types;
 import java.util.HashMap;
 
-import dev.kurumiDisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
+import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 
 public class ShrineDatabaseConst implements GenericDatabaseTable {
     

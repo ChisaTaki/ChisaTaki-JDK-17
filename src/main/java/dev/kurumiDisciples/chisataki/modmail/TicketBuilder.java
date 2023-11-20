@@ -1,10 +1,10 @@
-package dev.kurumiDisciples.chisataki.modmail;
+package dev.kurumidisciples.chisataki.modmail;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 
-import dev.kurumiDisciples.chisataki.enums.StatusType;
-import dev.kurumiDisciples.chisataki.utils.FileUtils;
+import dev.kurumidisciples.chisataki.enums.StatusType;
+import dev.kurumidisciples.chisataki.utils.FileUtils;
 import net.dv8tion.jda.api.interactions.modals.ModalInteraction;
 
 public class TicketBuilder {

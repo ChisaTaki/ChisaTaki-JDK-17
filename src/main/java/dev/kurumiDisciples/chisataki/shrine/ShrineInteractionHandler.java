@@ -1,10 +1,10 @@
-package dev.kurumiDisciples.chisataki.shrine;
+package dev.kurumidisciples.chisataki.shrine;
 
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-import dev.kurumiDisciples.chisataki.utils.MessageHistoryUtils;
-import dev.kurumiDisciples.chisataki.utils.RoleUtils;
+import dev.kurumidisciples.chisataki.utils.MessageHistoryUtils;
+import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

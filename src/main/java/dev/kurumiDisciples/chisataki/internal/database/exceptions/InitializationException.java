@@ -1,14 +1,14 @@
-package dev.kurumiDisciples.chisataki.internal.database.exceptions;
+package dev.kurumidisciples.chisataki.internal.database.exceptions;
 
 import java.sql.SQLException;
 
-import dev.kurumiDisciples.chisataki.internal.database.Database;
+import dev.kurumidisciples.chisataki.internal.database.Database;
 
 /**
  * Is thrown when the database is used before it is initialized.
  * This exception is thrown by the Database class.
  * @author Hacking Pancakez
- * @see dev.kurumiDisciples.chisataki.internal.database.Database
+ * @see dev.kurumidisciples.chisataki.internal.database.Database
  */
 public class InitializationException extends Exception{
     

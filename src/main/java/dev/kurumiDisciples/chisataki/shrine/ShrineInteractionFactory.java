@@ -1,6 +1,6 @@
-package dev.kurumiDisciples.chisataki.shrine;
+package dev.kurumidisciples.chisataki.shrine;
 
-import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
+import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 
 public class ShrineInteractionFactory {
 

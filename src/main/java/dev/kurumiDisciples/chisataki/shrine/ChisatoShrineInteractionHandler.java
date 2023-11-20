@@ -1,12 +1,11 @@
-package dev.kurumiDisciples.chisataki.shrine;
+package dev.kurumidisciples.chisataki.shrine;
 
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumiDisciples.chisataki.commands.slash.ShrineCountCommand;
-import dev.kurumiDisciples.chisataki.enums.FilePathEnum;
+import dev.kurumidisciples.chisataki.enums.FilePathEnum;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

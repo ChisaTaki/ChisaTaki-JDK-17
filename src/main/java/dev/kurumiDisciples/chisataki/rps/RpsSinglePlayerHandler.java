@@ -1,6 +1,6 @@
-package dev.kurumiDisciples.chisataki.rps;
+package dev.kurumidisciples.chisataki.rps;
 
-import dev.kurumiDisciples.chisataki.utils.UserUtils;
+import dev.kurumidisciples.chisataki.utils.UserUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;

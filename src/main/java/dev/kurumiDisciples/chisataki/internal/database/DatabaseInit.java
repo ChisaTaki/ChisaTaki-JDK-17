@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.internal.database;
+package dev.kurumidisciples.chisataki.internal.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,8 +9,8 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumiDisciples.chisataki.internal.database.exceptions.InitializationException;
-import dev.kurumiDisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
+import dev.kurumidisciples.chisataki.internal.database.exceptions.InitializationException;
+import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 
 /**
  * This class is used to initialize the database.
@@ -81,7 +81,7 @@ public class DatabaseInit {
      * @param table The table to create.
      * @throws SQLException If the table could not be created.
      * @throws InitializationException If the database is not initialized.
-     * @see dev.kurumiDisciples.chisataki.internal.database.middlemen.GenericDatabaseTable
+     * @see dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable
      */
     private static void createTable(Connection connection, GenericDatabaseTable table) throws SQLException, InitializationException {
         try {

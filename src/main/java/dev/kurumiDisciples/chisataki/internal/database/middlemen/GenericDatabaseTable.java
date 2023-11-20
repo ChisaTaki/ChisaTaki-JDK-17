@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.internal.database.middlemen;
+package dev.kurumidisciples.chisataki.internal.database.middlemen;
 
 import java.util.HashMap;
 

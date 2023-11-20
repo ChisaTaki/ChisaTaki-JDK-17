@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.commands;
+package dev.kurumidisciples.chisataki.commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,9 +7,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import dev.kurumiDisciples.chisataki.commands.message.MessageCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.SlashCommand;
-import dev.kurumiDisciples.chisataki.commands.user.UserCommand;
+import dev.kurumidisciples.chisataki.commands.message.MessageCommand;
+import dev.kurumidisciples.chisataki.commands.slash.SlashCommand;
+import dev.kurumidisciples.chisataki.commands.user.UserCommand;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.modmail;
+package dev.kurumidisciples.chisataki.modmail;
 
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
@@ -9,9 +9,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
-import dev.kurumiDisciples.chisataki.enums.StatusType;
-import dev.kurumiDisciples.chisataki.utils.RoleUtils;
+import dev.kurumidisciples.chisataki.enums.ChannelEnum;
+import dev.kurumidisciples.chisataki.enums.StatusType;
+import dev.kurumidisciples.chisataki.modmail.json.*;
+import dev.kurumidisciples.chisataki.utils.HTMLUtils;
+import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -26,9 +28,6 @@ import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.utils.FileUpload;
-
-import dev.kurumiDisciples.chisataki.utils.HTMLUtils;
-import dev.kurumiDisciples.chisataki.modmail.json.*;
 
 public class TicketInteraction extends ListenerAdapter {
 

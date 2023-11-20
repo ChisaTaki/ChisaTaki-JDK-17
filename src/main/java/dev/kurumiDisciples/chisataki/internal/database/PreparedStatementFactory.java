@@ -1,10 +1,9 @@
-package dev.kurumiDisciples.chisataki.internal.database;
+package dev.kurumidisciples.chisataki.internal.database;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import dev.kurumiDisciples.chisataki.internal.database.exceptions.InitializationException;
-import dev.kurumiDisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
+import dev.kurumidisciples.chisataki.internal.database.exceptions.InitializationException;
 
 /**
  * This class is used to streamline the creation of PreparedStatement objects using the GenericDatabaseTable class as the backbone for the table involved in the query. 
@@ -13,8 +12,8 @@ import dev.kurumiDisciples.chisataki.internal.database.middlemen.GenericDatabase
  * @author Hacking Pancakez
  * @see java.sql.PreparedStatement
  * @see java.sql.Connection
- * @see dev.kurumiDisciples.chisataki.internal.database.Database
- * @see dev.kurumiDisciples.chisataki.internal.database.middlemen.GenericDatabaseTable
+ * @see dev.kurumidisciples.chisataki.internal.database.Database
+ * @see dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable
  * @see dev.kurumiDisciples.chisataki.internal.database.middlemen.GenericQueryInterface
  */
 public class PreparedStatementFactory {

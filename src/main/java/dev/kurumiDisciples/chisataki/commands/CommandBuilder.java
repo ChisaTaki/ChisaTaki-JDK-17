@@ -1,22 +1,22 @@
-package dev.kurumiDisciples.chisataki.commands;
+package dev.kurumidisciples.chisataki.commands;
 
-import dev.kurumiDisciples.chisataki.commands.slash.DebugCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.EmbedCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.GifCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.IgnoreCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.MentionableCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.PercentageCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.RpsCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.ShrineCountCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.SlashCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.TTTCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.TestImageCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.SendRoleEmbedsCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.SendRulesEmbed;
-import dev.kurumiDisciples.chisataki.commands.user.ToggleRoleCommand;
-import dev.kurumiDisciples.chisataki.commands.user.UserCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.ChristmasCommand;
-import dev.kurumiDisciples.chisataki.enums.RoleEnum;
+import dev.kurumidisciples.chisataki.commands.slash.ChristmasCommand;
+import dev.kurumidisciples.chisataki.commands.slash.DebugCommand;
+import dev.kurumidisciples.chisataki.commands.slash.EmbedCommand;
+import dev.kurumidisciples.chisataki.commands.slash.GifCommand;
+import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
+import dev.kurumidisciples.chisataki.commands.slash.MentionableCommand;
+import dev.kurumidisciples.chisataki.commands.slash.PercentageCommand;
+import dev.kurumidisciples.chisataki.commands.slash.RpsCommand;
+import dev.kurumidisciples.chisataki.commands.slash.SendRoleEmbedsCommand;
+import dev.kurumidisciples.chisataki.commands.slash.SendRulesEmbed;
+import dev.kurumidisciples.chisataki.commands.slash.ShrineCountCommand;
+import dev.kurumidisciples.chisataki.commands.slash.SlashCommand;
+import dev.kurumidisciples.chisataki.commands.slash.TTTCommand;
+import dev.kurumidisciples.chisataki.commands.slash.TestImageCommand;
+import dev.kurumidisciples.chisataki.commands.user.ToggleRoleCommand;
+import dev.kurumidisciples.chisataki.commands.user.UserCommand;
+import dev.kurumidisciples.chisataki.enums.RoleEnum;
 
 public class CommandBuilder {
 	public static SlashCommand[] buildSlashCommands() {

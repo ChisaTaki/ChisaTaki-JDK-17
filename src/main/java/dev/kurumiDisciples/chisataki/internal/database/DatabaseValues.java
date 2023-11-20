@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.internal.database;
+package dev.kurumidisciples.chisataki.internal.database;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

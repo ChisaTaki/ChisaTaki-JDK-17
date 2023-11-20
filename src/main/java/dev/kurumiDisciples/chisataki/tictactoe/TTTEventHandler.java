@@ -1,14 +1,14 @@
-package dev.kurumiDisciples.chisataki.tictactoe;
+package dev.kurumidisciples.chisataki.tictactoe;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import dev.kurumiDisciples.chisataki.enums.GifEnum;
-import dev.kurumiDisciples.chisataki.rps.RpsLogic;
-import dev.kurumiDisciples.chisataki.rps.RpsResult;
-import dev.kurumiDisciples.chisataki.utils.ColorUtils;
+import dev.kurumidisciples.chisataki.enums.GifEnum;
+import dev.kurumidisciples.chisataki.rps.RpsLogic;
+import dev.kurumidisciples.chisataki.rps.RpsResult;
+import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;

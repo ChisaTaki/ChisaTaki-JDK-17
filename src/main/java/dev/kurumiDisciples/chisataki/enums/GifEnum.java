@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.enums;
+package dev.kurumidisciples.chisataki.enums;
 
 public enum GifEnum {
 	ALOHA("https://media.tenor.com/z_S2TzIm3AYAAAAd/lycoris-recoil-walnut.gif"),

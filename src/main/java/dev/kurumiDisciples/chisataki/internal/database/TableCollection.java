@@ -1,11 +1,11 @@
-package dev.kurumiDisciples.chisataki.internal.database;
+package dev.kurumidisciples.chisataki.internal.database;
 
 import java.util.List;
 
-import dev.kurumiDisciples.chisataki.commands.slash.IgnoreCommand;
-import dev.kurumiDisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
-import dev.kurumiDisciples.chisataki.modmail.Ticket;
-import dev.kurumiDisciples.chisataki.shrine.ShrineDatabaseConst;
+import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
+import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
+import dev.kurumidisciples.chisataki.modmail.Ticket;
+import dev.kurumidisciples.chisataki.shrine.ShrineDatabaseConst;
 
 public class TableCollection {
     

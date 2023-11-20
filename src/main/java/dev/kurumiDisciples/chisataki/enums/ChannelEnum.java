@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.enums;
+package dev.kurumidisciples.chisataki.enums;
 
 public enum ChannelEnum {
 	BOT_CHANNEL("1018915242027266129"),

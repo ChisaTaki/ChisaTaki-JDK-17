@@ -1,6 +1,6 @@
-package dev.kurumiDisciples.chisataki.shrine;
+package dev.kurumidisciples.chisataki.shrine;
 
-import dev.kurumiDisciples.chisataki.enums.EmojiEnum;
+import dev.kurumidisciples.chisataki.enums.EmojiEnum;
 
 public class ShrineHelper {
   public static EmojiEnum CHISATO_EMOJI = EmojiEnum.CHISATO_HEART;

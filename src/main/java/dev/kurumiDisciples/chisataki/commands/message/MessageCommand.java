@@ -1,9 +1,9 @@
-package dev.kurumiDisciples.chisataki.commands.message;
+package dev.kurumidisciples.chisataki.commands.message;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumiDisciples.chisataki.commands.CommandWrapper;
+import dev.kurumidisciples.chisataki.commands.CommandWrapper;
 import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.Command.Type;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;

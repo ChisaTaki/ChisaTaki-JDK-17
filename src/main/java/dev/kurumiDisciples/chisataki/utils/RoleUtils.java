@@ -1,8 +1,8 @@
-package dev.kurumiDisciples.chisataki.utils;
+package dev.kurumidisciples.chisataki.utils;
 
 import java.util.List;
 
-import dev.kurumiDisciples.chisataki.enums.RoleEnum;
+import dev.kurumidisciples.chisataki.enums.RoleEnum;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 

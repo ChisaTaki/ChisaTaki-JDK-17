@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.commands.slash;
+package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -11,9 +11,9 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumiDisciples.chisataki.internal.database.Database;
-import dev.kurumiDisciples.chisataki.internal.database.exceptions.InitializationException;
-import dev.kurumiDisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
+import dev.kurumidisciples.chisataki.internal.database.Database;
+import dev.kurumidisciples.chisataki.internal.database.exceptions.InitializationException;
+import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
 public class IgnoreCommand extends SlashCommand implements GenericDatabaseTable {

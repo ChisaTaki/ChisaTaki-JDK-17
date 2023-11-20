@@ -1,7 +1,7 @@
-package dev.kurumiDisciples.chisataki.commands.user;
+package dev.kurumidisciples.chisataki.commands.user;
 
-import dev.kurumiDisciples.chisataki.enums.RoleEnum;
-import dev.kurumiDisciples.chisataki.utils.RoleUtils;
+import dev.kurumidisciples.chisataki.enums.RoleEnum;
+import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;

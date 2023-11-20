@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.shrine;
+package dev.kurumidisciples.chisataki.shrine;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,11 +7,11 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumiDisciples.chisataki.internal.database.Database;
-import dev.kurumiDisciples.chisataki.internal.database.exceptions.InitializationException;
+import dev.kurumidisciples.chisataki.internal.database.Database;
+import dev.kurumidisciples.chisataki.internal.database.exceptions.InitializationException;
 
 public class ShrineDatabaseUtils {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ShrineDatabaseUtils.class);
 
     private static final String CHISATO_SHRINE_NAME = "chisato";

@@ -1,9 +1,9 @@
-package dev.kurumiDisciples.chisataki.modmail;
+package dev.kurumidisciples.chisataki.modmail;
 
 import java.awt.Color;
 import java.util.List;
 
-import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
+import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;

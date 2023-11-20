@@ -1,8 +1,8 @@
-package dev.kurumiDisciples.chisataki.commands.slash;
+package dev.kurumidisciples.chisataki.commands.slash;
 
-import dev.kurumiDisciples.chisataki.enums.EmojiEnum;
-import dev.kurumiDisciples.chisataki.enums.FilePathEnum;
-import dev.kurumiDisciples.chisataki.utils.FileUtils;
+import dev.kurumidisciples.chisataki.enums.EmojiEnum;
+import dev.kurumidisciples.chisataki.enums.FilePathEnum;
+import dev.kurumidisciples.chisataki.utils.FileUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 

@@ -1,9 +1,9 @@
-package dev.kurumiDisciples.chisataki.rps;
+package dev.kurumidisciples.chisataki.rps;
 
-import dev.kurumiDisciples.chisataki.enums.GifEnum;
-import dev.kurumiDisciples.chisataki.utils.ColorUtils;
-import dev.kurumiDisciples.chisataki.utils.MessageUtils;
-import dev.kurumiDisciples.chisataki.utils.TimeUtils;
+import dev.kurumidisciples.chisataki.enums.GifEnum;
+import dev.kurumidisciples.chisataki.utils.ColorUtils;
+import dev.kurumidisciples.chisataki.utils.MessageUtils;
+import dev.kurumidisciples.chisataki.utils.TimeUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;

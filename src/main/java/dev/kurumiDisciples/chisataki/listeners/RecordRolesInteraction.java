@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.listeners;
+package dev.kurumidisciples.chisataki.listeners;
 
 import java.io.File;
 import java.io.FileNotFoundException;

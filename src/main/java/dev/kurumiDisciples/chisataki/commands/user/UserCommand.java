@@ -1,6 +1,6 @@
-package dev.kurumiDisciples.chisataki.commands.user;
+package dev.kurumidisciples.chisataki.commands.user;
 
-import dev.kurumiDisciples.chisataki.commands.CommandWrapper;
+import dev.kurumidisciples.chisataki.commands.CommandWrapper;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;

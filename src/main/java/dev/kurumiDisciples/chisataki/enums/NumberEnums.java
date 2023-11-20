@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.enums;
+package dev.kurumidisciples.chisataki.enums;
 
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 

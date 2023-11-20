@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.modmail.json;
+package dev.kurumidisciples.chisataki.modmail.json;
 
 import javax.json.*;
 import javax.json.stream.*;

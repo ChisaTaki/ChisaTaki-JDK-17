@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.enums;
+package dev.kurumidisciples.chisataki.enums;
 
 public enum EmojiEnum {
   CHINANAGO("<:Chinanago:1120915801680134185>"), CHISATO_HEART("<:ChisaTakiHeart2:1035455134253199411>"),

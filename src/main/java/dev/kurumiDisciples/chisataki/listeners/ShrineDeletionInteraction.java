@@ -1,8 +1,5 @@
-package dev.kurumiDisciples.chisataki.listeners;
+package dev.kurumidisciples.chisataki.listeners;
 
-import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
-import dev.kurumiDisciples.chisataki.enums.EmojiEnum;
-import dev.kurumiDisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
@@ -10,6 +7,10 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import dev.kurumidisciples.chisataki.enums.ChannelEnum;
+import dev.kurumidisciples.chisataki.enums.EmojiEnum;
+import dev.kurumidisciples.chisataki.utils.RoleUtils;
 
 public class ShrineDeletionInteraction extends ListenerAdapter {
     private static final String BOOSTER_CHANNEL = "1028022086888869888";
