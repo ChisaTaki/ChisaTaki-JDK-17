@@ -52,6 +52,7 @@ public class Ticket implements GenericDatabaseTable{
   @Nullable
   protected Ticket(ResultSet set){
     try {
+      if (set.next()){
       this.ticketNumber = set.getInt("ticket");
       this.ticketId = set.getLong("ticket_id");
       this.memberId = String.valueOf(set.getLong("member_id"));
@@ -64,6 +65,7 @@ public class Ticket implements GenericDatabaseTable{
       this.body = set.getString("body");
       this.status = StatusType.valueOfLabel(set.getString("status"));
       this.reason = set.getString("reason");
+      }
     } catch (SQLException e) {
       e.printStackTrace();
     } catch (NullPointerException e) {
