@@ -76,7 +76,7 @@ public class ModMailInteraction extends ListenerAdapter {
 
           ticketChannel.sendMessage(createContentEmbed(ticket, event.getMember())).queue();
 
-         //sendNotification(event.getGuild(), ticket);
+         sendNotification(event.getGuild(), ticket);
         }
       }
     };
