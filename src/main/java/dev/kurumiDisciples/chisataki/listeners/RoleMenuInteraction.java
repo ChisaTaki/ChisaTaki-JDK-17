@@ -124,7 +124,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
   }
 
   private static boolean canUpdateShrineRoles(User user) {
-    LocalDateTime previousDateTime = CooldownUtils.getPreviousDateTime("data/shrineRoleCooldown.json", user);
+    LocalDateTime previousDateTime = CooldownUtils.getPreviousDateTime(user);
     return CooldownUtils.hasCooldownElapsed(previousDateTime);
   }
 
@@ -143,7 +143,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
       }
     }
 
-    CooldownUtils.updateUsersCooldown("data/shrineRoleCooldown.json", event.getUser());
+    CooldownUtils.updateUsersCooldown(event.getUser());
     event.getHook().editOriginal("Role Added").queue();
   }
 
