@@ -49,6 +49,7 @@ public class ShrineDatabaseUtils {
             PreparedStatement statement = connection.prepareStatement(GET_COUNT);
             statement.setString(1, shrineName);
             if (statement.execute()) {
+                statement.getResultSet().next();
                 count = statement.getResultSet().getInt("count");
             }
             statement.close();
