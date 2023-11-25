@@ -14,7 +14,8 @@ public class SecretSantaCommand extends SlashCommand{
         super("secretsanta", "Send Secret Santa message to members", Permission.MODERATE_MEMBERS);
         this.options = List.of(
             new OptionData(OptionType.STRING, "message", "message to send", true),
-            new OptionData(OptionType.CHANNEL, "channel", "channel to send message to", true)
+            new OptionData(OptionType.CHANNEL, "channel", "channel to send message to", true),
+            new OptionData(OptionType.INTEGER, "time", "Unix time to send the secret santa message at", true)
         );
     }
 

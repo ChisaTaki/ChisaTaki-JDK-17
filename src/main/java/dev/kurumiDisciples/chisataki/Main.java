@@ -17,6 +17,7 @@ import dev.kurumidisciples.chisataki.listeners.WelcomeInteraction;
 import dev.kurumidisciples.chisataki.modmail.ModMailInteraction;
 import dev.kurumidisciples.chisataki.modmail.TicketInteraction;
 import dev.kurumidisciples.chisataki.rps.RpsInteraction;
+import dev.kurumidisciples.chisataki.secretsanta.time.SantaClock;
 import dev.kurumidisciples.chisataki.tictactoe.TTTEventHandler;
 import dev.kurumidisciples.chisataki.tictactoe.TTTInteractionHandler;
 import dev.kurumidisciples.chisataki.utils.MessageCache;
@@ -67,7 +68,7 @@ public class Main {
       logger.info("Commands added!");
       MessageCache.setMaxSize(2000);
       logger.info("Message Cache Size: {}", MessageCache.getMaxSize());
-
+      SantaClock.start();
 
     }
 

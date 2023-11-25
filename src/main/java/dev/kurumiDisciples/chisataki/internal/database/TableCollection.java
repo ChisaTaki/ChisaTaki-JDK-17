@@ -6,6 +6,7 @@ import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 import dev.kurumidisciples.chisataki.modmail.Ticket;
 import dev.kurumidisciples.chisataki.secretsanta.SantaDatabase;
+import dev.kurumidisciples.chisataki.secretsanta.time.TimeStorage;
 import dev.kurumidisciples.chisataki.shrine.ShrineDatabaseConst;
 import dev.kurumidisciples.chisataki.utils.CooldownUtils;
 
@@ -17,7 +18,8 @@ public class TableCollection {
             new Ticket(),
             new ShrineDatabaseConst(),
             new CooldownUtils(),
-            new SantaDatabase()
+            new SantaDatabase(),
+            new TimeStorage()
         );
     }
 }
