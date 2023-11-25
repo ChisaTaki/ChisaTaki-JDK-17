@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumidisciples.chisataki.enums.FilePathEnum;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -16,11 +15,8 @@ public class ChisatoShrineInteractionHandler extends ShrineInteractionHandler {
 
   private static final Logger logger = LoggerFactory.getLogger(ChisatoShrineInteractionHandler.class);
 
-  private static final String INSERT_COUNT_INTO_CHISATO_SHRINE = "UPDATE chisato_shrine SET count = ? WHERE count = ?;";
-  private static final String SELECT_COUNT_FROM_CHISATO_SHRINE = "SELECT * FROM chisato_shrine WHERE count = ?;";
-
   protected ChisatoShrineInteractionHandler() {
-    super(ShrineHelper.CHISATO_EMOJI.getAsText(), FilePathEnum.CHISATOHEART.getFilePath(), 500);
+    super(ShrineHelper.CHISATO_EMOJI.getAsText(), 500);
   }
 
   @Override
@@ -38,7 +34,7 @@ public class ChisatoShrineInteractionHandler extends ShrineInteractionHandler {
   @Override
   protected String getCongratsMessage(MessageReceivedEvent event, int shrineCount) {
     return String.format("Congrats to %s for being our %d%s", event.getMember().getAsMention(), shrineCount,
-        "the Chinanago's Heart");
+        "th Chinanago's Heart");
   }
 
   @Override

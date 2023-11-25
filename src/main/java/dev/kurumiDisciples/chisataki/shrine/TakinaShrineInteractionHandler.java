@@ -5,7 +5,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumidisciples.chisataki.enums.FilePathEnum;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -17,7 +16,7 @@ public class TakinaShrineInteractionHandler extends ShrineInteractionHandler{
   private static final Logger logger = LoggerFactory.getLogger(TakinaShrineInteractionHandler.class);
 
   protected TakinaShrineInteractionHandler() {
-    super(ShrineHelper.TAKINA_EMOJI.getAsText(), FilePathEnum.SAKANA.getFilePath(), 1000);
+    super(ShrineHelper.TAKINA_EMOJI.getAsText(), 1000);
   }
 
   @Override

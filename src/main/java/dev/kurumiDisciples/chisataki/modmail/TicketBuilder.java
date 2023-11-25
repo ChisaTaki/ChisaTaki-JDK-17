@@ -32,7 +32,7 @@ public class TicketBuilder {
     FileUtils.updateFileContent("data/tickets/ticket-" + String.valueOf(ticket.getTicketNumber()) + ".json", ticket.getJsonObject());
   }
 
-  public static Ticket buildTicketDatabase(int ticketNumber, ModalInteraction interaction, long channelId){
+  public static Ticket buildTicket(int ticketNumber, ModalInteraction interaction, long channelId){
     Ticket ticket = new Ticket(ticketNumber, channelId, interaction.getMember().getIdLong(), interaction.getValue("subject").getAsString(), interaction.getValue("body").getAsString(), StatusType.UNANSWERED);
     TicketDatabaseUtils.insertTicket(ticket);
     return ticket;

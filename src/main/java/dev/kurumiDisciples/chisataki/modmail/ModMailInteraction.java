@@ -63,7 +63,7 @@ public class ModMailInteraction extends ListenerAdapter {
               .setTopic("This is a Ticket Channel and therefore it is temporary.")
               .setPosition(0)
             .complete();
-          Ticket ticket = TicketBuilder.buildTicketDatabase(countFiles(), event.getInteraction(),
+          Ticket ticket = TicketBuilder.buildTicket(countFiles(), event.getInteraction(),
               ticketChannel.getIdLong());
 
           /*

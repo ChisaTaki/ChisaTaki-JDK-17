@@ -37,42 +37,32 @@ public class IgnoreCommand extends SlashCommand implements GenericDatabaseTable 
 		String message;
 		
 		String memberId = event.getMember().getId();
-		if (isMemberIgnored(event.getGuild().getIdLong(), Long.parseLong(memberId))) {
-			removeMember(event.getGuild().getIdLong(), Long.parseLong(memberId));
+		if (isMemberIgnored(event.getGuild().getIdLong(), event.getMember().getIdLong())) {
+			removeMember(event.getGuild().getIdLong(), event.getMember().getIdLong());
 			message = "You are now included in ChisaTaki's interactions";
 		} else {
-			insertMember(event.getGuild().getIdLong(), Long.parseLong(memberId));
+			insertMember(event.getGuild().getIdLong(), event.getMember().getIdLong());
 			message = "You are now excluded from ChisaTaki's interactions";
 		}
-
-
-		//JsonObject updatedJson = Json.createObjectBuilder().add("ignore", updatedArray).build();
-		//FileUtils.updateFileContent(FILE_PATH, updatedJson);
 
 		event.getHook().editOriginal(message).queue();
 	}
 
-	@Override
-	public boolean isAllowed(SlashCommandInteractionEvent event) {
-		return true;
-	}
-	
-	/* FIX ME!!!!!!!!!! */
-	public static boolean isMemberIgnored(long guildId, long memberId){
-		try(PreparedStatement statement = Database.createStatement(SELECT_IGNORED_USERS)){
+	public static boolean isMemberIgnored(long guildId, long memberId) {
+		try (PreparedStatement statement = Database.createStatement(SELECT_IGNORED_USERS)) {
 			statement.setLong(1, guildId);
 			statement.setLong(2, memberId);
 
-			ResultSet set = statement.executeQuery();
-			return set.next();
-		}
-		catch (SQLException | InitializationException e){
-			LOGGER.error("An error occured in IgnoreCommand when retriving table", e);
+			try (ResultSet set = statement.executeQuery()) {
+				return set.next();
+			}
+		} catch (SQLException | InitializationException e) {
+			LOGGER.error("An error occurred in IgnoreCommand when retrieving table", e);
 			return false;
 		}
 	}
 
-	public static boolean isMemberIgnored(String memberId){
+	public static boolean isMemberIgnored(String memberId) {
 		/* Assume ChisaTaki server */
 		return isMemberIgnored(1010078628761055234L, Long.parseLong(memberId));
 	}
@@ -101,17 +91,17 @@ public class IgnoreCommand extends SlashCommand implements GenericDatabaseTable 
 
 	private static List<String> getIgnoreList() {
 		List<String> list = new ArrayList<>();
-		try(PreparedStatement statement = Database.createStatement(GET_ALL_IGNORED_USERS)){
+		try (PreparedStatement statement = Database.createStatement(GET_ALL_IGNORED_USERS)) {
 			/* Assume ChisaTaki server */
 			statement.setLong(1, 1010078628761055234L);
-			ResultSet set = statement.executeQuery();
-			while (set.next()){
-				list.add(set.getString("member_id"));
+			try (ResultSet set = statement.executeQuery()) {
+				while (set.next()) {
+					list.add(set.getString("member_id"));
+				}
 			}
 			return list;
-		}
-		catch (SQLException | InitializationException e){
-			LOGGER.error("An error occured in IgnoreCommand when retriving table", e);
+		} catch (SQLException | InitializationException e) {
+			LOGGER.error("An error occurred in IgnoreCommand when retrieving table", e);
 			return null;
 		}
 	}

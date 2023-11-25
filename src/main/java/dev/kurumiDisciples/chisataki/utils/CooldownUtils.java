@@ -45,16 +45,23 @@ public class CooldownUtils implements GenericDatabaseTable {
 	 * This function assumes the json file has the following structure:
 	 * { <User Id1>: <timeInEpochSecond1>, <User Id2>: <timeInEpochSecond2> }
 	 */
+	/**
+	 * Retrieves the previous timestamp for the given user.
+	 *
+	 * @param user The user to retrieve the previous timestamp for.
+	 * @return The previous timestamp as a LocalDateTime object, or null if it couldn't be retrieved.
+	 */
 	public static LocalDateTime getPreviousDateTime(User user) {
-		try(PreparedStatement statement = Database.createStatement(SELECT_USER_TIMESTAMP)){
+		try (PreparedStatement statement = Database.createStatement(SELECT_USER_TIMESTAMP)) {
 			statement.setLong(1, user.getIdLong());
 			ResultSet set = statement.executeQuery();
 			if (set.next()) {
-				return LocalDateTime.ofEpochSecond(set.getLong("timestamp"), 0, ZoneOffset.UTC);
+				LocalDateTime previousDateTime = LocalDateTime.ofEpochSecond(set.getLong("timestamp"), 0, ZoneOffset.UTC);
+				set.close(); // Close the ResultSet after retrieving the timestamp value
+				return previousDateTime;
 			}
 		} catch (SQLException | InitializationException e) {
 			LOGGER.error("Failed to get previous timestamp for user {} for reason: {}", user.getId(), e.getMessage());
-			return null;
 		}
 		return null;
 	}

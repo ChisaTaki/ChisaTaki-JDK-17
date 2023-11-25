@@ -2,6 +2,7 @@ package dev.kurumidisciples.chisataki.shrine;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.slf4j.Logger;
@@ -42,22 +43,18 @@ public class ShrineDatabaseUtils {
     }
 
     private static int getShrineCount(String shrineName) {
-        try {
-            Connection connection = Database.getConnection();
-
-            int count = 0;
-            PreparedStatement statement = connection.prepareStatement(GET_COUNT);
+        try (Connection connection = Database.getConnection();
+             PreparedStatement statement = connection.prepareStatement(GET_COUNT)) {
             statement.setString(1, shrineName);
-            if (statement.execute()) {
-                statement.getResultSet().next();
-                count = statement.getResultSet().getInt("count");
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("count");
+                }
             }
-            statement.close();
-            return count;
         } catch (SQLException | InitializationException e) {
             LOGGER.error("Failed to get shrine count", e);
-            return -1;
         }
+        return -1;
     }
 
     public static void incrementShrineCount(String shrineName) {

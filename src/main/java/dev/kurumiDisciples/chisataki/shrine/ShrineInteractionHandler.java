@@ -19,9 +19,8 @@ public abstract class ShrineInteractionHandler {
   private String filePath;
   private int recurrence;
 
-  protected ShrineInteractionHandler(String shrineEmoji, String filePath, int recurrence) {
+  protected ShrineInteractionHandler(String shrineEmoji, int recurrence) {
     this.shrineEmoji = shrineEmoji;
-    this.filePath = filePath;
     this.recurrence = recurrence;
   }
 

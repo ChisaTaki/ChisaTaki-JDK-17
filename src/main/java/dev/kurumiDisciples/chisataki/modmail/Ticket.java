@@ -80,31 +80,7 @@ public class Ticket implements GenericDatabaseTable{
 
   // grabs a already existing ticket
   public Ticket(int ticketNumber) {
-    ResultSet set = TicketDatabaseUtils.selectTicket(ticketNumber);
-    if (set == null) {
-        throw new NullPointerException("Ticket does not exist");
-    }
-    try { 
-        if (set.next()) { // Move the cursor to the first row
-            this.ticketNumber = ticketNumber;
-            this.ticketId = set.getLong("ticket_id");
-            this.memberId = String.valueOf(set.getLong("member_id"));
-            if (set.getLong("staff_id") == 0) {
-              this.staffId = null;
-            } else {
-              this.staffId = String.valueOf(set.getLong("staff_id"));
-            }
-            this.subject = set.getString("subject");
-            this.body = set.getString("body");
-            this.status = StatusType.valueOfLabel(set.getString("status"));
-            this.reason = set.getString("reason");
-        }
-        // else handle the case where the result set is empty
-    } catch (SQLException e) {
-        e.printStackTrace();
-    } catch (NullPointerException e) {
-        e.printStackTrace();
-    }
+    this(TicketDatabaseUtils.selectTicket(ticketNumber));
 }
 
   public long getStaffId() {
