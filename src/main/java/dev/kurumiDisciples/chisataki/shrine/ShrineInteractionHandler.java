@@ -1,23 +1,17 @@
-package dev.kurumiDisciples.chisataki.shrine;
+package dev.kurumidisciples.chisataki.shrine;
 
+import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-
-import dev.kurumiDisciples.chisataki.utils.FileUtils;
-import dev.kurumiDisciples.chisataki.utils.MessageHistoryUtils;
-import dev.kurumiDisciples.chisataki.utils.RoleUtils;
-
+import dev.kurumidisciples.chisataki.utils.MessageHistoryUtils;
+import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.exceptions.*;
+import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.requests.ErrorResponse;
-
-import java.time.Duration;
 
 public abstract class ShrineInteractionHandler {
 
@@ -25,9 +19,8 @@ public abstract class ShrineInteractionHandler {
   private String filePath;
   private int recurrence;
 
-  protected ShrineInteractionHandler(String shrineEmoji, String filePath, int recurrence) {
+  protected ShrineInteractionHandler(String shrineEmoji, int recurrence) {
     this.shrineEmoji = shrineEmoji;
-    this.filePath = filePath;
     this.recurrence = recurrence;
   }
 
@@ -47,9 +40,9 @@ public abstract class ShrineInteractionHandler {
     return isCorrespondingShrineEmoji(message)
         && !MessageHistoryUtils.isConsecutiveMessage(member, textChannel, message.getId());
   }
-
+  
   private void handleShrineCount(MessageReceivedEvent event) {
-    int newCount = FileUtils.getFileContent(this.filePath).getInt("count") + 1;
+    int newCount = getShrineCount();
     boolean isNewRecord = newCount % this.recurrence == 0;
     Member member = event.getMember();
 
@@ -58,8 +51,7 @@ public abstract class ShrineInteractionHandler {
       return;
     }
 
-    JsonObject updatedJson = Json.createObjectBuilder().add("count", newCount).build();
-    FileUtils.updateFileContent(this.filePath, updatedJson);
+    updateCount();
     logCount(member);
 
     if (isNewRecord) {
@@ -109,4 +101,8 @@ public abstract class ShrineInteractionHandler {
   protected abstract void rewardShrineRole(Guild guild, Member memberToReward);
 
   protected abstract boolean isDifferentShrineEmoji(Message message);
+
+  protected abstract int getShrineCount();
+
+  protected abstract void updateCount();
 }

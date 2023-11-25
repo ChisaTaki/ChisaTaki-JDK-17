@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.tictactoe;
+package dev.kurumidisciples.chisataki.tictactoe;
 
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 

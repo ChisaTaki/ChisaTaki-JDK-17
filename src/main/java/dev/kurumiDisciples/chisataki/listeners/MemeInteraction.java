@@ -1,13 +1,13 @@
-package dev.kurumiDisciples.chisataki.listeners;
+package dev.kurumidisciples.chisataki.listeners;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import dev.kurumiDisciples.chisataki.commands.slash.ChristmasCommand;
-import dev.kurumiDisciples.chisataki.commands.slash.IgnoreCommand;
-import dev.kurumiDisciples.chisataki.enums.NumberEnums;
-import dev.kurumiDisciples.chisataki.utils.MessageCache;
+import dev.kurumidisciples.chisataki.commands.slash.ChristmasCommand;
+import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
+import dev.kurumidisciples.chisataki.enums.NumberEnums;
+import dev.kurumidisciples.chisataki.utils.MessageCache;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

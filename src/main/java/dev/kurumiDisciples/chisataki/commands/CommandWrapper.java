@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.commands;
+package dev.kurumidisciples.chisataki.commands;
 
 import java.util.List;
 

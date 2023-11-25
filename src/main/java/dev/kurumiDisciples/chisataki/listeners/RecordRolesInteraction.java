@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.listeners;
+package dev.kurumidisciples.chisataki.listeners;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -34,7 +34,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /* TO DO */
 /* Add Loggers */
-
+@Deprecated
 public class RecordRolesInteraction extends ListenerAdapter {
 
     final static Logger logger = LoggerFactory.getLogger(RecordRolesInteraction.class);

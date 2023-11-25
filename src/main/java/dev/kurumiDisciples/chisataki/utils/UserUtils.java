@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.utils;
+package dev.kurumidisciples.chisataki.utils;
 
 public class UserUtils {
 	public static final String CHISATAKI_BOT_ID = "1070074991653167144";

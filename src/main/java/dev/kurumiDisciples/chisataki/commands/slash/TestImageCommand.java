@@ -1,6 +1,6 @@
-package dev.kurumiDisciples.chisataki.commands.slash;
+package dev.kurumidisciples.chisataki.commands.slash;
 
-import dev.kurumiDisciples.chisataki.listeners.WelcomeInteraction;
+import dev.kurumidisciples.chisataki.listeners.WelcomeInteraction;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.utils.FileUpload;

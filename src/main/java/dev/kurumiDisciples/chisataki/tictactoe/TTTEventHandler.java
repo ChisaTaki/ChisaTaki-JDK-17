@@ -1,14 +1,14 @@
-package dev.kurumiDisciples.chisataki.tictactoe;
+package dev.kurumidisciples.chisataki.tictactoe;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import dev.kurumiDisciples.chisataki.enums.GifEnum;
-import dev.kurumiDisciples.chisataki.rps.RpsLogic;
-import dev.kurumiDisciples.chisataki.rps.RpsResult;
-import dev.kurumiDisciples.chisataki.utils.ColorUtils;
+import dev.kurumidisciples.chisataki.enums.GifEnum;
+import dev.kurumidisciples.chisataki.rps.RpsLogic;
+import dev.kurumidisciples.chisataki.rps.RpsResult;
+import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -33,7 +33,6 @@ public class TTTEventHandler extends ListenerAdapter{
     public void onButtonInteraction(ButtonInteractionEvent event) {
         tttExecutor.execute(() -> {
             String buttonId = event.getButton().getId();
-            System.out.println(buttonId);
 
             if (buttonId.startsWith(TTT_PREFIX)) {
                 event.deferEdit().queue();
@@ -178,13 +177,6 @@ public class TTTEventHandler extends ListenerAdapter{
         message.delete().queueAfter(10L, java.util.concurrent.TimeUnit.MINUTES, null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
     
         char[][] charBoard = TTTUtils.discordButtonsToCharBoardFromButton(updatedBoard);
-        /* print charboard */
-        for (int i = 0; i < charBoard.length; i++) {
-            for (int j = 0; j < charBoard[i].length; j++) {
-                System.out.print(charBoard[i][j]);
-            }
-            System.out.println("break");
-        }
         /* check if the board is a draw  */
         if (TTTLogic.isDraw(charBoard)) {
             message.delete().queue();

@@ -1,11 +1,11 @@
-package dev.kurumiDisciples.chisataki.commands.slash;
+package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.util.List;
 
 import org.apache.commons.collections4.CollectionUtils;
 
-import dev.kurumiDisciples.chisataki.commands.CommandWrapper;
-import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
+import dev.kurumidisciples.chisataki.commands.CommandWrapper;
+import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;

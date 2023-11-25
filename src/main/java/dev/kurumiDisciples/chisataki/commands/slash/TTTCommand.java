@@ -1,8 +1,8 @@
-package dev.kurumiDisciples.chisataki.commands.slash;
+package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.util.List;
 
-import dev.kurumiDisciples.chisataki.tictactoe.TTTChoice;
+import dev.kurumidisciples.chisataki.tictactoe.TTTChoice;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
@@ -26,7 +26,7 @@ public class TTTCommand extends SlashCommand {
             event.deferReply(true).queue();
             OptionMapping opponentOption = event.getOption("opponent");
             
-            if (/*IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())*/ false) {
+            if (IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())) {
                event.getHook().editOriginal("This member wishes not to be challenged by other members").queue();
             } else if (opponentOption.getAsMember().getId().equals(event.getMember().getId())){
                 event.getHook().editOriginal("You cannot challenge yourself!").queue();

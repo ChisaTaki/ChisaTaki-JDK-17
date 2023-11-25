@@ -1,9 +1,9 @@
-package dev.kurumiDisciples.chisataki.commands.slash;
+package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import dev.kurumiDisciples.chisataki.utils.ColorUtils;
+import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;

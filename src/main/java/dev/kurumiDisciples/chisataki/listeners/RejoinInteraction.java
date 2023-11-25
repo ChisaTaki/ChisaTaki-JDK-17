@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.listeners;
+package dev.kurumidisciples.chisataki.listeners;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -19,7 +19,7 @@ import javax.json.JsonValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumiDisciples.chisataki.enums.RoleEnum;
+import dev.kurumidisciples.chisataki.enums.RoleEnum;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;

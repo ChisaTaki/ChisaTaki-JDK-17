@@ -1,11 +1,11 @@
-package dev.kurumiDisciples.chisataki.commands.slash;
+package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
-import dev.kurumiDisciples.chisataki.utils.RoleUtils;
+import dev.kurumidisciples.chisataki.enums.ChannelEnum;
+import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;

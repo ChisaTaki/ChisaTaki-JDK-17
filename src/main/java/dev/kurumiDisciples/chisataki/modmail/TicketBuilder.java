@@ -1,14 +1,15 @@
-package dev.kurumiDisciples.chisataki.modmail;
+package dev.kurumidisciples.chisataki.modmail;
 
 import javax.json.Json;
 import javax.json.JsonObject;
 
-import dev.kurumiDisciples.chisataki.utils.FileUtils;
+import dev.kurumidisciples.chisataki.enums.StatusType;
+import dev.kurumidisciples.chisataki.utils.FileUtils;
 import net.dv8tion.jda.api.interactions.modals.ModalInteraction;
 
 public class TicketBuilder {
 
-
+  @Deprecated
   public static Ticket buildTicketFile(int ticketNumber, ModalInteraction interaction, long channelId){
    
     JsonObject ticketContents = Json.createObjectBuilder()
@@ -30,4 +31,11 @@ public class TicketBuilder {
   public static void updateTicketFile(Ticket ticket){
     FileUtils.updateFileContent("data/tickets/ticket-" + String.valueOf(ticket.getTicketNumber()) + ".json", ticket.getJsonObject());
   }
+
+  public static Ticket buildTicket(int ticketNumber, ModalInteraction interaction, long channelId){
+    Ticket ticket = new Ticket(ticketNumber, channelId, interaction.getMember().getIdLong(), interaction.getValue("subject").getAsString(), interaction.getValue("body").getAsString(), StatusType.UNANSWERED);
+    TicketDatabaseUtils.insertTicket(ticket);
+    return ticket;
+  }
+  
 }

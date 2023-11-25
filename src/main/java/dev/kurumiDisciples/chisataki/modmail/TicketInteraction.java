@@ -1,14 +1,19 @@
-package dev.kurumiDisciples.chisataki.modmail;
+package dev.kurumidisciples.chisataki.modmail;
 
 import java.awt.Color;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
-import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
-import dev.kurumiDisciples.chisataki.enums.StatusType;
-import dev.kurumiDisciples.chisataki.utils.RoleUtils;
+import dev.kurumidisciples.chisataki.enums.ChannelEnum;
+import dev.kurumidisciples.chisataki.enums.StatusType;
+import dev.kurumidisciples.chisataki.modmail.json.*;
+import dev.kurumidisciples.chisataki.utils.HTMLUtils;
+import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
@@ -23,9 +28,6 @@ import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.utils.FileUpload;
-
-import dev.kurumiDisciples.chisataki.utils.HTMLUtils;
-import dev.kurumiDisciples.chisataki.modmail.json.*;
 
 public class TicketInteraction extends ListenerAdapter {
 
@@ -171,9 +173,7 @@ public class TicketInteraction extends ListenerAdapter {
         .addField("Staff", guild.getMemberById(ticket.getStaffId()).getAsMention(), false)
         .addField("Reason", ticket.getReason(), false).build();
 
-    transcriptChannel.sendMessage(" ").addEmbeds(embed).complete();
-    transcriptChannel.sendMessage(" ").addFiles(FileUpload.fromData(stream, transcriptName + ".txt")).complete();
-    transcriptChannel.sendMessage(" ").addFiles(FileUpload.fromData(htmlStream, transcriptName + ".html")).complete();
+    transcriptChannel.sendMessage(" ").addEmbeds(embed).addFiles(FileUpload.fromData(compressToZip(htmlStream, stream), "transcripts.zip")).complete();
     //FileUtils.writeFile("data/tickets/"+transcriptName+".txt", transcript);
   }
 
@@ -191,5 +191,30 @@ public class TicketInteraction extends ListenerAdapter {
     html = String.format(html, encodedChannel, encodedServer, encodedMessages);
 
     return html;
+  }
+
+  private InputStream compressToZip(InputStream html, InputStream txt) {
+    try{
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    try (ZipOutputStream zipOut = new ZipOutputStream(baos)) {
+      // Add HTML file to the zip
+      zipOut.putNextEntry(new ZipEntry("transcript.html"));
+      byte[] htmlBytes = html.readAllBytes();
+      zipOut.write(htmlBytes, 0, htmlBytes.length);
+      zipOut.closeEntry();
+
+      // Add TXT file to the zip
+      zipOut.putNextEntry(new ZipEntry("transcript.txt"));
+      byte[] txtBytes = txt.readAllBytes();
+      zipOut.write(txtBytes, 0, txtBytes.length);
+      zipOut.closeEntry();
+    }
+
+    return new ByteArrayInputStream(baos.toByteArray());
+  }
+  catch(Exception e){
+    e.printStackTrace();
+    return null;
+  }
   }
 }

@@ -1,16 +1,30 @@
-package dev.kurumiDisciples.chisataki.commands.slash;
+package dev.kurumidisciples.chisataki.commands.slash;
 
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonValue;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-import dev.kurumiDisciples.chisataki.utils.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import dev.kurumidisciples.chisataki.internal.database.Database;
+import dev.kurumidisciples.chisataki.internal.database.exceptions.InitializationException;
+import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
-public class IgnoreCommand extends SlashCommand {
+public class IgnoreCommand extends SlashCommand implements GenericDatabaseTable {
 	private static final String FILE_PATH = "data/ignore.json";
+
+	private static final String GET_ALL_IGNORED_USERS = "SELECT * FROM ignore_list WHERE guild_id = ?";
+	private static final String SELECT_IGNORED_USERS = "SELECT * FROM ignore_list WHERE guild_id = ? AND member_id = ?";
+	private static final String INSERT_IGNORED_USERS = "INSERT INTO ignore_list (guild_id, member_id) VALUES (?, ?)";
+	private static final String REMOVE_IGNORED_USER = "DELETE FROM ignore_list WHERE guild_id = ? AND member_id = ?";
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(IgnoreCommand.class);
 
 	public IgnoreCommand() {
 		super("ignore-me", "make the bot ignore you from its shenanigans");
@@ -20,58 +34,103 @@ public class IgnoreCommand extends SlashCommand {
 	public void execute(SlashCommandInteractionEvent event) {
 		event.deferReply(true).queue();
 		
-		JsonArray updatedArray;
 		String message;
 		
 		String memberId = event.getMember().getId();
-		if (isMemberIgnored(memberId)) {
-			updatedArray = removeMember(memberId);
+		if (isMemberIgnored(event.getGuild().getIdLong(), event.getMember().getIdLong())) {
+			removeMember(event.getGuild().getIdLong(), event.getMember().getIdLong());
 			message = "You are now included in ChisaTaki's interactions";
 		} else {
-			updatedArray = insertMember(memberId);
+			insertMember(event.getGuild().getIdLong(), event.getMember().getIdLong());
 			message = "You are now excluded from ChisaTaki's interactions";
 		}
 
-		JsonObject updatedJson = Json.createObjectBuilder().add("ignore", updatedArray).build();
-		FileUtils.updateFileContent(FILE_PATH, updatedJson);
-
 		event.getHook().editOriginal(message).queue();
 	}
-	
-	public static boolean isMemberIgnored(String memberId){
-		JsonArray ignoreList = getIgnoreList();
-		for (int i = 0; i < ignoreList.size(); i++){
-			if (ignoreList.getString(i).equals(memberId))
-				return true;
+
+	public static boolean isMemberIgnored(long guildId, long memberId) {
+		try (PreparedStatement statement = Database.createStatement(SELECT_IGNORED_USERS)) {
+			statement.setLong(1, guildId);
+			statement.setLong(2, memberId);
+
+			try (ResultSet set = statement.executeQuery()) {
+				return set.next();
+			}
+		} catch (SQLException | InitializationException e) {
+			LOGGER.error("An error occurred in IgnoreCommand when retrieving table", e);
+			return false;
 		}
-		return false;
 	}
 
-	private static JsonArray removeMember(String memberId) {
-		JsonArrayBuilder jsonArray = Json.createArrayBuilder();
-		JsonArray list = getIgnoreList();
-		
-		for (int i = 0; i < list.size(); i++){
-			if (!list.getString(i).equals(memberId))
-				jsonArray.add(list.getString(i));
+	public static boolean isMemberIgnored(String memberId) {
+		/* Assume ChisaTaki server */
+		return isMemberIgnored(1010078628761055234L, Long.parseLong(memberId));
+	}
+	private static void removeMember(long guildId, long memberId) {
+		try(PreparedStatement statement = Database.createStatement(REMOVE_IGNORED_USER)){
+			statement.setLong(1, guildId);
+			statement.setLong(2, memberId);
+			statement.executeUpdate();
+			LOGGER.info("Removed member {} from ignore list", memberId);
 		}
-		
-		return jsonArray.build();
+		catch (SQLException | InitializationException e){
+			LOGGER.error("An error occured in IgnoreCommand when removing from table", e);
+		}
 	}
 	
-	private static JsonArray insertMember(String memberId) {
-		JsonArrayBuilder jsonArray = Json.createArrayBuilder();
-		JsonArray previousList = getIgnoreList();
-		
-		for (JsonValue value : previousList){
-			jsonArray.add(value);
+	private static void insertMember(long guildId, long memberId) {
+		try(PreparedStatement statement = Database.createStatement(INSERT_IGNORED_USERS)){
+			statement.setLong(1, guildId);
+			statement.setLong(2, memberId);
+			statement.executeUpdate();
 		}
-		jsonArray.add(memberId);
-		
-		return jsonArray.build();
+		catch (SQLException | InitializationException e){
+			LOGGER.error("An error occured in IgnoreCommand when inserting into table", e);
+		}
 	}
 
-	private static JsonArray getIgnoreList() {
-		return FileUtils.getFileContentArray(FILE_PATH, "ignore");
+	private static List<String> getIgnoreList() {
+		List<String> list = new ArrayList<>();
+		try (PreparedStatement statement = Database.createStatement(GET_ALL_IGNORED_USERS)) {
+			/* Assume ChisaTaki server */
+			statement.setLong(1, 1010078628761055234L);
+			try (ResultSet set = statement.executeQuery()) {
+				while (set.next()) {
+					list.add(set.getString("member_id"));
+				}
+			}
+			return list;
+		} catch (SQLException | InitializationException e) {
+			LOGGER.error("An error occurred in IgnoreCommand when retrieving table", e);
+			return null;
+		}
+	}
+
+	@Override
+	public String getPrimaryKey(){
+		return null;
+	}
+
+	@Override
+	public String getTableName(){
+		return "ignore_list";
+	}
+
+	@Override
+	public HashMap<String, Integer> getDefinedColumns(){
+		HashMap<String, Integer> columns = new HashMap<>();
+		columns.put("guild_id", Types.VARCHAR);
+		columns.put("member_id", Types.VARCHAR);
+		return columns;
+	}
+
+	@Override
+	public Integer getPrimaryKeyType(){
+		return null;
+	}
+
+	@Override
+	public String getTableSchema(){
+		return "CREATE TABLE IF NOT EXISTS ignore_list (guild_id VARCHAR(20) NOT NULL, member_id VARCHAR(20) NOT NULL)";
 	}
 }

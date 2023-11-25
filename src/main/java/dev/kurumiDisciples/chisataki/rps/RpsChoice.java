@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.rps;
+package dev.kurumidisciples.chisataki.rps;
 
 public enum RpsChoice {
 	ROCK("U+1FAA8"),

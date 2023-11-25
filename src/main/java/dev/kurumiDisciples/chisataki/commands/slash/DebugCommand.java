@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.commands.slash;
+package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
@@ -8,7 +8,7 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
-import dev.kurumiDisciples.chisataki.utils.MessageCache;
+import dev.kurumidisciples.chisataki.utils.MessageCache;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Message;

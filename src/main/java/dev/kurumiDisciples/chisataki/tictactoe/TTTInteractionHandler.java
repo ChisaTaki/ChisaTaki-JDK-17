@@ -1,10 +1,10 @@
-package dev.kurumiDisciples.chisataki.tictactoe;
+package dev.kurumidisciples.chisataki.tictactoe;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import dev.kurumiDisciples.chisataki.utils.ColorUtils;
+import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
@@ -21,9 +21,7 @@ public class TTTInteractionHandler extends ListenerAdapter{
 
     @Override
     public void onStringSelectInteraction(StringSelectInteractionEvent event){
-        System.out.println(event.getComponentId());
         tttExecutor.execute(() -> {
-            System.out.println(event.getComponentId());
             if (event.getComponent().getId().startsWith("menu:TTT-")){
                 event.deferEdit().queue();
                 event.getHook().deleteOriginal().queue();

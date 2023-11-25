@@ -1,23 +1,22 @@
-package dev.kurumiDisciples.chisataki.shrine;
+package dev.kurumidisciples.chisataki.shrine;
 
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import dev.kurumiDisciples.chisataki.enums.FilePathEnum;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
-public class TakinaShrineInteractionHandler extends ShrineInteractionHandler {
+public class TakinaShrineInteractionHandler extends ShrineInteractionHandler{
 
   private static final Logger logger = LoggerFactory.getLogger(TakinaShrineInteractionHandler.class);
 
   protected TakinaShrineInteractionHandler() {
-    super(ShrineHelper.TAKINA_EMOJI.getAsText(), FilePathEnum.SAKANA.getFilePath(), 1000);
+    super(ShrineHelper.TAKINA_EMOJI.getAsText(), 1000);
   }
 
   @Override
@@ -62,5 +61,15 @@ public class TakinaShrineInteractionHandler extends ShrineInteractionHandler {
   @Override
   protected boolean isDifferentShrineEmoji(Message message) {
     return message.getContentRaw().equals(ShrineHelper.CHISATO_EMOJI.getAsText());
+  }
+
+  @Override
+  protected int getShrineCount() {
+    return ShrineDatabaseUtils.getTakinaShrineCount();
+  }
+
+  @Override
+  protected void updateCount() {
+    ShrineDatabaseUtils.incrementTakinaShrineCount();
   }
 }

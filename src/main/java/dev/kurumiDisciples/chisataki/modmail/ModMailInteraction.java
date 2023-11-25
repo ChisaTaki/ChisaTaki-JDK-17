@@ -1,10 +1,9 @@
-package dev.kurumiDisciples.chisataki.modmail;
+package dev.kurumidisciples.chisataki.modmail;
 
 import java.awt.Color;
-import java.io.File;
 import java.util.List;
 
-import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
+import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
@@ -64,7 +63,7 @@ public class ModMailInteraction extends ListenerAdapter {
               .setTopic("This is a Ticket Channel and therefore it is temporary.")
               .setPosition(0)
             .complete();
-          Ticket ticket = TicketBuilder.buildTicketFile(countFiles(), event.getInteraction(),
+          Ticket ticket = TicketBuilder.buildTicket(countFiles(), event.getInteraction(),
               ticketChannel.getIdLong());
 
           /*
@@ -105,18 +104,7 @@ public class ModMailInteraction extends ListenerAdapter {
   }
 
   public static int countFiles() {
-    String directoryPath = "data/tickets";
-    File directory = new File(directoryPath);
-    if (!directory.exists()) {
-      System.out.println("Directory does not exist.");
-      return 0;
-    }
-    if (!directory.isDirectory()) {
-      System.out.println("Not a directory.");
-      return 0;
-    }
-    File[] files = directory.listFiles();
-    return files.length;
+    return TicketDatabaseUtils.countTickets();
   }
 
   private MessageCreateData createContentEmbed(Ticket ticket, Member member) {

@@ -1,10 +1,10 @@
-package dev.kurumiDisciples.chisataki.rps;
+package dev.kurumidisciples.chisataki.rps;
 
 import java.awt.Color;
 
-import dev.kurumiDisciples.chisataki.enums.GifEnum;
-import dev.kurumiDisciples.chisataki.utils.ColorUtils;
-import dev.kurumiDisciples.chisataki.utils.MessageUtils;
+import dev.kurumidisciples.chisataki.enums.GifEnum;
+import dev.kurumidisciples.chisataki.utils.ColorUtils;
+import dev.kurumidisciples.chisataki.utils.MessageUtils;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 

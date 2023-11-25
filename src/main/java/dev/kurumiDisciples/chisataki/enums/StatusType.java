@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.enums;
+package dev.kurumidisciples.chisataki.enums;
 
 public enum StatusType {
   UNANSWERED("unanswered"),

@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.enums;
+package dev.kurumidisciples.chisataki.enums;
 
 import java.util.List;
 

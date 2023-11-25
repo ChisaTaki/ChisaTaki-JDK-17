@@ -1,13 +1,13 @@
-package dev.kurumiDisciples.chisataki.commands.slash;
+package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.awt.Color;
 import java.time.Instant;
 import java.util.List;
 
-import dev.kurumiDisciples.chisataki.enums.ChannelEnum;
-import dev.kurumiDisciples.chisataki.utils.ColorUtils;
-import dev.kurumiDisciples.chisataki.utils.MessageUtils;
-import dev.kurumiDisciples.chisataki.utils.RoleUtils;
+import dev.kurumidisciples.chisataki.enums.ChannelEnum;
+import dev.kurumidisciples.chisataki.utils.ColorUtils;
+import dev.kurumidisciples.chisataki.utils.MessageUtils;
+import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;

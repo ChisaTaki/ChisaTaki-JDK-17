@@ -1,4 +1,4 @@
-package dev.kurumiDisciples.chisataki.tictactoe;
+package dev.kurumidisciples.chisataki.tictactoe;
 
 public class TTTLogic {
 
