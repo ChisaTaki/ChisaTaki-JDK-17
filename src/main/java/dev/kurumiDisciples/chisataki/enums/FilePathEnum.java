@@ -1,7 +1,5 @@
 package dev.kurumidisciples.chisataki.enums;
 
-import kotlin.coroutines.jvm.internal.DebugMetadata;
-
 @Deprecated
 public enum FilePathEnum {
 	CHINANAGO("data/chisato.json"),

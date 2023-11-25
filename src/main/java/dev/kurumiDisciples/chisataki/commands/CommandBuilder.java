@@ -1,21 +1,7 @@
 package dev.kurumidisciples.chisataki.commands;
 
-import dev.kurumidisciples.chisataki.commands.slash.ChristmasCommand;
-import dev.kurumidisciples.chisataki.commands.slash.DebugCommand;
-import dev.kurumidisciples.chisataki.commands.slash.EmbedCommand;
-import dev.kurumidisciples.chisataki.commands.slash.GifCommand;
-import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
-import dev.kurumidisciples.chisataki.commands.slash.MentionableCommand;
-import dev.kurumidisciples.chisataki.commands.slash.PercentageCommand;
-import dev.kurumidisciples.chisataki.commands.slash.RpsCommand;
-import dev.kurumidisciples.chisataki.commands.slash.SendRoleEmbedsCommand;
-import dev.kurumidisciples.chisataki.commands.slash.SendRulesEmbed;
-import dev.kurumidisciples.chisataki.commands.slash.ShrineCountCommand;
-import dev.kurumidisciples.chisataki.commands.slash.SlashCommand;
-import dev.kurumidisciples.chisataki.commands.slash.TTTCommand;
-import dev.kurumidisciples.chisataki.commands.slash.TestImageCommand;
-import dev.kurumidisciples.chisataki.commands.user.ToggleRoleCommand;
-import dev.kurumidisciples.chisataki.commands.user.UserCommand;
+import dev.kurumidisciples.chisataki.commands.slash.*;
+import dev.kurumidisciples.chisataki.commands.user.*;
 import dev.kurumidisciples.chisataki.enums.RoleEnum;
 
 public class CommandBuilder {
