@@ -2,7 +2,7 @@ package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.util.List;
 
-import dev.kurumidisciples.chisataki.secretsanta.ModalUtils;
+import dev.kurumidisciples.chisataki.secretsanta.SantaComponents;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -28,7 +28,7 @@ public class SecretSantaCommand extends SlashCommand{
         String message = event.getOption("message").getAsString();
 
         event.getOption("channel").getAsChannel().asTextChannel()
-        .sendMessage(message).setActionRow(ModalUtils.createButton()).queue();
+        .sendMessage(message).setActionRow(SantaComponents.createButton()).queue();
     }
 
     @Override

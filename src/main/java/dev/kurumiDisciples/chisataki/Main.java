@@ -17,6 +17,7 @@ import dev.kurumidisciples.chisataki.listeners.WelcomeInteraction;
 import dev.kurumidisciples.chisataki.modmail.ModMailInteraction;
 import dev.kurumidisciples.chisataki.modmail.TicketInteraction;
 import dev.kurumidisciples.chisataki.rps.RpsInteraction;
+import dev.kurumidisciples.chisataki.secretsanta.SantaInteraction;
 import dev.kurumidisciples.chisataki.secretsanta.time.SantaClock;
 import dev.kurumidisciples.chisataki.tictactoe.TTTEventHandler;
 import dev.kurumidisciples.chisataki.tictactoe.TTTInteractionHandler;
@@ -56,7 +57,7 @@ public class Main {
           .addEventListeners(new SupportInteraction()).addEventListeners(new ShrineInteraction())
           .addEventListeners(new ShrineDeletionInteraction()).addEventListeners(new RecordRolesInteraction())
           .addEventListeners(new RejoinInteraction()).addEventListeners(new WelcomeInteraction())
-          .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
+          .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction()).addEventListeners(new SantaInteraction())
           .addEventListeners(new ModMailInteraction()).addEventListeners(new TicketInteraction(), new TTTInteractionHandler(), new TTTEventHandler())
           .addEventListeners(commandCenter)
           .setActivity(Activity.customStatus("Attending ChisaTaki Wedding"))

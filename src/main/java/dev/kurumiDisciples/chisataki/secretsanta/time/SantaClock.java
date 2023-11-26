@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import dev.kurumidisciples.chisataki.internal.database.Database;
 import dev.kurumidisciples.chisataki.internal.database.exceptions.InitializationException;
+import dev.kurumidisciples.chisataki.secretsanta.MessageUsers;
 
 public class SantaClock {
 
@@ -68,8 +69,14 @@ public class SantaClock {
                 long currentTime = System.currentTimeMillis() / 1000;
                 long expirationTime = getTime();
 
-                if (currentTime > 0 && currentTime <= expirationTime) {
-                    // Time has expired, execute the method that has yet to be implemented
+                LOGGER.info("running clock");
+
+                if (currentTime >= expirationTime) {
+                    LOGGER.info("time is up");
+                    MessageUsers.messageUsers();
+                    executor.shutdown();
+                } else {
+                    LOGGER.info("time is not up");
                 }
             }, 0, 1, TimeUnit.SECONDS);
 

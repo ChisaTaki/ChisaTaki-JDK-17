@@ -5,8 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +14,7 @@ import dev.kurumidisciples.chisataki.internal.database.exceptions.Initialization
 public class SantaDatabaseUtils {
     
     private static final String SELECT_USER = "SELECT * FROM secretsanta WHERE user_id = ?";
-    private static final String INSERT_USER = "INSERT INTO secretsanta (user_id, preferred_gift, comments, chisataki) VALUES (?, ?, ?, ?)";
+    private static final String INSERT_USER = "INSERT INTO secretsanta (user_id, preferred_gift, chisataki) VALUES (?, ?, ?)";
     private static final String COUNT_AMOUNT_OF_USERS = "SELECT COUNT(*) FROM secretsanta";
     private static final String ALL_USERS = "SELECT * FROM secretsanta";
     private static final String REMOVE_USER = "DELETE FROM secretsanta WHERE user_id = ?";
@@ -37,13 +35,29 @@ public class SantaDatabaseUtils {
         }
     }
 
+    public static SantaStruct getUser(long userid){
+        try (PreparedStatement statement = Database.createStatement(SELECT_USER)) {
+            statement.setLong(1, userid);
+
+            try (ResultSet set = statement.executeQuery()) {
+                if(set.next()){
+                    return new SantaStruct(set.getLong("user_id"), set.getString("preferred_gift"), set.getString("chisataki"));
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException | InitializationException e) {
+            LOGGER.error("An error occurred in SantaDatabaseUtils when retrieving table", e);
+            return null;
+        }
+    }
+
     /* Only comments can be null */
-    public static void insertUser(long userId, String preferredGift, @Nullable String comments, String chisataki){
+    public static void insertUser(long userId, String preferredGift, String chisataki){
         try (PreparedStatement statement = Database.createStatement(INSERT_USER)) {
             statement.setLong(1, userId);
             statement.setString(2, preferredGift);
-            statement.setString(3, comments);
-            statement.setString(4, chisataki);
+            statement.setString(3, chisataki);
 
             statement.executeUpdate();
         } catch (SQLException | InitializationException e) {
@@ -52,7 +66,7 @@ public class SantaDatabaseUtils {
     }
 
     public static void insertUser(SantaStruct santaStruct){
-        insertUser(santaStruct.getUserId(), santaStruct.getPreferredGift(), santaStruct.getComments(), santaStruct.getChisataki());
+        insertUser(santaStruct.getUserId(), santaStruct.getPreferredGift(), santaStruct.getChisataki());
     }
 
     public static int countAmountOfUsers(){
@@ -85,5 +99,5 @@ public class SantaDatabaseUtils {
             LOGGER.error("An error occurred in SantaDatabaseUtils when removing from table", e);
         }
     }
-    
+
 }

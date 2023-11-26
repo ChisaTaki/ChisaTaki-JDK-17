@@ -6,7 +6,7 @@ import java.util.List;
 
 public class PairingSystem {
     
-    public HashMap<Long, Long> getRandomizedPairings(){
+    public static HashMap<Long, Long> getRandomizedPairings(){
         HashMap<Long, Long> pairings = new HashMap<>();
 
         List<SantaStruct> santas = SantaDatabaseUtils.getAllUsers();

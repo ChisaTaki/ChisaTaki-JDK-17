@@ -6,20 +6,16 @@ import net.dv8tion.jda.api.interactions.components.text.TextInput;
 import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 
-public class ModalUtils {
+public class SantaComponents {
     
 
     public static Modal createModal() {
-        TextInput perferredGift = TextInput.create("perferred", "What is your perferred gift?", TextInputStyle.SHORT)
-        .setPlaceholder("Cannot be worth more than $50 USD.")
+        TextInput preferredGift = TextInput.create("preferred", "What is your preferred gift?", TextInputStyle.SHORT)
+        .setPlaceholder("Please keep it digital!")
         .setRequiredRange(5, 150)
         .setRequired(true)
         .build();
 
-        TextInput commentsOrConcerns = TextInput.create("comments", "Any comments or concerns?", TextInputStyle.SHORT)
-        .setPlaceholder("Have any questions? Let us know!")
-        .setMaxLength(1000)
-        .build();
 
         TextInput chisaTaki = TextInput.create("chisataki", "Chisato, Takina, or both?", TextInputStyle.SHORT)
         .setPlaceholder("Chisato, Takina, or both?")
@@ -28,7 +24,8 @@ public class ModalUtils {
         .build();
 
         Modal form = Modal.create("modal:secret-santa", "Secret Santa Form")
-        .addActionRow(perferredGift, commentsOrConcerns, chisaTaki)
+        .addActionRow(preferredGift)
+        .addActionRow(chisaTaki)
         .build();
 
         return form;
