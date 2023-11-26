@@ -35,7 +35,7 @@ public class SantaClock {
                 return set.next();
             }
         } catch (SQLException | InitializationException e) {
-            LOGGER.error("An error occurred in SantaDatabaseUtils when retrieving table", e);
+            LOGGER.error("An error occurred in SantaClock when retrieving table", e);
             return false;
         }
     }
@@ -46,7 +46,7 @@ public class SantaClock {
                 statement.setLong(1, time);
                 statement.executeUpdate();
             } catch (SQLException | InitializationException e) {
-                LOGGER.error("An error occurred in SantaDatabaseUtils when inserting into the table", e);
+                LOGGER.error("An error occurred in SantaClock when inserting into the table", e);
             }
         } else {
             insertTime(time);
@@ -58,7 +58,7 @@ public class SantaClock {
             statement.setLong(1, time);
             statement.executeUpdate();
         } catch (SQLException | InitializationException e) {
-            LOGGER.error("An error occurred in SantaDatabaseUtils when inserting into the table", e);
+            LOGGER.error("An error occurred in SantaClock when inserting into the table", e);
         }
     }
 
@@ -72,7 +72,7 @@ public class SantaClock {
                 }
             }
         } catch (SQLException | InitializationException e) {
-            LOGGER.error("An error occurred in SantaDatabaseUtils when retrieving table", e);
+            LOGGER.error("An error occurred in SantaClock when retrieving table", e);
             return -1;
         }
     }
