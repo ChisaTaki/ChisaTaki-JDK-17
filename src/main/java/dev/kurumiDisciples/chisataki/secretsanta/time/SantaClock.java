@@ -17,7 +17,8 @@ import dev.kurumidisciples.chisataki.secretsanta.MessageUsers;
 public class SantaClock {
 
     private static final String GET_TIME = "SELECT time FROM santaTime";
-    private static final String SET_TIME = "INSERT INTO santaTime (time) VALUES (?)";
+    private static final String UPDATE_TIME = "UPDATE INTO santaTime (time) VALUES (?)";
+    private static final String INSERT_TIME = "INSERT INTO santaTime (time) VALUES (?)";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SantaClock.class);
 
@@ -40,7 +41,20 @@ public class SantaClock {
     }
 
     public static void setTime(long time){
-        try(PreparedStatement statement = Database.createStatement(SET_TIME)){
+        if (isTimeSet()){
+            try(PreparedStatement statement = Database.createStatement(SET_TIME)){
+                statement.setLong(1, time);
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                LOGGER.error("An error occurred in SantaDatabaseUtils when inserting into the table", e);
+            }
+        } else {
+            insertTime(time);
+        }
+    }
+
+    public static void insertTime(long time){
+        try(PreparedStatement statement = Database.createStatement(INSERT_TIME)){
             statement.setLong(1, time);
             statement.executeUpdate();
         } catch (SQLException | InitializationException e) {
