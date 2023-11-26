@@ -85,14 +85,14 @@ public class SantaClock {
 
                 boolean isTimeSet = isTimeSet();
 
-                LOGGER.info("running clock");
+                LOGGER.debug("running clock");
 
                 if (isTimeSet && currentTime >= expirationTime) {
-                    LOGGER.info("SantaClock time is up. Sending Messages.");
+                    LOGGER.debug("SantaClock time is up. Sending Messages.");
                     MessageUsers.messageUsers();
                     executor.shutdown();
                 } else {
-                    LOGGER.info("time is not up");
+                    LOGGER.debug("time is not up");
                 }
             }, 0, 1, TimeUnit.SECONDS);
 
