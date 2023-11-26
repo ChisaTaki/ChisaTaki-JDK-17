@@ -42,10 +42,10 @@ public class SantaClock {
 
     public static void setTime(long time){
         if (isTimeSet()){
-            try(PreparedStatement statement = Database.createStatement(SET_TIME)){
+            try(PreparedStatement statement = Database.createStatement(UPDATE_TIME)){
                 statement.setLong(1, time);
                 statement.executeUpdate();
-            } catch (SQLException e) {
+            } catch (SQLException | InitializationException e) {
                 LOGGER.error("An error occurred in SantaDatabaseUtils when inserting into the table", e);
             }
         } else {
