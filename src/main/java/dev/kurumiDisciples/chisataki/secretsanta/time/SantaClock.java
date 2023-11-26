@@ -72,7 +72,7 @@ public class SantaClock {
                 LOGGER.info("running clock");
 
                 if (currentTime >= expirationTime) {
-                    LOGGER.info("time is up");
+                    LOGGER.info("SantaClock time is up. Sending Messages.");
                     MessageUsers.messageUsers();
                     executor.shutdown();
                 } else {

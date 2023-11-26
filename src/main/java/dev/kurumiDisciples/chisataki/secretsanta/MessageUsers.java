@@ -26,7 +26,7 @@ public class MessageUsers {
                 continue;
             }
 
-            String message = "Hello, " + santaUser.getName() + "! You have been selected as a Secret Santa for " + santaUser.getName() + "!";
+            String message = "Hello, " + santaUser.getName() + "! You have been selected as a Secret Santa for " + targetUser.getAsMention() + "!";
 
             message += "\n\n" + targetUser.getName() + " has also requested that you get them a \"" + target.getPreferredGift() + "\".";
 
