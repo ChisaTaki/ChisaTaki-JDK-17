@@ -32,7 +32,7 @@ public class SantaComponents {
     }
 
     public static Button createButton(){
-        return Button.primary("santa-button", "Secret Santa Form").withEmoji(Emoji.fromUnicode("🎅"));
+        return Button.secondary("santa-button", "Secret Santa Form").withEmoji(Emoji.fromUnicode("🎅"));
     }
    
 }
