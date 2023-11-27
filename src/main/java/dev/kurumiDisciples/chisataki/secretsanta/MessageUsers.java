@@ -31,7 +31,7 @@ public class MessageUsers {
                 santaUser.openPrivateChannel().queue(
                         (channel) -> channel.sendMessageEmbeds(createEmbed(SantaDatabaseUtils.getUser(santa), target)).queue(
                                 null,
-                                (error) -> sendMessageError(santaUser, targetUser, error)
+                                (error) -> sendMessageError(santaUser, targetUser)
                         )
                 );
             }
@@ -61,7 +61,7 @@ public class MessageUsers {
         return builder.build();
     }
 
-    private static void sendMessageError(User santaUser, User target, Throwable error) {
+    private static void sendMessageError(User santaUser, User target) {
         Main.getJDA().getGuildById(GUILD_ID).getTextChannelById(TEXT_CHANNEL_ID)
                 .sendMessage("Failed to send message to " + santaUser.getName() + " (" + santaUser.getId() + ")" + "\n\nMessage: ")
                 .setEmbeds(createEmbed(SantaDatabaseUtils.getUser(santaUser.getIdLong()), SantaDatabaseUtils.getUser(target.getIdLong())))
