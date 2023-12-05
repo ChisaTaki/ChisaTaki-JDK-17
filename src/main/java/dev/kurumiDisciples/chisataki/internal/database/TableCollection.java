@@ -5,6 +5,7 @@ import java.util.List;
 import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 import dev.kurumidisciples.chisataki.modmail.Ticket;
+import dev.kurumidisciples.chisataki.secretsanta.Pairings;
 import dev.kurumidisciples.chisataki.secretsanta.SantaDatabase;
 import dev.kurumidisciples.chisataki.secretsanta.time.TimeStorage;
 import dev.kurumidisciples.chisataki.shrine.ShrineDatabaseConst;
@@ -19,7 +20,8 @@ public class TableCollection {
             new ShrineDatabaseConst(),
             new CooldownUtils(),
             new SantaDatabase(),
-            new TimeStorage()
+            new TimeStorage(),
+            new Pairings()
         );
     }
 }

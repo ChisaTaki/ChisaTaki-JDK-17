@@ -34,6 +34,8 @@ public class MessageUsers {
                                 (error) -> sendMessageError(santaUser, targetUser)
                         )
                 );
+                //store pairing
+                PairingsUtil.insertPairing(santaUser.getIdLong(), targetUser.getIdLong());
             }
         }
     }
