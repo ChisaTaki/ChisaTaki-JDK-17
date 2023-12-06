@@ -3,16 +3,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
-import dev.kurumidisciples.chisataki.Main;
 import dev.kurumidisciples.chisataki.commands.slash.ChristmasCommand;
 import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumidisciples.chisataki.enums.NumberEnums;
 import dev.kurumidisciples.chisataki.utils.MessageCache;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -28,18 +23,6 @@ public class MemeInteraction extends ListenerAdapter {
 	private static final String CHISATAKI_KISS = "<:ChisaTakiKiss:1013059473167888486>";
 
 	private static final ExecutorService THREAD_POOL_EXECUTOR = Executors.newFixedThreadPool(5);
-
-	private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE;
-
-
-	static {
-		SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
-		SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> {
-			JDA jda = Main.getJDA();
-			TextChannel prayerChannel = jda.getTextChannelById("1013939353434738798");
-			prayerChannel.sendMessage("May all of your prayers come true! <:ChisatakiPray2:1041721086036955286> <:ChisatakiPray1:1044650587708473364> ").queue();
-		}, 0, 24, TimeUnit.HOURS);
-	}
 
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
