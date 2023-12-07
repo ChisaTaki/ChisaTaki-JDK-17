@@ -31,10 +31,6 @@ public class MemeInteraction extends ListenerAdapter {
 
 	static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
-	static {
-		createMessageClock();
-	}
-
 	@Override
 	public void onMessageReceived(MessageReceivedEvent event) {
 		Thread messageThread = new Thread() {
