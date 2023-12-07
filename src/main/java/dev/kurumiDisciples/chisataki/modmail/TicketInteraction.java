@@ -11,7 +11,9 @@ import java.util.zip.ZipOutputStream;
 
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import dev.kurumidisciples.chisataki.enums.StatusType;
-import dev.kurumidisciples.chisataki.modmail.json.*;
+import dev.kurumidisciples.chisataki.modmail.json.ChannelEncoded;
+import dev.kurumidisciples.chisataki.modmail.json.MessagesEncoded;
+import dev.kurumidisciples.chisataki.modmail.json.ServerEncoded;
 import dev.kurumidisciples.chisataki.utils.HTMLUtils;
 import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -149,11 +151,11 @@ public class TicketInteraction extends ListenerAdapter {
     for (int i = messages.size() - 1; i >= 0; i--) {
       Message message = messages.get(i);
       if (message.getReferencedMessage() != null) {
-        data += String.format(formatReply, message.getMember().getEffectiveName(),
-            message.getAuthor().getDiscriminator(), message.getReferencedMessage().getMember().getEffectiveName(),
+        data += String.format(formatReply, message.getAuthor().getName(),
+            message.getAuthor().getDiscriminator(), message.getReferencedMessage().getAuthor().getName(),
             message.getReferencedMessage().getAuthor().getDiscriminator(), message.getContentStripped());
       } else {
-        data += String.format(format, message.getMember().getEffectiveName(), message.getAuthor().getDiscriminator(),
+        data += String.format(format, message.getAuthor().getName(), message.getAuthor().getDiscriminator(),
             message.getContentStripped());
       }
     }
