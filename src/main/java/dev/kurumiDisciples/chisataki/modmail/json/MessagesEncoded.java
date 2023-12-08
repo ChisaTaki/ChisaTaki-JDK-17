@@ -1,12 +1,13 @@
 package dev.kurumidisciples.chisataki.modmail.json;
 
-import java.util.List;
 import java.util.ArrayList;
-
 import java.util.Base64;
+import java.util.List;
 
-import javax.json.*;
-import javax.json.stream.*;
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import javax.json.JsonObjectBuilder;
 
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
@@ -40,7 +41,7 @@ public class MessagesEncoded {
                            .add("user_id", message.getAuthor().getId())
                            .add("bot", message.getAuthor().isBot())
                            .add("username", message.getAuthor().getName())
-                           .add("nick", message.getMember().getEffectiveName())
+                           .add("nick", message.getAuthor().getName())
                            .add("tag", message.getAuthor().getDiscriminator())
                            .add("avatar", message.getAuthor().getAvatarUrl().split("/")[5].split("\\.")[0])
                            .add("id", message.getId())
@@ -84,13 +85,13 @@ private JsonArrayBuilder createEmbedObject(Message message) {
 
     JsonObjectBuilder objectBuilder = Json.createObjectBuilder();
 
-    message.getMentions().getMembers().forEach(member -> {
+    message.getMentions().getUsers().forEach(member -> {
       objectBuilder.add(member.getId(),
                        Json.createObjectBuilder()
-                        .add("name", member.getUser().getName())
-                        .add("tag", member.getUser().getDiscriminator())
+                        .add("name", member.getName())
+                        .add("tag", member.getDiscriminator())
                         .add("nick", member.getEffectiveName())
-                        .add("avatar", member.getUser().getAvatarUrl().split("/")[5].split("\\.")[0])
+                        .add("avatar", member.getAvatarUrl().split("/")[5].split("\\.")[0])
                        );
     });
     return objectBuilder;

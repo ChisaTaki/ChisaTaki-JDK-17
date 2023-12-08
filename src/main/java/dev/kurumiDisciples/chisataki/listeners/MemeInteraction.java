@@ -68,6 +68,8 @@ public class MemeInteraction extends ListenerAdapter {
 						event.getMessage().addReaction(numEmoji.getEmoji()).complete();
 					});
 					event.getMessage().addReaction(Emoji.fromUnicode("🎄")).complete();
+				} else if (userMessage.toLowerCase().contains("supaka")){
+					event.getMessage().addReaction(Emoji.fromFormatted("<a:ChisatoDrive:1015331140317499392>")).queue();
 				}
 
 			}
