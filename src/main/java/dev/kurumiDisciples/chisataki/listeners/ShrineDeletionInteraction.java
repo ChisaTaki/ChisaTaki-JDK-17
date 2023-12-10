@@ -1,16 +1,15 @@
 package dev.kurumidisciples.chisataki.listeners;
 
-import net.dv8tion.jda.api.entities.Member;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import dev.kurumidisciples.chisataki.enums.EmojiEnum;
 import dev.kurumidisciples.chisataki.utils.RoleUtils;
+import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.events.message.MessageUpdateEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class ShrineDeletionInteraction extends ListenerAdapter {
     private static final String BOOSTER_CHANNEL = "1028022086888869888";
@@ -26,11 +25,11 @@ public class ShrineDeletionInteraction extends ListenerAdapter {
 
     private void handleReceivedMessage(MessageReceivedEvent event) {
         if (event.getChannel().getId().equals(ChannelEnum.CHISATO_SHRINE.getId())
-                && !event.getMessage().getContentRaw().equals(EmojiEnum.CHISATO_HEART.getAsText())
+                && !event.getMessage().getContentRaw().equals(EmojiEnum.CHISATO_PADORU.getAsText())
                 && !event.getAuthor().isBot() && !isExcluded(event.getMember())) {
             event.getMessage().delete().reason("not the corresponding shrine emote").queue();
         } else if (event.getChannel().getId().equals(ChannelEnum.TAKINA_SHRINE.getId())
-                && !event.getMessage().getContentRaw().equals(EmojiEnum.SAKANA.getAsText()) && !event.getAuthor().isBot()
+                && !event.getMessage().getContentRaw().equals(EmojiEnum.TAKINA_PADORU.getAsText()) && !event.getAuthor().isBot()
                 && !isExcluded(event.getMember())) {
             event.getMessage().delete().reason("not the corresponding shrine emote").queue();
         } else if (event.getChannel().getId().equals(BOOSTER_CHANNEL) && !event.getAuthor().isBot()
