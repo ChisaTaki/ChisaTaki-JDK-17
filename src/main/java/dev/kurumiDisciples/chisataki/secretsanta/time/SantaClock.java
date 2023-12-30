@@ -83,12 +83,14 @@ public class SantaClock {
                 long currentTime = System.currentTimeMillis() / 1000;
                 long expirationTime = getTime();
 
+                LOGGER.info(String.valueOf(expirationTime));
+
                 boolean isTimeSet = isTimeSet();
 
-                LOGGER.debug("running clock");
+                LOGGER.info("running clock");
 
                 if (isTimeSet && currentTime >= expirationTime) {
-                    LOGGER.debug("SantaClock time is up. Sending Messages.");
+                    LOGGER.info("SantaClock time is up. Sending Messages.");
                     MessageUsers.messageUsers();
                     executor.shutdown();
                 } else {
