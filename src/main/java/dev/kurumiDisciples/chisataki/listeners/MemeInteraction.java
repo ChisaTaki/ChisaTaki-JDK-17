@@ -62,13 +62,13 @@ public class MemeInteraction extends ListenerAdapter {
 					event.getMessage().reply("Don’t you dare hurt Chisato or I’ll CRRRUSSH YOU " + MAD_DOG_TAKINA).queue();
 				} else if (userMessage.contains(CHISATAKI_KISS)) {
 					event.getMessage().addReaction(Emoji.fromFormatted(CHISATAKI_KISS)).queue();
-				} else if (userMessage.toLowerCase().contains("christmas")){
+				} /* else if (userMessage.toLowerCase().contains("christmas")){
 					List<NumberEnums> numberEnums = getNumberEnumsFromInt(ChristmasCommand.calculateDaysUntilChristmas());
 					numberEnums.forEach(numEmoji -> {
 						event.getMessage().addReaction(numEmoji.getEmoji()).complete();
 					});
 					event.getMessage().addReaction(Emoji.fromUnicode("🎄")).complete();
-				} else if (userMessage.toLowerCase().contains("supaka")){
+				} */else if (userMessage.toLowerCase().contains("supaka")){
 					event.getMessage().addReaction(Emoji.fromFormatted("<a:ChisatoDrive:1015331140317499392>")).queue();
 				}
 
