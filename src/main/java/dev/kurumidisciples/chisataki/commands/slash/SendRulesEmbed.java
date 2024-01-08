@@ -76,7 +76,7 @@ public class SendRulesEmbed extends SlashCommand {
 		StringSelectMenu menu = StringSelectMenu.create("menu:info")
 				.setPlaceholder("Use this menu to learn more about our server.")
 				.addOption(/*label*/"Church Staff", /*value*/"adminSelect", /*description*/"Select to learn about our lovely staff.", Emoji.fromCustom("LycoReco", 993444445741645845L, false))
-				.addOption(/*label*/"Main Server", /*value*/ "sisterSelect", "Select to view our main server.", Emoji.fromCustom("ChisaTakiKiss", 1014257843974721606L, false))
+				.addOption(/*label*/"Bar4bidden", /*value*/ "sisterSelect", "Select to view our translation server.", Emoji.fromCustom("KurumiPat", 1159555167973277847L, false))
 				.addOption(/*label*/"Shrine Info", /*value*/ "shrineSelect", /*description*/"Select to learn more about the Shrine Channels", Emoji.fromUnicode("U+26E9"))
 				.addOption("XP System", "xpSystem", "Select to learn about our XP System.", Emoji.fromCustom("YellowSpiderLily", 997605599531507873L, false))
 				.build();

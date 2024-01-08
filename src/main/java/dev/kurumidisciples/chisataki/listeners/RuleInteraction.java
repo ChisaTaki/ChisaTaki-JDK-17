@@ -137,9 +137,9 @@ public class RuleInteraction extends ListenerAdapter {
   private static MessageEmbed getSisterServer() {
     MessageEmbed sister = new EmbedBuilder()
       .setColor(new Color(229, 20, 104))
-      .setThumbnail("https://cdn.discordapp.com/icons/990527994969874493/ce1465898fafcc2fdf0fd3be17185711?size=128")
-      .setTitle("Lycoris Recoil","https://discord.gg/LycorisRecoil")
-      .setDescription("The Lycoris Recoil server is dedicated to **Lycoris Recoil (リコリス・リコイル)** original TV Anime Series set to be produced by A-1 Pictures and Director Shingo Adachi (SAO, To-Love Ru) featuring an original story by Asaura and Character Design by Imigimuru.")
+      .setThumbnail("https://cdn.discordapp.com/icons/1127334757026500782/f257e945aedb1e10d0e2b9bb383ee24d.webp?size=128")
+      .setTitle("Bar4bidden","https://discord.gg/PT6Ek66urc")
+      .setDescription("A Lycoris Recoil Translations Group.\r\n" + "We translate various LycoReco official contents.")
       .build();
     return sister;
   }
