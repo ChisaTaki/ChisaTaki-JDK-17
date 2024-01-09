@@ -140,9 +140,9 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 
 	private StringSelectMenu getGroupMenu() {
 		StringSelectMenu group = StringSelectMenu.create("menu:role:groupwatch").setPlaceholder("Select Groupwatch Role(s)")
-				.addOption("Spy x Family S2", "sxfSelect", Emoji.fromCustom("SXFBondo", 691730988430131210L, false))
-				.addOption("Stardust Telepath", "starSelect", Emoji.fromCustom("SS_GalaxyStar", 971802882548576296L, true))
-				.addOption("WataOshi", "wataoshiSelect", Emoji.fromCustom("Claire", 825854942136238141L, false))
+				.addOption("Solo Leveling", "soloSelect", Emoji.fromCustom("jin_shout", 743934505727033435L, false))
+				.addOption("Metallic Rouge", "metaSelect", Emoji.fromCustom("pinkheart", 817275500145541153L, true))
+				.addOption("Villainess Level 99", "villainessSelect", Emoji.fromCustom("mafuPowerAura", 766757352544010300L, false))
 				.setMaxValues(3).setMinValues(0).build();
 
 		return group;

@@ -42,17 +42,17 @@ public class RoleMenuInteraction extends ListenerAdapter {
           String roleName = "";
           for (String s : event.getValues()) {
             switch (s) {
-            	case "sxfSelect":
-	                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.SPY_X_FAMILY.getId()));
-	                roleName += "`Spy x Family S2`, ";
+            	case "soloSelect":
+	                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.SOLO_LEVELING.getId()));
+	                roleName += "`Solo Leveling`, ";
 	                break;
-            	case "starSelect":
-	                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.STARDUST.getId()));
-	                roleName += "`Stardust Telepath`, ";
+            	case "metaSelect":
+	                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.METALLIC_ROUGE.getId()));
+	                roleName += "`Metallic Rouge`, ";
 	                break;
-            	case "wataoshiSelect":
-	                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.WATAOSHI.getId()));
-	                roleName += "`WataOshi`, ";
+            	case "villainessSelect":
+	                roleHandle(event.getMember(), guild.getRoleById(RoleEnum.VILLAINESS_LEVEL_99.getId()));
+	                roleName += "`Villainess Level 99`, ";
 	                break;
             }
           }
