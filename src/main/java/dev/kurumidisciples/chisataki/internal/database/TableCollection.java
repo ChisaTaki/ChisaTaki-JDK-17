@@ -2,6 +2,7 @@ package dev.kurumidisciples.chisataki.internal.database;
 
 import java.util.List;
 
+import dev.kurumidisciples.chisataki.booster.BoosterDatabase;
 import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 import dev.kurumidisciples.chisataki.modmail.Ticket;
@@ -15,7 +16,8 @@ public class TableCollection {
             new IgnoreCommand(),
             new Ticket(),
             new ShrineDatabaseConst(),
-            new CooldownUtils()
+            new CooldownUtils(),
+            new BoosterDatabase()
         );
     }
 }
