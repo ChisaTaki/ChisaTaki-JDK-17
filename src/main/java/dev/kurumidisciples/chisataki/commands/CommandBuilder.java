@@ -1,5 +1,6 @@
 package dev.kurumidisciples.chisataki.commands;
 
+import dev.kurumidisciples.chisataki.commands.slash.BoosterCommand;
 import dev.kurumidisciples.chisataki.commands.slash.DebugCommand;
 import dev.kurumidisciples.chisataki.commands.slash.EmbedCommand;
 import dev.kurumidisciples.chisataki.commands.slash.GifCommand;
@@ -60,7 +61,8 @@ public class CommandBuilder {
 				new SendRulesEmbed(),
 				new ShrineCountCommand(), 
 				new TestImageCommand(),
-				new TTTCommand()
+				new TTTCommand(),
+				new BoosterCommand()
 		};
 	}
 	
