@@ -122,6 +122,7 @@ public class BoosterCommand extends SlashCommand {
         } else if (emoji.getType() == Emoji.Type.UNICODE){
             role.getManager().setIcon(emoji.asUnicode().getAsCodepoints()).queue();
         }
+        role = event.getGuild().getRoleById(Long.valueOf(booster.getRoleId()));
         event.replyEmbeds(BoosterEmbedUtils.getRoleIconEmbed(event, role)).setEphemeral(false).queue();
         LOGGER.info("Role icon updated for user " + event.getUser().getId() + " and role " + role.getId() + " with icon " + icon);
     }
@@ -136,7 +137,7 @@ public class BoosterCommand extends SlashCommand {
         try{
         role.getManager().setName(name).queue();
         LOGGER.info("Role name updated for user " + event.getUser().getId() + " and role " + role.getId() + " with name " + name);
-        event.replyEmbeds(BoosterEmbedUtils.getRoleNameEmbed(event, role)).setEphemeral(false).queue();
+        event.replyEmbeds(BoosterEmbedUtils.getRoleNameEmbed(event, role, name)).setEphemeral(false).queue();
         } catch (IllegalArgumentException e){
             event.reply("The name you have entered exceeds 100 characters! If you believe this is an error contact a moderator.").setEphemeral(true).queue();
             LOGGER.error("Failed to update role name for user " + event.getUser().getId() + " and role " + role.getId() + " with name " + name, e);

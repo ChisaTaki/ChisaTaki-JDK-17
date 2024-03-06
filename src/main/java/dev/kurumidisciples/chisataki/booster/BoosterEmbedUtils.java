@@ -27,10 +27,11 @@ public class BoosterEmbedUtils {
         return embed.build();
     }
 
-    public static MessageEmbed getRoleNameEmbed(Interaction event, Role role){
+    public static MessageEmbed getRoleNameEmbed(Interaction event, Role role, String name){
         EmbedBuilder embed = new EmbedBuilder();
         embed.setAuthor(event.getMember().getEffectiveName(), null, event.getMember().getUser().getEffectiveAvatarUrl());
         embed.setTitle("Edited Role Name!");
+        embed.setDescription("Role name is now " + name + "!");
         embed.setColor(role.getColor());
         embed.setFooter("Role ID: " + role.getId());
         return embed.build();
@@ -40,6 +41,7 @@ public class BoosterEmbedUtils {
         EmbedBuilder embed = new EmbedBuilder();
         embed.setAuthor(event.getMember().getEffectiveName(), null, event.getMember().getUser().getEffectiveAvatarUrl());
         embed.setTitle("Edited Role Icon!");
+        embed.setThumbnail(role.getIcon().getIconUrl());
         embed.setColor(role.getColor());
         embed.setFooter("Role ID: " + role.getId());
         return embed.build();

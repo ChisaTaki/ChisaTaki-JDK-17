@@ -32,7 +32,7 @@ public class DatabaseInit {
         Connection connection = null;
         try {
             connection = DriverManager.getConnection(DatabaseValues.getDatabaseUrl(), DatabaseValues.getDatabaseUsername(), DatabaseValues.getDatabasePassword());
-            LOGGER.info("Connection to database established successfully.");
+            LOGGER.debug("Connection to database established successfully.");
         } catch (SQLException | NullPointerException e) {
             LOGGER.error("Failed to create connection to database.", e);
             LOGGER.info("Database could not be initialized. Shutting down bot.");
