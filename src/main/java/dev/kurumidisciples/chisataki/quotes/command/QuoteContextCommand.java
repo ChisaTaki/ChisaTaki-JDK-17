@@ -51,7 +51,7 @@ public class QuoteContextCommand extends MessageCommand  {
             return;
         }
 
-        event.getGuild().getTextChannelById(ChannelEnum.BOT_HOUSE.getId()).sendMessage("*Generating Quote...*").queue(message -> {
+        event.getGuild().getThreadChannelById(1221538772785561600L).sendMessage("*Generating Quote...*").queue(message -> {
             QuoteSettings finalSettings = settings;
             Member member = event.getMember();
             event.getChannel().retrieveMessageById(event.getTarget().getId()).queue(message1 -> {
