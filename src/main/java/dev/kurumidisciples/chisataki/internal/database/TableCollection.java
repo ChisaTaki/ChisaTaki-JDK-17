@@ -6,6 +6,8 @@ import dev.kurumidisciples.chisataki.booster.BoosterDatabase;
 import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 import dev.kurumidisciples.chisataki.modmail.Ticket;
+import dev.kurumidisciples.chisataki.quotes.QuoteSettingsDatabase;
+import dev.kurumidisciples.chisataki.quotes.quota.QuoteQuotaDatabase;
 import dev.kurumidisciples.chisataki.shrine.ShrineDatabaseConst;
 import dev.kurumidisciples.chisataki.utils.CooldownUtils;
 
@@ -17,7 +19,9 @@ public class TableCollection {
             new Ticket(),
             new ShrineDatabaseConst(),
             new CooldownUtils(),
-            new BoosterDatabase()
+            new BoosterDatabase(),
+            new QuoteSettingsDatabase(),
+            new QuoteQuotaDatabase()
         );
     }
 }

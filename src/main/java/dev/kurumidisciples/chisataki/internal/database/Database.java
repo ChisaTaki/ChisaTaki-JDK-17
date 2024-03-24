@@ -52,7 +52,7 @@ public class Database {
      * @param tables - A list of GenericDatabaseTable objects that represent the tables to be created. Generally grabbed from TableCollection.
      */
     private static void createTables(List<GenericDatabaseTable> tables){
-        LOGGER.info("Creating tables...");
+        LOGGER.debug("Creating tables...");
         DatabaseInit.createTables(tables);
         LOGGER.info("Tables created or were already created.");
     }

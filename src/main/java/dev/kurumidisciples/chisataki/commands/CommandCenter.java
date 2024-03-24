@@ -27,6 +27,7 @@ public class CommandCenter extends ListenerAdapter {
 	public CommandCenter() {
 		wrapCommands(CommandBuilder.buildSlashCommands());
 		wrapCommands(CommandBuilder.buildUserCommands());
+		wrapCommands(CommandBuilder.buildMessageCommands());
 	}
 
 	private void wrapCommands(CommandWrapper ...commands) {

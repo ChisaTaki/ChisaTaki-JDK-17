@@ -1,6 +1,7 @@
 package dev.kurumidisciples.chisataki.commands;
 
 import dev.kurumidisciples.chisataki.commands.slash.BoosterCommand;
+import dev.kurumidisciples.chisataki.commands.message.MessageCommand;
 import dev.kurumidisciples.chisataki.commands.slash.DebugCommand;
 import dev.kurumidisciples.chisataki.commands.slash.EmbedCommand;
 import dev.kurumidisciples.chisataki.commands.slash.GifCommand;
@@ -17,6 +18,7 @@ import dev.kurumidisciples.chisataki.commands.slash.TestImageCommand;
 import dev.kurumidisciples.chisataki.commands.user.ToggleRoleCommand;
 import dev.kurumidisciples.chisataki.commands.user.UserCommand;
 import dev.kurumidisciples.chisataki.enums.RoleEnum;
+import dev.kurumidisciples.chisataki.quotes.command.QuoteContextCommand;
 
 public class CommandBuilder {
 	public static SlashCommand[] buildSlashCommands() {
@@ -73,6 +75,12 @@ public class CommandBuilder {
 		
 		return new UserCommand[] {
 				chisatoShrineCmd, takinaShrineCmd, shareholderCmd
+		};
+	}
+
+	public static MessageCommand[] buildMessageCommands() {
+		return new MessageCommand[] {
+			new QuoteContextCommand()
 		};
 	}
 }

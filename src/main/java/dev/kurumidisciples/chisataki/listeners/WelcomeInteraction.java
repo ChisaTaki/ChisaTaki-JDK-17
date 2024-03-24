@@ -3,6 +3,7 @@ package dev.kurumidisciples.chisataki.listeners;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -85,6 +86,7 @@ public class WelcomeInteraction extends ListenerAdapter {
 		BufferedImage output = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
 
 		Graphics2D g2d = output.createGraphics();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g2d.setClip(new Ellipse2D.Double(0, 0, diameter, diameter));
 		g2d.drawImage(image, 0, 0, null);
 		g2d.dispose();
