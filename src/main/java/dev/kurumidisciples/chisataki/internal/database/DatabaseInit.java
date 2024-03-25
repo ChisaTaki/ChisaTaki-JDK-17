@@ -48,7 +48,7 @@ public class DatabaseInit {
     protected static void createTables(List<GenericDatabaseTable> tables){
         try(Connection connection = Database.getConnection()) {
             for (GenericDatabaseTable table : tables){
-                    LOGGER.info("Creating table: " + table.getTableName());
+                    LOGGER.debug("Creating table: " + table.getTableName());
                     createTable(connection, table);
             }
         }
@@ -69,9 +69,9 @@ public class DatabaseInit {
         try(Connection connection = Database.getConnection()) {
             boolean exists = connection.getMetaData().getTables(null, null, table.getTableName(), null).next();
             if (exists) {
-                LOGGER.info("Table exists: " + table.getTableName());
+                LOGGER.debug("Table exists: " + table.getTableName());
             } else {
-                LOGGER.info("Table does not exist: " + table.getTableName());
+                LOGGER.debug("Table does not exist: " + table.getTableName());
             }
             return exists;
         }

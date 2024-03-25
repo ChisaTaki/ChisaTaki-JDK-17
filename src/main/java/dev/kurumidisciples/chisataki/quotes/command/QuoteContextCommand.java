@@ -52,7 +52,7 @@ public class QuoteContextCommand extends MessageCommand  {
         }
 
         event.getGuild().getThreadChannelById(1221538772785561600L).sendMessage("*Generating Quote...*").queue(message -> {
-            QuoteSettings finalSettings = settings;
+            final QuoteSettings finalSettings = settings;
             Member member = event.getMember();
             event.getChannel().retrieveMessageById(event.getTarget().getId()).queue(message1 -> {
                 BufferedImage quoteImage = QuoteImageGenerator.generateQuoteImage(finalSettings, message1);
