@@ -84,13 +84,13 @@ public class QuoteContextCommand extends MessageCommand  {
     }
 
     private static boolean hasUserExceededQuota(long userid){
-        // if the timestamp is within the last 6 hours, return true
+        // if the timestamp is within the last 1 hour, return true
         Timestamp timestamp = QuoteQuotaUtils.selectTimestamp(userid);
         if (timestamp == null){
             //insert the current timestamp into the database with the user id
             QuoteQuotaUtils.insertQuota(userid, System.currentTimeMillis());
             return false;
-        } else if (System.currentTimeMillis() - timestamp.getTime() < 21600000){
+        } else if (System.currentTimeMillis() - timestamp.getTime() < 3600000){
             return true;
         } else {
             //update the timestamp to the current time
