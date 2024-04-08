@@ -50,6 +50,10 @@ public class RoleMenuInteraction extends ListenerAdapter {
 	            	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.JELLYFISH.getId()));
 	                roleName += "`Jellyfish`, ";
 	                break;
+	            case "radioSelect":
+	            	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.SEIYUU_RADIO.getId()));
+	                roleName += "`Seiyuu Radio`, ";
+	                break;
 	            case "shuuSelect":
 	            	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.SHUUMATSU_TRAIN.getId()));
 	                roleName += "`Shuumatsu`, ";
