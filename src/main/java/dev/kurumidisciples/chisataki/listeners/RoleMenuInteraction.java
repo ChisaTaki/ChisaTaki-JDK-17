@@ -42,10 +42,6 @@ public class RoleMenuInteraction extends ListenerAdapter {
           String roleName = "";
           for (String s : event.getValues()) {
             switch (s) {
-	            case "barSelect":
-	            	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.BARTENDER.getId()));
-	                roleName += "`Bartender`, ";
-	                break;
 	            case "jellySelect":
 	            	roleHandle(event.getMember(), guild.getRoleById(RoleEnum.JELLYFISH.getId()));
 	                roleName += "`Jellyfish`, ";
