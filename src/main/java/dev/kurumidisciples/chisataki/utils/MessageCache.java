@@ -6,18 +6,19 @@ import java.util.List;
 import java.util.Map;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.GuildMessageChannel;
 
 public class MessageCache {
 
-    private static final LinkedHashMap<TextChannel, List<Message>> messageMap;
+    private static final LinkedHashMap<GuildMessageChannel, List<Message>> messageMap;
     private static int maxSize;
 
     static {
-        messageMap = new LinkedHashMap<TextChannel, List<Message>>() {
+        messageMap = new LinkedHashMap<GuildMessageChannel, List<Message>>() {
             private static final long serialVersionUID = 1L;
     
             @Override
-            protected boolean removeEldestEntry(Map.Entry<TextChannel, List<Message>> eldest) {
+            protected boolean removeEldestEntry(Map.Entry<GuildMessageChannel, List<Message>> eldest) {
                 return size() > maxSize;
             }
         };
@@ -28,7 +29,7 @@ public class MessageCache {
     } 
 
     public static void storeMessage(Message message) {
-        TextChannel channel = message.getChannel().asTextChannel();
+        GuildMessageChannel channel = message.getChannel().asGuildMessageChannel();
         List<Message> messages = messageMap.get(channel);
         if (messages == null) {
             messages = new ArrayList<>();

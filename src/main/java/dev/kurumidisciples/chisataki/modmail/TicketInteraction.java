@@ -118,7 +118,7 @@ public class TicketInteraction extends ListenerAdapter {
       ticket.setStaff(event.getMember().getId());
     }
 
-    List<Message> actualMessages = event.getChannel().asTextChannel().getHistory().retrieveFuture(100).complete();
+    List<Message> actualMessages = event.getChannel().asTextChannel().getHistoryFromBeginning(100).complete().getRetrievedHistory();
     List<Message> localMessages = MessageCache.getMessages(event.getChannel().asTextChannel());
 
     List<Message> messages = removeDuplicates(actualMessages, localMessages);
