@@ -4,20 +4,16 @@ import dev.kurumidisciples.chisataki.quotes.QuoteSettings;
 
 import java.awt.*;
 import java.awt.color.ColorSpace;
-import java.awt.font.TextLayout;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

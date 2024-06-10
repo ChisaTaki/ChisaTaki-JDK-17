@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 import javax.imageio.ImageIO;
 
 import dev.kurumidisciples.chisataki.commands.message.MessageCommand;
-import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import dev.kurumidisciples.chisataki.quotes.QuoteSettings;
 import dev.kurumidisciples.chisataki.quotes.QuoteSettingsUtils;
 import dev.kurumidisciples.chisataki.quotes.image.QuoteImageGenerator;
