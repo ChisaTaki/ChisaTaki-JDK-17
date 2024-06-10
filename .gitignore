@@ -11,3 +11,4 @@ target/*
 ChisaTaki.jar
 /target/
 /.vscode/
+.fake

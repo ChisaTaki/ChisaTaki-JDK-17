@@ -65,7 +65,7 @@ public class Main {
 
       commandCenter.addCommands(getJDA());
       logger.info("Commands added!");
-      MessageCache.setMaxSize(2000);
+      MessageCache.setMaxSize(10000);
       logger.info("Message Cache Size: {}", MessageCache.getMaxSize());
 
 

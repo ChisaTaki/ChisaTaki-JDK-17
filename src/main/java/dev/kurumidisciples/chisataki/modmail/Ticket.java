@@ -37,7 +37,6 @@ public class Ticket implements GenericDatabaseTable{
     this.reason = json.getString("reason", null);
 
   }
-  @Nonnull
   protected Ticket( int ticketNumber, long ticketId, long memberId, String subject, String body, StatusType status) {
     this.ticketNumber = ticketNumber;
     this.ticketId = ticketId;
@@ -49,7 +48,6 @@ public class Ticket implements GenericDatabaseTable{
 
   
   /* This one has reason and staff */
-  @Nullable
   protected Ticket(ResultSet set){
     try {
       if (set.next()){

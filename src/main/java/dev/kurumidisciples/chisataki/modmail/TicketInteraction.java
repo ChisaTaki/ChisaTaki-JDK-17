@@ -15,6 +15,7 @@ import dev.kurumidisciples.chisataki.modmail.json.ChannelEncoded;
 import dev.kurumidisciples.chisataki.modmail.json.MessagesEncoded;
 import dev.kurumidisciples.chisataki.modmail.json.ServerEncoded;
 import dev.kurumidisciples.chisataki.utils.HTMLUtils;
+import dev.kurumidisciples.chisataki.utils.MessageCache;
 import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -147,7 +148,7 @@ public class TicketInteraction extends ListenerAdapter {
     String data = "";
     String format = "%s#%s: %s\n";
     String formatReply = "%s#%s replying to %s#%s: %s\n";
-    List<Message> messages = history.getRetrievedHistory();
+    List<Message> messages = MessageCache.getMessages(channel);
     for (int i = messages.size() - 1; i >= 0; i--) {
       Message message = messages.get(i);
       if (message.getReferencedMessage() != null) {
