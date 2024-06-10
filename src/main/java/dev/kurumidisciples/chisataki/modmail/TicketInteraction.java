@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
@@ -22,6 +23,7 @@ import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.Message.Attachment;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -115,10 +117,15 @@ public class TicketInteraction extends ListenerAdapter {
     if (!ticket.hasStaff()) {
       ticket.setStaff(event.getMember().getId());
     }
+
+    List<Message> actualMessages = event.getChannel().asTextChannel().getHistory().retrieveFuture(100).complete();
+    List<Message> localMessages = MessageCache.getMessages(event.getChannel().asTextChannel());
+
+    List<Message> messages = removeDuplicates(actualMessages, localMessages);
   event.getHook().editOriginal("Ticket closed").queue();    
     event.getGuildChannel().asTextChannel().getManager().removePermissionOverride(ticket.getMemberId()).complete();
     sendTranscript(ticket, event.getGuild(), archive(event.getGuildChannel().asTextChannel()),
-        "ticket-" + ticket.getTicketNumber(), generateHTMLTranscript(event.getGuildChannel().asTextChannel()));
+        "ticket-" + ticket.getTicketNumber(), generateHTMLTranscript(event.getGuildChannel().asTextChannel()), getAttachments(messages));
     
     event.getGuildChannel().asTextChannel().delete().queueAfter(10, TimeUnit.SECONDS);
 
@@ -128,9 +135,14 @@ public class TicketInteraction extends ListenerAdapter {
     if (!ticket.hasStaff()) {
       ticket.setStaff(event.getMember().getId());
     }
+
+    List<Message> actualMessages = event.getChannel().asTextChannel().getHistory().retrieveFuture(100).complete();
+    List<Message> localMessages = MessageCache.getMessages(event.getChannel().asTextChannel());
+
+    List<Message> messages = removeDuplicates(actualMessages, localMessages);
     event.getGuildChannel().asTextChannel().getManager().removePermissionOverride(ticket.getMemberId()).complete();
     sendTranscript(ticket, event.getGuild(), archive(event.getGuildChannel().asTextChannel()),
-        "ticket-" + ticket.getTicketNumber(), generateHTMLTranscript(event.getGuildChannel().asTextChannel()));
+        "ticket-" + ticket.getTicketNumber(), generateHTMLTranscript(event.getGuildChannel().asTextChannel()) , getAttachments(messages));
     event.getHook().editOriginal("Ticket closed with reason").queue();
     event.getGuildChannel().asTextChannel().delete().queueAfter(10, TimeUnit.SECONDS);
   }
@@ -148,7 +160,10 @@ public class TicketInteraction extends ListenerAdapter {
     String data = "";
     String format = "%s#%s: %s\n";
     String formatReply = "%s#%s replying to %s#%s: %s\n";
-    List<Message> messages = MessageCache.getMessages(channel);
+    List<Message> actualMessages = history.retrieveFuture(100).complete();
+    List<Message> localMessages = MessageCache.getMessages(channel);
+
+    List<Message> messages = removeDuplicates(actualMessages, localMessages);
     for (int i = messages.size() - 1; i >= 0; i--) {
       Message message = messages.get(i);
       if (message.getReferencedMessage() != null) {
@@ -164,7 +179,25 @@ public class TicketInteraction extends ListenerAdapter {
     return data;
   }
 
-  private void sendTranscript(Ticket ticket, Guild guild, String transcript, String transcriptName, String htmlTranscript) {
+  private List<Message> removeDuplicates(List<Message> actualMessages, List<Message> localMessages) {
+    List<Message> messages = new ArrayList<>();
+    for (Message message : actualMessages) {
+      if (!localMessages.contains(message)) {
+        messages.add(message);
+      }
+    }
+    return messages;
+  }
+
+  private List<Message.Attachment> getAttachments(List<Message> messages) {
+    List<Message.Attachment> attachments = new ArrayList<>();
+    for (Message message : messages) {
+      attachments.addAll(message.getAttachments());
+    }
+    return attachments;
+  }
+
+  private void sendTranscript(Ticket ticket, Guild guild, String transcript, String transcriptName, String htmlTranscript, List<Attachment> attachments) {
     TextChannel transcriptChannel = guild.getTextChannelById(ChannelEnum.TRANSCRIPT_LOGS.getId());
 
     InputStream stream = new ByteArrayInputStream(transcript.getBytes());
@@ -176,7 +209,7 @@ public class TicketInteraction extends ListenerAdapter {
         .addField("Staff", guild.getMemberById(ticket.getStaffId()).getAsMention(), false)
         .addField("Reason", ticket.getReason(), false).build();
 
-    transcriptChannel.sendMessage(" ").addEmbeds(embed).addFiles(FileUpload.fromData(compressToZip(htmlStream, stream), "transcripts.zip")).complete();
+    transcriptChannel.sendMessage(" ").addEmbeds(embed).addFiles(FileUpload.fromData(compressToZip(htmlStream, stream, attachments), "transcripts.zip")).complete();
     //FileUtils.writeFile("data/tickets/"+transcriptName+".txt", transcript);
   }
 
@@ -196,28 +229,36 @@ public class TicketInteraction extends ListenerAdapter {
     return html;
   }
 
-  private InputStream compressToZip(InputStream html, InputStream txt) {
-    try{
+  private InputStream compressToZip(InputStream html, InputStream txt, List<Message.Attachment> attachments) {
     ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    try (ZipOutputStream zipOut = new ZipOutputStream(baos)) {
-      // Add HTML file to the zip
-      zipOut.putNextEntry(new ZipEntry("transcript.html"));
-      byte[] htmlBytes = html.readAllBytes();
-      zipOut.write(htmlBytes, 0, htmlBytes.length);
-      zipOut.closeEntry();
+    ZipOutputStream zos = new ZipOutputStream(baos);
 
-      // Add TXT file to the zip
-      zipOut.putNextEntry(new ZipEntry("transcript.txt"));
-      byte[] txtBytes = txt.readAllBytes();
-      zipOut.write(txtBytes, 0, txtBytes.length);
-      zipOut.closeEntry();
+    try {
+      zos.putNextEntry(new ZipEntry("transcript.html"));
+      byte[] buffer = new byte[1024];
+      int len;
+      while ((len = html.read(buffer)) > 0) {
+        zos.write(buffer, 0, len);
+      }
+      zos.closeEntry();
+
+      zos.putNextEntry(new ZipEntry("transcript.txt"));
+      while ((len = txt.read(buffer)) > 0) {
+        zos.write(buffer, 0, len);
+      }
+      zos.closeEntry();
+
+      for (Message.Attachment attachment : attachments) {
+        zos.putNextEntry(new ZipEntry(attachment.getFileName()));
+        zos.write(attachment.getProxy().download().get().readAllBytes());
+        zos.closeEntry();
+      }
+
+      zos.close();
+    } catch (Exception e) {
+      e.printStackTrace();
     }
 
     return new ByteArrayInputStream(baos.toByteArray());
-  }
-  catch(Exception e){
-    e.printStackTrace();
-    return null;
-  }
   }
 }
