@@ -15,94 +15,114 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 
 public abstract class ShrineInteractionHandler {
 
-  private String shrineEmoji;
-  private String filePath;
-  private int recurrence;
+    private static final String CLEAN_UP_REASON = "clean up";
+    private static final String BOT_HOUSE_CHANNEL_ID = "1010078629344051202";
+    private static final String HAMTARO_ID = "422176394575872001";
+    private static final Duration MESSAGE_DELETE_DELAY = Duration.ofSeconds(10);
+    private static final Duration BOT_MESSAGE_CLEANUP_DELAY = Duration.ofSeconds(10);
 
-  protected ShrineInteractionHandler(String shrineEmoji, int recurrence) {
-    this.shrineEmoji = shrineEmoji;
-    this.recurrence = recurrence;
-  }
+    private final String shrineEmoji;
+    private final int recurrence;
 
-  public void handleShrineInteraction(MessageReceivedEvent event) {
-    if (shouldHandleShrineCount(event.getMessage(), event.getMember(), event.getGuildChannel().asTextChannel())) {
-      handleShrineCount(event);
-    } else if (isCorrespondingShrineEmoji(event.getMessage())) {
-      deleteMessage(event.getMessage(), event.getMember(), event.getGuildChannel().asTextChannel(),
-          "consecutive shrine emoji");
-    } else if (isDifferentShrineEmoji(event.getMessage())) {
-      deleteMessage(event.getMessage(), event.getMember(), event.getGuildChannel().asTextChannel(),
-          "unauthorized shrine emoji");
-    }
-  }
-
-  private boolean shouldHandleShrineCount(Message message, Member member, TextChannel textChannel) {
-    return isCorrespondingShrineEmoji(message)
-        && !MessageHistoryUtils.isConsecutiveMessage(member, textChannel, message.getId());
-  }
-  
-  private void handleShrineCount(MessageReceivedEvent event) {
-    int newCount = getShrineCount();
-    boolean isNewRecord = newCount % this.recurrence == 0;
-    Member member = event.getMember();
-
-    if (isNewRecord && RoleUtils.isMemberStaff(member)) {
-      logUnrecordedCount(member, newCount);
-      return;
+    protected ShrineInteractionHandler(String shrineEmoji, int recurrence) {
+        this.shrineEmoji = shrineEmoji;
+        this.recurrence = recurrence;
     }
 
-    updateCount();
-    logCount(member);
-
-    if (isNewRecord) {
-      String congratsMessage = getCongratsMessage(event, newCount);
-      event.getMessage().reply(congratsMessage).queue();
-
-      rewardShrineRole(event.getGuild(), member);
-
-      TextChannel shrineChannel = event.getGuildChannel().asTextChannel();
-      pingHamtaro(event.getGuild(), shrineChannel, member);
-
-      MessageHistoryUtils.getLastBotMessage(shrineChannel).delete().reason("clean up").queueAfter(5, TimeUnit.MINUTES);
+    public void handleShrineInteraction(MessageReceivedEvent event) {
+        if (shouldHandleShrineCount(event.getMessage(), event.getMember(), event.getGuildChannel().asTextChannel())) {
+            handleShrineCount(event);
+        } else if (isCorrespondingShrineEmoji(event.getMessage())) {
+            deleteMessage(event.getMessage(), event.getMember(), event.getGuildChannel().asTextChannel(), "consecutive shrine emoji");
+        } else if (isDifferentShrineEmoji(event.getMessage())) {
+            deleteMessage(event.getMessage(), event.getMember(), event.getGuildChannel().asTextChannel(), "unauthorized shrine emoji");
+        }
     }
-  }
 
-  private void pingHamtaro(Guild guild, TextChannel shrineChannel, Member newShrineRoleOwner) {
-    String botHouseChannelId = "1010078629344051202";
-    String hamtaroId = "422176394575872001";
-
-    TextChannel botHouseChannel = guild.getTextChannelById(botHouseChannelId);
-    Member hamtaroMember = guild.getMemberById(hamtaroId);
-
-    String message = String.format("%s Detected a new shrine record in %s by %s", hamtaroMember.getAsMention(),
-        shrineChannel.getAsMention(), newShrineRoleOwner.getAsMention());
-    botHouseChannel.sendMessage(message).queue();
-  }
-
-  private void deleteMessage(Message message, Member member, TextChannel textChannel, String reason) {
-    if (!member.getUser().isBot()) {
-      message.delete().reason(reason).queueAfter(5, TimeUnit.SECONDS);
-      textChannel.sendMessage(member.getAsMention() + " You can't do that.").complete();
-      MessageHistoryUtils.getLastBotMessage(textChannel).delete().reason("clean up").delay(Duration.ofSeconds(10))
-          .queue(null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
+    private boolean shouldHandleShrineCount(Message message, Member member, TextChannel textChannel) {
+        return isCorrespondingShrineEmoji(message) && !MessageHistoryUtils.isConsecutiveMessage(member, textChannel, message.getId());
     }
+
+    private void handleShrineCount(MessageReceivedEvent event) {
+        int newCount = getShrineCount();
+        boolean isNewRecord = newCount % recurrence == 0;
+        Member member = event.getMember();
+
+        if (isNewRecord && RoleUtils.isMemberStaff(member)) {
+            logUnrecordedCount(member, newCount);
+            return;
+        }
+
+        updateCount();
+        logCount(member);
+
+        if (isNewRecord) {
+            String congratsMessage = getCongratsMessage(event, newCount);
+            event.getMessage().reply(congratsMessage).queue();
+            rewardShrineRole(event.getGuild(), member);
+            pingHamtaro(event.getGuild(), event.getGuildChannel().asTextChannel(), member);
+            cleanUpLastBotMessage(event.getGuildChannel().asTextChannel());
+        }
+    }
+
+    private void pingHamtaro(Guild guild, TextChannel shrineChannel, Member newShrineRoleOwner) {
+        TextChannel botHouseChannel = guild.getTextChannelById(BOT_HOUSE_CHANNEL_ID);
+        Member hamtaroMember = guild.getMemberById(HAMTARO_ID);
+        String message = String.format("%s Detected a new shrine record in %s by %s", hamtaroMember.getAsMention(), shrineChannel.getAsMention(), newShrineRoleOwner.getAsMention());
+        botHouseChannel.sendMessage(message).queue();
+    }
+
+    private void deleteMessage(Message message, Member member, TextChannel textChannel, String reason) {
+        if (!member.getUser().isBot()) {
+            message.delete().reason(reason).queueAfter(MESSAGE_DELETE_DELAY.getSeconds(), TimeUnit.SECONDS);
+            textChannel.sendMessage(member.getAsMention() + " You can't do that.").queue();
+            cleanUpLastBotMessage(textChannel);
+        }
+    }
+
+    private void cleanUpLastBotMessage(TextChannel textChannel) {
+        MessageHistoryUtils.getLastBotMessage(textChannel)
+            .delete()
+            .reason(CLEAN_UP_REASON)
+            .delay(BOT_MESSAGE_CLEANUP_DELAY)
+            .queue(null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
+    }
+
+    protected boolean isCorrespondingShrineEmoji(Message message) {
+        return message.getContentRaw().equals(shrineEmoji);
+    }
+
+    protected String getOrdinalSuffix(int number) {
+      switch (number % 100) {
+          case 11:
+          case 12:
+          case 13:
+              return "th";
+          default:
+              switch (number % 10) {
+                  case 1:
+                      return "st";
+                  case 2:
+                      return "nd";
+                  case 3:
+                      return "rd";
+                  default:
+                      return "th";
+              }
+      }
   }
 
-  protected boolean isCorrespondingShrineEmoji(Message message) {
-    return message.getContentRaw().equals(this.shrineEmoji);
-  }
+    protected abstract void logUnrecordedCount(Member member, int unrecordedCount);
 
-  protected abstract void logUnrecordedCount(Member member, int unrecordedCount);
+    protected abstract void logCount(Member member);
 
-  protected abstract void logCount(Member member);
+    protected abstract String getCongratsMessage(MessageReceivedEvent event, int shrineCount);
 
-  protected abstract String getCongratsMessage(MessageReceivedEvent event, int shrineCount);
+    protected abstract void rewardShrineRole(Guild guild, Member memberToReward);
 
-  protected abstract void rewardShrineRole(Guild guild, Member memberToReward);
+    protected abstract boolean isDifferentShrineEmoji(Message message);
 
-  protected abstract boolean isDifferentShrineEmoji(Message message);
+    protected abstract int getShrineCount();
 
-  protected abstract int getShrineCount();
-
-  protected abstract void updateCount();
+    protected abstract void updateCount();
 }
