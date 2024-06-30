@@ -1,2 +1,0 @@
-Manifest-Version: 0.12
-Class-Path: target/dependency/nv-websocket-client-2.14.jar target/dependency/jackson-databind-2.13.2.2.jar target/dependency/jackson-core-2.13.3.jar target/dependency/jackson-annotations-2.13.2.jar target/dependency/jackson-datatype-jdk8-2.12.4.jar target/dependency/javax.json-1.1.4.jar target/dependency/javax.json-api-1.0.jar 

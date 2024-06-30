@@ -1,3 +1,0 @@
-Manifest-Version: 1
-Main-Class: dev/kurumiDisciples/chisataki/Main
-Class-Path: target/dependency/JDA-5.0.0-beta.1.jar target/dependency/slf4j-api-2.0.1.jar target/dependency/slf4j-simple-2.0.1.jar target/dependency/log4j-api-2.17.2.jar target/dependency/trove4j-3.0.3.jar target/dependency/commons-collections4-4.4.jar target/dependency/okhttp-4.9.3.jar target/dependency/kotlin-stdlib-jdk8-1.4.10.jar target/dependency/kotlin-stdlib-common-1.4.0.jar target/dependency/kotlin-stdlib-1.4.10.jar Packages.jar Packages2.jar
