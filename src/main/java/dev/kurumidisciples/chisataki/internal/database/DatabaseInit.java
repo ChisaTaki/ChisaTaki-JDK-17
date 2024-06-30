@@ -65,6 +65,8 @@ public class DatabaseInit {
      * @throws SQLException If the table could not be checked.
      * @throws InitializationException If the database is not initialized.
      */
+    @Deprecated
+    @SuppressWarnings("unused")
     private static boolean tableExists(GenericDatabaseTable table) throws SQLException, InitializationException {
         try(Connection connection = Database.getConnection()) {
             boolean exists = connection.getMetaData().getTables(null, null, table.getTableName(), null).next();

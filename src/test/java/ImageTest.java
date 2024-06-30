@@ -3,13 +3,16 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
+import org.junit.Test;
+
 import dev.kurumidisciples.chisataki.quotes.QuoteSettings;
 import dev.kurumidisciples.chisataki.quotes.image.QuoteImageGenerator;
 import net.dv8tion.jda.api.entities.Message;
 
 public class ImageTest {
-    
-    public static void main(String[] args) {
+
+    @Test
+    public static void testImageGen() {
         QuoteSettings settings = new QuoteSettings("123", true, true, 630, 1200);
         Message message = null;
 

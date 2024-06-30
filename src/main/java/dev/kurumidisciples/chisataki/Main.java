@@ -51,13 +51,23 @@ public class Main {
               CacheFlag.STICKER, CacheFlag.ROLE_TAGS, CacheFlag.CLIENT_STATUS, CacheFlag.ONLINE_STATUS,
               CacheFlag.SCHEDULED_EVENTS, CacheFlag.FORUM_TAGS)
           .setMemberCachePolicy(MemberCachePolicy.ALL).setChunkingFilter(ChunkingFilter.ALL)
-          .addEventListeners(new MemeInteraction()).addEventListeners(new RpsInteraction())
-          .addEventListeners(new SupportInteraction()).addEventListeners(new ShrineInteraction())
-          .addEventListeners(new ShrineDeletionInteraction()).addEventListeners(new RecordRolesInteraction())
-          .addEventListeners(new RejoinInteraction()).addEventListeners(new WelcomeInteraction())
-          .addEventListeners(new RuleInteraction()).addEventListeners(new RoleMenuInteraction())
-          .addEventListeners(new ModMailInteraction()).addEventListeners(new TicketInteraction(), new TTTInteractionHandler(), new TTTEventHandler())
-          .addEventListeners(commandCenter)
+          .addEventListeners(
+              new MemeInteraction(), 
+              new RpsInteraction(),
+              new SupportInteraction(), 
+              new ShrineInteraction(),
+              new ShrineDeletionInteraction(), 
+              new RecordRolesInteraction(),
+              new RejoinInteraction(), 
+              new WelcomeInteraction(),
+              new RuleInteraction(), 
+              new RoleMenuInteraction(),
+              new ModMailInteraction(), 
+              new TicketInteraction(), 
+              new TTTInteractionHandler(), 
+              new TTTEventHandler(),
+              commandCenter
+          )
           .setActivity(Activity.customStatus("Attending ChisaTaki Wedding"))
           .build();
       jda.awaitReady(); // awaits for the cache system to build
