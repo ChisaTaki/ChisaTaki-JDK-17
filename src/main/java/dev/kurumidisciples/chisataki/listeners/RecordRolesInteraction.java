@@ -86,8 +86,8 @@ public class RecordRolesInteraction extends ListenerAdapter {
             } catch (IllegalStateException illegal) {
                 logger.debug("illegal state caught - retrying");
             } catch (FileNotFoundException e) {
-                logger.debug("File not found - retrying");
-            }
+                logger.debug("File not found ");
+                return Json.createObjectBuilder().build();            }
         }
     }
 
