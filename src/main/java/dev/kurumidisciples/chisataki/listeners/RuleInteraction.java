@@ -123,8 +123,9 @@ public class RuleInteraction extends ListenerAdapter {
       .addField("President", "🔹<@422176394575872001>\n🔹<@263352590534836224>\n🔹<@258118512575381506>", true)
       .addField("Vice-President", "🔹<@838708612402249740>", true)
       .addBlankField(true) // simulate 2 columns
-      .addField("ChisaTaki Staff", "🔹<@360241951804620800>\n🔹<@330540834753740810>", true)
+      .addField("ChisaTaki Staff", "🔹<@330540834753740810>", true)
       .addField("ChisaTaki Guards", "🔹<@599973543672938511>\n🔹<@119142790537019392>", true)
+      .addField("ChisaTaki Interns", "🔹<@360241951804620800>\n", true)
       .addBlankField(true) // simulate 2 columns
       .addField("Head Streamer", "🔹<@353335252304789504>", true)
       .addField("Streamers", "🔹<@727045572028137523>\n🔹<@133126607945728001>\n🔹<@265416682569334784>", true)
