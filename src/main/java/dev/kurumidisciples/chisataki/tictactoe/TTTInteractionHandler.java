@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.Nonnull;
+
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -15,12 +17,13 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
+@SuppressWarnings("null")
 public class TTTInteractionHandler extends ListenerAdapter{
 
     private final static ExecutorService tttExecutor = Executors.newCachedThreadPool();
 
     @Override
-    public void onStringSelectInteraction(StringSelectInteractionEvent event){
+    public void onStringSelectInteraction(@Nonnull StringSelectInteractionEvent event){
         tttExecutor.execute(() -> {
             if (event.getComponent().getId().startsWith("menu:TTT-")){
                 event.deferEdit().queue();

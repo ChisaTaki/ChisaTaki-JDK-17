@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.Nonnull;
+
 import dev.kurumidisciples.chisataki.enums.GifEnum;
 import dev.kurumidisciples.chisataki.rps.RpsLogic;
 import dev.kurumidisciples.chisataki.rps.RpsResult;
@@ -21,6 +23,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
+@SuppressWarnings("null")
 public class TTTEventHandler extends ListenerAdapter{
     
     private static final String TTT_PREFIX = "TTT-";
@@ -30,7 +33,7 @@ public class TTTEventHandler extends ListenerAdapter{
     private final static ExecutorService tttExecutor = Executors.newCachedThreadPool();
 
     @Override
-    public void onButtonInteraction(ButtonInteractionEvent event) {
+    public void onButtonInteraction(@Nonnull ButtonInteractionEvent event) {
         tttExecutor.execute(() -> {
             String buttonId = event.getButton().getId();
 

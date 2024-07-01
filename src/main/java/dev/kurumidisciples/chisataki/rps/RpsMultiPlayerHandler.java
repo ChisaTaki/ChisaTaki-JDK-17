@@ -1,5 +1,7 @@
 package dev.kurumidisciples.chisataki.rps;
 
+import javax.annotation.Nonnull;
+
 import dev.kurumidisciples.chisataki.enums.GifEnum;
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import dev.kurumidisciples.chisataki.utils.MessageUtils;
@@ -10,9 +12,10 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
+@SuppressWarnings("null")
 public class RpsMultiPlayerHandler extends RpsInteractionHandler {
 
-	public static void startMatch(SlashCommandInteractionEvent event) {
+	public static void startMatch(@Nonnull SlashCommandInteractionEvent event) {
 		Member opponent = event.getOption("challenge").getAsMember();
 		MessageCreateData matchStartMessage = getMatchStartMessage(opponent);
 		event.getHook().sendMessage(matchStartMessage).addActionRow(RpsLogic.getRpsButtons(opponent)).queue();	

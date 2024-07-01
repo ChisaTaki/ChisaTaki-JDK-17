@@ -4,6 +4,8 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
+
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -14,10 +16,11 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
+@SuppressWarnings("null")
 public class RpsInteraction extends ListenerAdapter {
 
 	@Override
-	public void onButtonInteraction(ButtonInteractionEvent event) {
+	public void onButtonInteraction(@Nonnull ButtonInteractionEvent event) {
 		Thread buttonThread = new Thread() {
 			public void run() {
 				long matchStartTime = OffsetDateTime.now().toEpochSecond();
