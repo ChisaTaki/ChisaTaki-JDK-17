@@ -6,8 +6,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
+
 import dev.kurumidisciples.chisataki.Main;
-import dev.kurumidisciples.chisataki.commands.slash.ChristmasCommand;
 import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumidisciples.chisataki.enums.NumberEnums;
 import dev.kurumidisciples.chisataki.utils.MessageCache;
@@ -19,6 +20,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /* To do */
 //1. remove the opposing emotes from the respective shrines;
+@SuppressWarnings({"null", "unused"})
 public class MemeInteraction extends ListenerAdapter {
 
 	private static final String TAKINA_BOXERS = "<:TakinaBoxers:1015393926573719593>";
@@ -32,7 +34,7 @@ public class MemeInteraction extends ListenerAdapter {
 	static final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
 
 	@Override
-	public void onMessageReceived(MessageReceivedEvent event) {
+	public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
 		Thread messageThread = new Thread() {
 			public void run() {
 				MessageCache.storeMessage(event.getMessage());
@@ -78,7 +80,7 @@ public class MemeInteraction extends ListenerAdapter {
 		messageThread.setPriority(4);
 		messageThread.start();
 	}
-
+	@Deprecated
 	private List<NumberEnums> getNumberEnumsFromInt(int days){
 		List<NumberEnums> numberEnums = new ArrayList<>();
 		for (char c : String.valueOf(days).toCharArray()){
@@ -86,7 +88,7 @@ public class MemeInteraction extends ListenerAdapter {
 		}
 		return numberEnums;
 	}
-
+	@Deprecated
 	private static void createMessageClock(){
 		executor.scheduleAtFixedRate(() -> {
 			JDA jda = Main.getJDA();

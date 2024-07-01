@@ -7,6 +7,7 @@ import dev.kurumidisciples.chisataki.enums.StatusType;
 import dev.kurumidisciples.chisataki.utils.FileUtils;
 import net.dv8tion.jda.api.interactions.modals.ModalInteraction;
 
+@SuppressWarnings("null")
 public class TicketBuilder {
 
   @Deprecated
@@ -28,6 +29,7 @@ public class TicketBuilder {
     return new Ticket(ticketContents);
   }
 
+  @Deprecated
   public static void updateTicketFile(Ticket ticket){
     FileUtils.updateFileContent("data/tickets/ticket-" + String.valueOf(ticket.getTicketNumber()) + ".json", ticket.getJsonObject());
   }

@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
@@ -11,7 +13,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 public class RuleInteraction extends ListenerAdapter {
 
-  public void onStringSelectInteraction(StringSelectInteractionEvent event) {
+  public void onStringSelectInteraction(@Nonnull StringSelectInteractionEvent event) {
     Thread selectMenu = new Thread() {
       public void run() {
         if (event.getComponentId().equals("menu:info")) {
@@ -37,7 +39,7 @@ public class RuleInteraction extends ListenerAdapter {
     selectMenu.start();
   }
 
-  public void onButtonInteraction(ButtonInteractionEvent event) {
+  public void onButtonInteraction(@Nonnull ButtonInteractionEvent event) {
     Thread buttonThread = new Thread(){
       public void run(){
         String buttonId = event.getComponentId();

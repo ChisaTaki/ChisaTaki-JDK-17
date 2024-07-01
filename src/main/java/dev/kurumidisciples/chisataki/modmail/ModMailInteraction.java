@@ -3,6 +3,8 @@ package dev.kurumidisciples.chisataki.modmail;
 import java.awt.Color;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -22,16 +24,17 @@ import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
+@SuppressWarnings("null")
 public class ModMailInteraction extends ListenerAdapter {
 
 
-  public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+  public void onSlashCommandInteraction(@Nonnull SlashCommandInteractionEvent event) {
     if (event.getName().equals("sdfsa")) {
       event.reply(" ").setActionRow(Button.success("modmail", "ModMail")).queue();
     }
   }
 
-  public void onButtonInteraction(ButtonInteractionEvent event) {
+  public void onButtonInteraction(@Nonnull ButtonInteractionEvent event) {
     Thread modMailThread = new Thread() {
       public void run() {
         if (event.getComponentId().equals("modmail")) {
@@ -42,7 +45,7 @@ public class ModMailInteraction extends ListenerAdapter {
     modMailThread.start();
   }
 
-  public void onModalInteraction(ModalInteractionEvent event) {
+  public void onModalInteraction(@Nonnull ModalInteractionEvent event) {
     Thread modMail = new Thread() {
       public void run() {
         if (event.getModalId().equals("mailModal")) {
@@ -126,7 +129,7 @@ public class ModMailInteraction extends ListenerAdapter {
   }
 
   private void sendNotification(Guild guild, Ticket ticket){
-    TextChannel ticketLog = guild.getTextChannelById(ChannelEnum.TICKET_LOGS.getId());
+    @Nonnull TextChannel ticketLog = guild.getTextChannelById(ChannelEnum.TICKET_LOGS.getId());
     String format = "**Channel**\n%s\n\n**Subject**\n%s\n\n**Body**\n%s\n\n**Member**\n%s";
     ticketLog.sendMessage("<@&1016048811581382676> ** NEW TICKET**").setEmbeds(new EmbedBuilder()
                                         .setColor(new Color(144, 96, 233))

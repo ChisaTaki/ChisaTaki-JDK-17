@@ -16,8 +16,8 @@ import dev.kurumidisciples.chisataki.internal.database.exceptions.Initialization
 import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 
+@SuppressWarnings({"null", "unused"})
 public class IgnoreCommand extends SlashCommand implements GenericDatabaseTable {
-	private static final String FILE_PATH = "data/ignore.json";
 
 	private static final String GET_ALL_IGNORED_USERS = "SELECT * FROM ignore_list WHERE guild_id = ?";
 	private static final String SELECT_IGNORED_USERS = "SELECT * FROM ignore_list WHERE guild_id = ? AND member_id = ?";
@@ -88,7 +88,7 @@ public class IgnoreCommand extends SlashCommand implements GenericDatabaseTable 
 			LOGGER.error("An error occured in IgnoreCommand when inserting into table", e);
 		}
 	}
-
+	@Deprecated
 	private static List<String> getIgnoreList() {
 		List<String> list = new ArrayList<>();
 		try (PreparedStatement statement = Database.createStatement(GET_ALL_IGNORED_USERS)) {

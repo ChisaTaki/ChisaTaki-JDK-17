@@ -18,6 +18,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
+@SuppressWarnings("null")
 public class DebugCommand extends SlashCommand {
 	private Runtime runtime = Runtime.getRuntime();
 

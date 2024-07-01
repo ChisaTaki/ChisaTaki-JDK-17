@@ -21,6 +21,7 @@ import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 /**
  * Keep in mind that even if the `testing` option is set to true. The original embed will reply with the newest version of the dropdown options and button interactions
  */
+@SuppressWarnings("null")
 public class SendRulesEmbed extends SlashCommand {
 
 	public SendRulesEmbed() {

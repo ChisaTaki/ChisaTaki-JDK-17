@@ -20,6 +20,7 @@ import org.slf4j.LoggerFactory;
 
 import net.dv8tion.jda.api.entities.Message;
 
+@SuppressWarnings({"null", "unused"})
 public class QuoteImageGenerator {
 
     private static Logger logger = LoggerFactory.getLogger(QuoteImageGenerator.class);

@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
+@SuppressWarnings("null")
 public class TTTCommand extends SlashCommand {
     
     public TTTCommand() {

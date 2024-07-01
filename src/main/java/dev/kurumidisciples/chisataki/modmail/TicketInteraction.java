@@ -10,6 +10,8 @@ import java.util.concurrent.TimeUnit;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.annotation.Nonnull;
+
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import dev.kurumidisciples.chisataki.enums.StatusType;
 import dev.kurumidisciples.chisataki.modmail.json.ChannelEncoded;
@@ -34,10 +36,11 @@ import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.utils.FileUpload;
 
+@SuppressWarnings("null")
 public class TicketInteraction extends ListenerAdapter {
 
   @Override
-  public void onButtonInteraction(ButtonInteractionEvent event) {
+  public void onButtonInteraction(@Nonnull ButtonInteractionEvent event) {
     Thread ticket = new Thread() {
       public void run() {
 
@@ -90,7 +93,7 @@ public class TicketInteraction extends ListenerAdapter {
   }
 
   @Override
-  public void onModalInteraction(ModalInteractionEvent event) {
+  public void onModalInteraction(@Nonnull ModalInteractionEvent event) {
     Thread reasonModal = new Thread() {
       public void run() {
         if (event.getModalId().startsWith("reasonModal")) {

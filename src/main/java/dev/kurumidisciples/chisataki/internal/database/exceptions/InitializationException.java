@@ -1,7 +1,5 @@
 package dev.kurumidisciples.chisataki.internal.database.exceptions;
 
-import java.sql.SQLException;
-
 import dev.kurumidisciples.chisataki.internal.database.Database;
 
 /**

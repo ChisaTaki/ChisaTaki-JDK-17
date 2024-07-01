@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
+@SuppressWarnings("null")
 public class RpsCommand extends SlashCommand {
 
 	public RpsCommand() {

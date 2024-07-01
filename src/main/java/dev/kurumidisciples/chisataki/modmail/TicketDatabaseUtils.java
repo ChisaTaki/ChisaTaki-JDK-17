@@ -24,7 +24,7 @@ public class TicketDatabaseUtils {
 
     public static int insertStaffIntoTicket(long staffId, int ticketNumber) {
         try {
-            Connection connection = Database.getConnection();
+            @Deprecated Connection connection = Database.getConnection();
             PreparedStatement statement = Database.createStatement(INSERT_STAFF_INTO_TICKET);
             statement.setLong(1, staffId);
             statement.setInt(2, ticketNumber);
@@ -38,7 +38,7 @@ public class TicketDatabaseUtils {
 
     public static int insertStatusIntoTicket(String status, int ticketNumber) {
         try {
-            Connection connection = Database.getConnection();
+            @Deprecated Connection connection = Database.getConnection();
             PreparedStatement statement = Database.createStatement(INSERT_STATUS_INTO_TICKET);
             statement.setString(1, status);
             statement.setInt(2, ticketNumber);
@@ -52,7 +52,7 @@ public class TicketDatabaseUtils {
 
     public static int insertReasonIntoTicket(String reason, int ticketNumber) {
         try {
-            Connection connection = Database.getConnection();
+            @Deprecated Connection connection = Database.getConnection();
             PreparedStatement statement = Database.createStatement(INSERT_REASON_INTO_TICKET);
             statement.setString(1, reason);
             statement.setInt(2, ticketNumber);
@@ -66,7 +66,7 @@ public class TicketDatabaseUtils {
 
     public static int insertTicket(Ticket ticket){
         try {
-            Connection connection = Database.getConnection();
+            @Deprecated Connection connection = Database.getConnection();
             PreparedStatement statement = Database.createStatement(INSERT_TICKET);
             statement.setInt(1, ticket.getTicketNumber());
             statement.setLong(2, ticket.getTicketId());
@@ -84,7 +84,7 @@ public class TicketDatabaseUtils {
 
     public static ResultSet selectTicket(int ticketNumber){
         try {
-            Connection connection = Database.getConnection();
+            @Deprecated Connection connection = Database.getConnection();
             PreparedStatement statement = Database.createStatement(SELECT_TICKET);
             statement.setInt(1, ticketNumber);
             return statement.executeQuery();

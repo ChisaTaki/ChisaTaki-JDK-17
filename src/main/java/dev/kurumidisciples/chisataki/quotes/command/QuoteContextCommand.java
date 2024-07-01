@@ -20,6 +20,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent;
 import net.dv8tion.jda.api.utils.FileUpload;
 
+@SuppressWarnings("null")
 public class QuoteContextCommand extends MessageCommand  {
     
     public QuoteContextCommand(){

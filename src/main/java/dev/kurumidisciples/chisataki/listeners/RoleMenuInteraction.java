@@ -2,6 +2,8 @@ package dev.kurumidisciples.chisataki.listeners;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,7 +20,7 @@ import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 /* To Do: Add event loggers */
-
+@SuppressWarnings("null")
 public class RoleMenuInteraction extends ListenerAdapter {
 
   StringSelectInteractionEvent EVENT;
@@ -30,7 +32,7 @@ public class RoleMenuInteraction extends ListenerAdapter {
 
   final static Logger logger = LoggerFactory.getLogger(RoleMenuInteraction.class);
 
-  public void onStringSelectInteraction(StringSelectInteractionEvent event) {
+  public void onStringSelectInteraction(@Nonnull StringSelectInteractionEvent event) {
     Thread roleThread = new Thread() {
       public void run() {
         EVENT = event;

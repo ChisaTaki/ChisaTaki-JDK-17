@@ -23,6 +23,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 
+@SuppressWarnings("null")
 public class BoosterCommand extends SlashCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BoosterCommand.class);
@@ -103,10 +104,6 @@ public class BoosterCommand extends SlashCommand {
             return;
         }
         EmojiUnion emoji = Emoji.fromFormatted(icon);
-        if (emoji == null) {
-            event.reply("Invalid emoji!").setEphemeral(true).queue();
-            return;
-        }
 
         if (emoji.getType() == Emoji.Type.CUSTOM){
             try{

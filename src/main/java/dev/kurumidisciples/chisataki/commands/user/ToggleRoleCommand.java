@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent;
 
+@SuppressWarnings("null")
 public class ToggleRoleCommand extends UserCommand {
 	
 	private RoleEnum roleEnum;

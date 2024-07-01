@@ -3,6 +3,8 @@ package dev.kurumidisciples.chisataki.listeners;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.Nonnull;
+
 import dev.kurumidisciples.chisataki.booster.Booster;
 import dev.kurumidisciples.chisataki.booster.BoosterDatabaseUtils;
 import net.dv8tion.jda.api.entities.Role;
@@ -10,12 +12,13 @@ import net.dv8tion.jda.api.entities.sticker.StickerSnowflake;
 import net.dv8tion.jda.api.events.guild.member.update.GuildMemberUpdateBoostTimeEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+@SuppressWarnings("null")
 public class SupportInteraction extends ListenerAdapter {
     private static final String SUPPORTER_CHANNEL = "1015626668360077453";
     private static final String BOOSTER_CHANNEL = "1028022086888869888";
     private static final ExecutorService boostExecutor = Executors.newSingleThreadExecutor();
 
-    public void onGuildMemberUpdateBoostTime(GuildMemberUpdateBoostTimeEvent event) {
+    public void onGuildMemberUpdateBoostTime(@Nonnull GuildMemberUpdateBoostTimeEvent event) {
         boostExecutor.submit(() -> {
             if (event.getOldTimeBoosted() == null) {
                 String messageFormat = "Thank you for the boost %s!!!!!❤️ Please go to %s to claim your customizable role and color if you haven't already!";

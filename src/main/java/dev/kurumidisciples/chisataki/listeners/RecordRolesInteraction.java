@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 /*json classes */
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -35,11 +36,12 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 /* TO DO */
 /* Add Loggers */
 @Deprecated
+@SuppressWarnings({"null", "unused"})
 public class RecordRolesInteraction extends ListenerAdapter {
 
     final static Logger logger = LoggerFactory.getLogger(RecordRolesInteraction.class);
 
-    public void onGuildMemberRemove(GuildMemberRemoveEvent event) {
+    public void onGuildMemberRemove(@Nonnull GuildMemberRemoveEvent event) {
         Thread memberLeave = new Thread() {
             public void run() {
                 /* Save all roles and perms */
@@ -141,7 +143,7 @@ public class RecordRolesInteraction extends ListenerAdapter {
     /************************************
      * JsonObject*Modifiers *
      *************************************************/
-
+    @Deprecated
     private static JsonObject removeProperty(JsonObject origin, String key) {
         JsonObjectBuilder builder = Json.createObjectBuilder();
 
@@ -154,14 +156,14 @@ public class RecordRolesInteraction extends ListenerAdapter {
         }
         return builder.build();
     }
-
+    @Deprecated
     private static JsonObject insertValue(JsonObject source, String key, String value) {
         JsonObjectBuilder builder = Json.createObjectBuilder();
         builder.add(key, value);
         source.entrySet().forEach(e -> builder.add(e.getKey(), e.getValue()));
         return builder.build();
     }
-
+    @Deprecated
     private static JsonObject insertObject(JsonObject parent, JsonObject child, String childName) {
 
         JsonObjectBuilder child_builder = Json.createObjectBuilder();
@@ -171,13 +173,13 @@ public class RecordRolesInteraction extends ListenerAdapter {
         parent_builder.add(childName, child_builder);
         return parent_builder.build();
     }
+    @Deprecated
+    private static List<Role> getBlackListedRoles(Guild guild /*Only ChisaTaki*/){
+        List<Role> roles = new ArrayList<Role>();
+        roles.add(guild.getBoostRole());
+        roles.add(guild.getRoleById("1010079865082478622" /*admin*/));
+        roles.add(guild.getRoleById("1016046889310883910") /*mod*/);
 
-  private static List<Role> getBlackListedRoles(Guild guild /*Only ChisaTaki*/){
-    List<Role> roles = new ArrayList<Role>();
-    roles.add(guild.getBoostRole());
-    roles.add(guild.getRoleById("1010079865082478622" /*admin*/));
-    roles.add(guild.getRoleById("1016046889310883910") /*mod*/);
-
-    return roles;
-  }
+        return roles;
+    }
 }

@@ -16,6 +16,7 @@ import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.Nonnull;
 import javax.imageio.ImageIO;
 
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
@@ -28,6 +29,7 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.FileUpload;
 
+@SuppressWarnings("null")
 public class WelcomeInteraction extends ListenerAdapter {
 
 	private static final int THREAD_POOL_SIZE = 10;
@@ -39,7 +41,7 @@ public class WelcomeInteraction extends ListenerAdapter {
 	private static Font font = null;
 	private static Random random = new Random();
 
-	public void onGuildMemberJoin(GuildMemberJoinEvent event){
+	public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent event){
 		threadPool.execute(() -> {
 			if (!event.getMember().getUser().isBot()) {
 				int guildSize = event.getGuild().getMembers().size();

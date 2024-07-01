@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.Nonnull;
+
 import dev.kurumidisciples.chisataki.commands.message.MessageCommand;
 import dev.kurumidisciples.chisataki.commands.slash.SlashCommand;
 import dev.kurumidisciples.chisataki.commands.user.UserCommand;
@@ -66,17 +68,17 @@ public class CommandCenter extends ListenerAdapter {
 	}
 
 	@Override
-	public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+	public void onSlashCommandInteraction(@Nonnull SlashCommandInteractionEvent event) {
 		commandExecutor.execute(() -> handleSlashInteraction(event));
 	}
 	
 	@Override
-	public void onUserContextInteraction(UserContextInteractionEvent event) {
+	public void onUserContextInteraction(@Nonnull UserContextInteractionEvent event) {
 		commandExecutor.execute(() -> handleUserContextInteraction(event));
 	}
 
 	@Override
-	public void onMessageContextInteraction(MessageContextInteractionEvent event) {
+	public void onMessageContextInteraction(@Nonnull MessageContextInteractionEvent event) {
 		commandExecutor.execute(() -> handleMessageContextInteraction(event));
 	}
 

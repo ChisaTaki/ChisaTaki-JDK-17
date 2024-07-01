@@ -18,6 +18,7 @@ import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
+@SuppressWarnings("null")
 public class SendRoleEmbedsCommand extends SlashCommand {
 
 	private static final Color EMBED_COLOR = new Color(216, 109, 127);

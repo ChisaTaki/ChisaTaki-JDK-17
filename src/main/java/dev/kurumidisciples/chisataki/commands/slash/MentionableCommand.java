@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 
+@SuppressWarnings("null")
 public class MentionableCommand extends SlashCommand {
 	
 	private String messageFormat;

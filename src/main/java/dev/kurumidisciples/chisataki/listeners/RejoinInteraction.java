@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 /*json classes */
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -29,12 +30,12 @@ import net.dv8tion.jda.api.exceptions.HierarchyException;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
-
+@SuppressWarnings("null")
 public class RejoinInteraction extends ListenerAdapter {
 
   final static Logger logger = LoggerFactory.getLogger(RejoinInteraction.class);
 
-  public void onGuildMemberJoin(GuildMemberJoinEvent event){
+  public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent event){
     Thread addRoles = new Thread(){
       public void run(){
         if (userHasRecord(event.getMember())){

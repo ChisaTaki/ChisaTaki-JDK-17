@@ -8,6 +8,8 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.annotation.Nonnull;
+
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import dev.kurumidisciples.chisataki.enums.EmojiEnum;
 import dev.kurumidisciples.chisataki.utils.RoleUtils;
@@ -16,11 +18,11 @@ public class ShrineDeletionInteraction extends ListenerAdapter {
     private static final String BOOSTER_CHANNEL = "1028022086888869888";
     private static final ExecutorService deleteExecutor = Executors.newCachedThreadPool();
 
-    public void onMessageReceived(MessageReceivedEvent event) {
+    public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
         deleteExecutor.execute(() -> handleReceivedMessage(event));
     }
 
-    public void onMessageUpdate(MessageUpdateEvent event) {
+    public void onMessageUpdate(@Nonnull MessageUpdateEvent event) {
         deleteExecutor.execute(() -> handleUpdatedMessage(event));
     }
 
