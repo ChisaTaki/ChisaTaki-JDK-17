@@ -141,11 +141,10 @@ public class SendRoleEmbedsCommand extends SlashCommand {
 
 	private StringSelectMenu getGroupMenu() {
 		StringSelectMenu group = StringSelectMenu.create("menu:role:groupwatch").setPlaceholder("Select Groupwatch Role(s)")
-				.addOption("Jellyfish Can’t Swim in the Night", "jellySelect", Emoji.fromUnicode("U+1FABC"))
-				.addOption("Shuumatsu Train", "shuuSelect", Emoji.fromCustom("TrainChisato", 1013976121253040160L, false))
-				.addOption("The Two Sides of Seiyuu Radio", "radioSelect", Emoji.fromUnicode("U+1F4FB"))
-				.addOption("Whisper Me a Love Song (Sasakoi)", "sasakoiSelect", Emoji.fromCustom("HimaYay", 1064912520931983432L, false))
-				.setMaxValues(4).setMinValues(0).build();
+				.addOption("LycoReco Rewatch", "lycoRecoSelect", Emoji.fromCustom("ChisaTakiKiss", 1013059473167888486L, false))
+				.addOption("My Deer Friend Nokotan ", "deerSelect", Emoji.fromUnicode("U+1F98C"))
+				.addOption("Oshi no Ko S2", "oshiSelect", Emoji.fromCustom("AiDameDame", 1096082285301870733L, true))
+				.setMaxValues(3).setMinValues(0).build();
 
 		return group;
 	}
