@@ -58,7 +58,7 @@ public class SendRulesEmbed extends SlashCommand {
 
 		MessageEmbed aboutServer = new EmbedBuilder()
 				.setTitle("Welcome to ChisaTaki!")
-				.setThumbnail("https://cdn.discordapp.com/icons/1010078628761055234/a_31c7473cad3f9b74a96b331d9b9dbaa1?size=128")
+				.setThumbnail("https://cdn.discordapp.com/icons/1010078628761055234/a_58eeb8a8cedea5e8aae5ec4ecafe8cb8.webp")
 				.setDescription("Welcome to ChisaTaki!\nWe are a server dedicated to ChisaTaki.\nIt also has a Chisato and Takina Fanclub integrated in it.\n\nLet's gather together to ~~worship~~ lead wholesome discussions and enjoy some time together with Lycoirs Recoil fans. Let's enjoy the harmony and ship Chisato and Takina all along.\n\n**Please note that we are a sister server of the below embedded Lycoris Recoil main server.**")
 				.setColor(new Color(144, 96, 233))
 				.build();
