@@ -43,7 +43,7 @@ public class QuoteContextCommand extends MessageCommand  {
         } 
 
         if(hasUserExceededQuota(event.getUser().getIdLong())) {
-            event.getHook().editOriginal("You have exceeded the quote limit for the last 6 hours!").queue();
+            event.getHook().editOriginal("Please wait 10 seconds before generating another quote.").queue();
             return;
         }
 
@@ -90,7 +90,7 @@ public class QuoteContextCommand extends MessageCommand  {
             //insert the current timestamp into the database with the user id
             QuoteQuotaUtils.insertQuota(userid, System.currentTimeMillis());
             return false;
-        } else if (System.currentTimeMillis() - timestamp.getTime() < 3600000){
+        } else if (System.currentTimeMillis() - timestamp.getTime() < 10000){
             return true;
         } else {
             //update the timestamp to the current time
