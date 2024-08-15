@@ -127,14 +127,14 @@ public class WelcomeInteraction extends ListenerAdapter {
 		g2.dispose();
 		return image;
 	}
-
+	@Deprecated
 	public static InputStream bufferedImageToInputStream(BufferedImage image, String formatName) throws Exception {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 		ImageIO.write(image, formatName, outputStream);
 		InputStream inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 		return inputStream;
 	}
-
+	@Deprecated
 	public static ArrayList<BufferedImage> gifToBufferedImages(String filePath, int numberOfFrames, int frameWidth) throws Exception {
 		ArrayList<BufferedImage> frames = new ArrayList<>();
 		BufferedImage gifImage = ImageIO.read(new File(filePath));
@@ -179,7 +179,7 @@ public class WelcomeInteraction extends ListenerAdapter {
 				makeCircleImage(ImageIO.read(new URL(member.getUser().getAvatarUrl()))), 
 				185,25), "Welcome " + member.getUser().getName() + "!",  25, 255, 30);
 	}
-
+	@Deprecated
 	public static InputStream createGifEncoder(ArrayList<BufferedImage> imageList) throws Exception {
 		//  File gifFile = new File("data/images/test.gif");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
