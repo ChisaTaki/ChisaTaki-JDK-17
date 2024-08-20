@@ -111,7 +111,6 @@ public class ImageUtils {
 				break;
 			}
 			BufferedImage frame = gifImage.getSubimage(x, 0, width, frameHeight);
-			System.out.println("adding frame " + i);
 			frames.add(frame);
 		}
 		return frames;
@@ -123,7 +122,6 @@ public class ImageUtils {
 		AnimatedGifEncoder encoder = new AnimatedGifEncoder();
 		encoder.start(baos);
 		encoder.setRepeat(0);
-		encoder.colorDepth = 16;
 		encoder.setDelay(delay);
 		for (BufferedImage image : imageList) {
 			//System.out.println("adding image");

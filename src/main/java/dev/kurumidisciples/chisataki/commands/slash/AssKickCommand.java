@@ -56,7 +56,7 @@ public class AssKickCommand extends SlashCommand {
             CompletableFuture<List<BufferedImage>> future = CompletableFuture.supplyAsync(() -> {
                 List<BufferedImage> circleImages = new ArrayList<>();
                 circleImages.add(ImageUtils.shrinkImage(ImageUtils.makeCircleImage(executorAvatar), 98, 98));
-                circleImages.add(ImageUtils.makeCircleImage(targetAvatar));
+                circleImages.add(ImageUtils.shrinkImage(ImageUtils.makeCircleImage(targetAvatar), 98, 98));
                 return circleImages;
             });
 
@@ -65,14 +65,20 @@ public class AssKickCommand extends SlashCommand {
             ArrayList<BufferedImage> newFrames = new ArrayList<>();
 
             for (int i = 0; i < gifFrames.size(); i++) {
-                    BufferedImage frame = gifFrames.get(i);
-                    frame = ImageUtils.overlayImages(frame, future.get().get(0), AutoDetectCircle.detect(frame).get(0).getX(), AutoDetectCircle.detect(frame).get(0).getY());
-                    frame = ImageUtils.overlayImages(frame, future.get().get(1), AutoDetectCircle.detect(frame).get(1).getX(), AutoDetectCircle.detect(frame).get(1).getY());
-                    newFrames.add(frame);
+                    try {
+                        BufferedImage frame = gifFrames.get(i);
+                        frame = ImageUtils.overlayImages(frame, future.get().get(0), AutoDetectCircle.detect(frame).get(0).getX(), AutoDetectCircle.detect(frame).get(0).getY());
+                        frame = ImageUtils.overlayImages(frame, future.get().get(1), AutoDetectCircle.detect(frame).get(1).getX(), AutoDetectCircle.detect(frame).get(1).getY());
+                        newFrames.add(frame);
+                    } catch (Exception e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
             }
 
             return ImageUtils.createGifEncoder(newFrames, 50);
         } catch (Exception e) {
+            e.printStackTrace();
             return null;
         }
     }

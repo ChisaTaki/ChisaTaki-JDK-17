@@ -17,11 +17,11 @@ public class AutoDetectCircle {
         int midX = image.getWidth() / 2;
 
         // Process the left half of the image
-        logger.debug("Processing left half...");
+        logger.info("Processing left half...");
         positions.addAll(detectTransparentArea(image, 0, midX, "Left Half"));
 
         // Process the right half of the image
-        logger.debug("Processing right half...");
+        logger.info("Processing right half...");
         positions.addAll(detectTransparentArea(image, midX, image.getWidth(), "Right Half"));
 
         return positions;
@@ -113,11 +113,11 @@ public class AutoDetectCircle {
         }
 
         // Log detected bounds for debugging
-        logger.debug(label + " minX: " + minX + " minY: " + minY + " maxX: " + maxX + " maxY: " + maxY);
+        logger.info(label + " minX: " + minX + " minY: " + minY + " maxX: " + maxX + " maxY: " + maxY);
 
         // Check if any transparent area was found
         if (minX >= endX || maxX <= startX || minY == image.getHeight() || maxY == 0) {
-            logger.debug(label + " no transparent area found");
+            logger.info(label + " no transparent area found");
             return positions;
         }
 
@@ -138,7 +138,7 @@ public class AutoDetectCircle {
         }
 
         // Log final calculated position
-        logger.debug("Final " + label + " circleX: " + imagePosX + " circleY: " + imagePosY);
+        logger.info("Final " + label + " circleX: " + imagePosX + " circleY: " + imagePosY);
 
         // Add the position to the list
         positions.add(new Position(imagePosX, imagePosY));
