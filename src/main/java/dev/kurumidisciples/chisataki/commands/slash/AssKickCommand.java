@@ -42,7 +42,7 @@ public class AssKickCommand extends SlashCommand {
     private MessageEmbed buildEmbed(Member executor, Member target){
         return new EmbedBuilder()
             .setColor(ColorUtils.PURPLE)
-            .setTitle(String.format("%s kicked %s in the butt!", executor.getAsMention(), target.getAsMention()))
+            .setTitle(String.format("%s kicked %s in the butt!", executor.getEffectiveName(), target.getEffectiveName()))
             .setImage("attachment://asskick.gif")
             .setFooter("that looked like it hurt")
             .build();
