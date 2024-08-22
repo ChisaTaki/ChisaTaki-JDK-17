@@ -36,6 +36,7 @@ public class BoosterCommand extends SlashCommand {
             .addOption(OptionType.STRING, "color", "hex code of the color you want to set. include '#'", false)
             .addOption(OptionType.STRING, "icon", "emote to set as your icon", false)
         );
+        subcommands.add(new SubcommandData("remove", "Remove your booster role")); // removes the booster from the database and deletes the role in the guild
         subcommands.add(new SubcommandData("claim", "claim your booster role")); // adds the booster to the database and creates a generic role for them to modify to their liking
     }
 
@@ -81,6 +82,21 @@ public class BoosterCommand extends SlashCommand {
                 event.replyEmbeds(BoosterEmbedUtils.getRoleClaimEmbed(event.getInteraction(), role)).setEphemeral(false).queue();
                 LOGGER.info("Booster role claimed for user " + userId + " with role " + role.getId() + " and name " + uuid);
             });
+        } else if (name.equals("remove")) {
+            Booster booster = BoosterDatabaseUtils.getBooster(userId);
+            if (booster == null) {
+                event.reply("You have no booster role; I cannot remove what doesn't exist.").setEphemeral(true).queue();
+            } else {
+                Role role = event.getGuild().getRoleById(Long.valueOf(booster.getRoleId()));
+                if (role == null) {
+                    event.reply("You have a registered role in the database, but the role doesn't exist in the server. Contact a bot developer through a ticket.").setEphemeral(true).queue();
+                    return;
+                }
+                BoosterDatabaseUtils.deleteBooster(userId);
+                role.delete().queue();
+                event.reply(String.format("Role (%s) has been successfully removed. You can reclaim the role at anytime.", role.getId())).setEphemeral(false).queue();
+                LOGGER.info("Booster role removed for user " + userId + " with role " + role.getId());
+            }
         }
     }
 
