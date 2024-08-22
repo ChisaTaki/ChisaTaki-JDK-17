@@ -7,7 +7,6 @@ import dev.kurumidisciples.chisataki.commands.CommandCenter;
 import dev.kurumidisciples.chisataki.internal.database.Database;
 import dev.kurumidisciples.chisataki.listeners.MemeInteraction;
 import dev.kurumidisciples.chisataki.listeners.RecordRolesInteraction;
-import dev.kurumidisciples.chisataki.listeners.RejoinInteraction;
 import dev.kurumidisciples.chisataki.listeners.RoleMenuInteraction;
 import dev.kurumidisciples.chisataki.listeners.RuleInteraction;
 import dev.kurumidisciples.chisataki.listeners.ShrineDeletionInteraction;
@@ -57,8 +56,7 @@ public class Main {
               new SupportInteraction(), 
               new ShrineInteraction(),
               new ShrineDeletionInteraction(), 
-              new RecordRolesInteraction(),
-              new RejoinInteraction(), 
+              new RecordRolesInteraction(), 
               new WelcomeInteraction(),
               new RuleInteraction(), 
               new RoleMenuInteraction(),
