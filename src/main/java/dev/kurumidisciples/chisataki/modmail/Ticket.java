@@ -25,6 +25,7 @@ public class Ticket implements GenericDatabaseTable{
 
 
   // from jsonobject
+  @Deprecated
   public Ticket(JsonObject json) {
     this.json = json;
     this.ticketNumber = json.getJsonNumber("ticket").intValue();
