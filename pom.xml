@@ -50,6 +50,19 @@
 			<version>1.43.3</version>
 		</dependency>
 
+		
+		<dependency>
+			<groupId>io.github.lambdua</groupId>
+			<artifactId>service</artifactId>
+				<version>0.22.1</version>
+		</dependency>
+
+		<dependency>
+			<groupId>io.github.lambdua</groupId>
+			<artifactId>api</artifactId>
+				<version>0.22.1</version>
+		</dependency>
+
 
 		<dependency>
 			<groupId>com.google.http-client</groupId>
@@ -133,7 +146,7 @@
 		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
-		    <version>8.0.26</version>
+		    <version>8.0.33</version>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish</groupId>
@@ -190,7 +203,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>31.1-jre</version>
+			<version>33.3.1-jre</version>
 			<type>pom</type>
 		</dependency>
 		<dependency>

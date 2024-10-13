@@ -3,6 +3,8 @@ package dev.kurumidisciples.chisataki.internal.database;
 import java.util.List;
 
 import dev.kurumidisciples.chisataki.booster.BoosterDatabase;
+import dev.kurumidisciples.chisataki.character.AiStatusTable;
+import dev.kurumidisciples.chisataki.character.UsageTable;
 import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 import dev.kurumidisciples.chisataki.modmail.Ticket;
@@ -21,7 +23,9 @@ public class TableCollection {
             new CooldownUtils(),
             new BoosterDatabase(),
             new QuoteSettingsDatabase(),
-            new QuoteQuotaDatabase()
+            new QuoteQuotaDatabase(),
+            new UsageTable(),
+            new AiStatusTable()
         );
     }
 }

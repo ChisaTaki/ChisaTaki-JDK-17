@@ -28,6 +28,7 @@ public class AssKickCommand extends SlashCommand {
     }
 
     @Override
+    @SuppressWarnings("null")
     public void execute(SlashCommandInteractionEvent event) {
         event.deferReply().queue();
         Member executor = event.getMember();

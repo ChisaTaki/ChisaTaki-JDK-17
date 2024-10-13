@@ -3,8 +3,13 @@ package dev.kurumidisciples.chisataki;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.theokanning.openai.assistants.assistant.Assistant;
+import com.theokanning.openai.billing.BillingUsage;
+import com.theokanning.openai.service.OpenAiService;
+
 import dev.kurumidisciples.chisataki.commands.CommandCenter;
 import dev.kurumidisciples.chisataki.internal.database.Database;
+import dev.kurumidisciples.chisataki.listeners.AiListenerInteraction;
 import dev.kurumidisciples.chisataki.listeners.MemeInteraction;
 import dev.kurumidisciples.chisataki.listeners.RecordRolesInteraction;
 import dev.kurumidisciples.chisataki.listeners.RoleMenuInteraction;
@@ -32,6 +37,9 @@ public class Main {
   final static Logger logger = LoggerFactory.getLogger(Main.class);
   final static int gcSec = 3600;
   private static JDA jda;
+
+  private static Assistant assistant;
+  private static OpenAiService aiService;
 
   public static void main(String[] args) {
     // We construct a builder for a BOT account. If we wanted to use a CLIENT
@@ -64,6 +72,7 @@ public class Main {
               new TicketInteraction(), 
               new TTTInteractionHandler(), 
               new TTTEventHandler(),
+              new AiListenerInteraction(),
               commandCenter
           )
           .setActivity(Activity.customStatus("Attending ChisaTaki Wedding"))
@@ -76,6 +85,10 @@ public class Main {
       MessageCache.setMaxSize(10000);
       logger.info("Message Cache Size: {}", MessageCache.getMaxSize());
 
+       aiService = new OpenAiService(env.get("OPENAI_API_KEY"));
+       assistant = aiService.retrieveAssistant(env.get("ASSISTANT_ID"));
+      logger.info("OpenAI Service successfully built!");
+      logger.info("Assistant successfully built!");
 
     }
 
@@ -89,5 +102,13 @@ public class Main {
 
   public static JDA getJDA() {
     return jda;
+  }
+
+  public static Assistant getAssistant() {
+    return assistant;
+  }
+
+  public static OpenAiService getAiService() {
+    return aiService;
   }
 }

@@ -3,6 +3,8 @@
 /dev/
 /data/
 
+.env
+
 target/*
 !target/dependency/
 

@@ -2,6 +2,7 @@ package dev.kurumidisciples.chisataki.commands;
 
 import dev.kurumidisciples.chisataki.commands.slash.BoosterCommand;
 import dev.kurumidisciples.chisataki.commands.message.MessageCommand;
+import dev.kurumidisciples.chisataki.commands.slash.AiPropertiesCommand;
 import dev.kurumidisciples.chisataki.commands.slash.AssKickCommand;
 import dev.kurumidisciples.chisataki.commands.slash.DebugCommand;
 import dev.kurumidisciples.chisataki.commands.slash.EmbedCommand;
@@ -66,7 +67,8 @@ public class CommandBuilder {
 				new TestImageCommand(),
 				new TTTCommand(),
 				new BoosterCommand(),
-				new AssKickCommand()
+				new AssKickCommand(),
+				new AiPropertiesCommand()
 		};
 	}
 	
