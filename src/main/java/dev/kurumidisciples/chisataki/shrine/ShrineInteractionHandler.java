@@ -58,10 +58,9 @@ public abstract class ShrineInteractionHandler {
 
         if (isNewRecord) {
             String congratsMessage = getCongratsMessage(event, newCount);
-            event.getMessage().reply(congratsMessage).queue();
+            event.getMessage().reply(congratsMessage).submit().thenAccept(message -> message.delete().queueAfter(MESSAGE_DELETE_DELAY.getSeconds(), TimeUnit.SECONDS));
             rewardShrineRole(event.getGuild(), member);
             pingHamtaro(event.getGuild(), event.getGuildChannel().asTextChannel(), member);
-            cleanUpLastBotMessage(event.getGuildChannel().asTextChannel());
         }
     }
 
@@ -75,17 +74,8 @@ public abstract class ShrineInteractionHandler {
     private void deleteMessage(Message message, Member member, TextChannel textChannel, String reason) {
         if (!member.getUser().isBot()) {
             message.delete().reason(reason).queueAfter(MESSAGE_DELETE_DELAY.getSeconds(), TimeUnit.SECONDS);
-            textChannel.sendMessage(member.getAsMention() + " You can't do that.").queue();
-            cleanUpLastBotMessage(textChannel);
+            textChannel.sendMessage(member.getAsMention() + " You can't do that.").submit().thenAccept(sentMessage -> sentMessage.delete().queueAfter(MESSAGE_DELETE_DELAY.getSeconds(), TimeUnit.SECONDS));
         }
-    }
-
-    private void cleanUpLastBotMessage(TextChannel textChannel) {
-        MessageHistoryUtils.getLastBotMessage(textChannel)
-            .delete()
-            .reason(CLEAN_UP_REASON)
-            .delay(BOT_MESSAGE_CLEANUP_DELAY)
-            .queue(null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
     }
 
     protected boolean isCorrespondingShrineEmoji(Message message) {
