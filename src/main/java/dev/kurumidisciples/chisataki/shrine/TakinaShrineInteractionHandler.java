@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 
+@SuppressWarnings("all")
 public class TakinaShrineInteractionHandler extends ShrineInteractionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(TakinaShrineInteractionHandler.class);

@@ -8,6 +8,7 @@ import net.dv8tion.jda.api.interactions.Interaction;
 import net.dv8tion.jda.api.interactions.components.ActionRow;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
+@SuppressWarnings("all")
 public class TTTUtils {
     
      public static TTTGameSetup rebuildGameSetupFromMenu(Interaction event, String id){

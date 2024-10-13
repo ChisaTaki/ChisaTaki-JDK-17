@@ -10,9 +10,9 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.exceptions.ErrorHandler;
-import net.dv8tion.jda.api.requests.ErrorResponse;
 
+
+@SuppressWarnings("all")
 public abstract class ShrineInteractionHandler {
 
     private static final String CLEAN_UP_REASON = "clean up";
