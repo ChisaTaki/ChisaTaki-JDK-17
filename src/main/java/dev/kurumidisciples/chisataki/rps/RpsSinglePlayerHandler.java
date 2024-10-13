@@ -13,6 +13,7 @@ public class RpsSinglePlayerHandler extends RpsInteractionHandler {
 		RpsChoice challengerChoice = RpsChoice.valueOf(choiceText);
 		RpsChoice opponentChoice = RpsLogic.getBotChoice(challengerChoice);
 		
+		@SuppressWarnings("null")
 		Member opponent = event.getGuild().getMemberById(UserUtils.CHISATAKI_BOT_ID);
 		MessageEmbed embed = getMatchResultEmbed(challengerChoice, opponentChoice, event.getMember(), opponent);
 		

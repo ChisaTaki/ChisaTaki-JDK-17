@@ -12,7 +12,6 @@ import dev.kurumidisciples.chisataki.character.AssistantMessageRequest;
 import dev.kurumidisciples.chisataki.character.UsageTableUtils;
 import dev.kurumidisciples.chisataki.character.UserUsage;
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
-import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.entities.SelfUser;
 import net.dv8tion.jda.api.entities.Message.MentionType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;

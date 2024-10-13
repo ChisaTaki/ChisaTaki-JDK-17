@@ -1,7 +1,6 @@
 package dev.kurumidisciples.chisataki.modmail.json;
 
 import javax.json.*;
-import javax.json.stream.*;
 
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 

@@ -95,7 +95,7 @@ public class ModMailInteraction extends ListenerAdapter {
         .setMinLength(10).setMaxLength(1000).build();
 
     Modal modModal = Modal.create("mailModal", /* title */"Contact Staff")
-        .addActionRows(ActionRow.of(subject), ActionRow.of(body)).build();
+        .addComponents(ActionRow.of(subject), ActionRow.of(body)).build();
     return modModal;
   }
 

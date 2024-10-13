@@ -1,13 +1,9 @@
 package dev.kurumidisciples.chisataki.commands.slash;
 
-import org.jetbrains.annotations.ApiStatus.OverrideOnly;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.theokanning.openai.assistants.assistant.Assistant;
-import com.theokanning.openai.billing.BillingUsage;
-import com.theokanning.openai.billing.DailyCost;
-import com.theokanning.openai.billing.LineItem;
 
 import dev.kurumidisciples.chisataki.Main;
 import dev.kurumidisciples.chisataki.character.AiStatusTableUtils;
@@ -23,7 +19,7 @@ public class AiPropertiesCommand extends SlashCommand {
     private static final Logger LOGGER = LoggerFactory.getLogger(AiPropertiesCommand.class);
     
     public AiPropertiesCommand(){
-        super("ai", "Manage/View properties for the Ai", Permission.CREATE_GUILD_EXPRESSIONS); //TODO change to MANAGE_SERVER on release
+        super("ai", "Manage/View properties for the Ai", Permission.MANAGE_SERVER);
         super.subcommands = List.of(
             new SubcommandData("enable", "Enable the Ai"),
             new SubcommandData("disable", "Disable the Ai"),

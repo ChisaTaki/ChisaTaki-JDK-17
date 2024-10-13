@@ -38,7 +38,7 @@ public class AssistantMessageRequest {
     private final Member member;
     private final long guildId;
 
-    
+    @SuppressWarnings("unused")
     private static final Logger logger = LoggerFactory.getLogger(AssistantMessageRequest.class);
 
     public class Response {

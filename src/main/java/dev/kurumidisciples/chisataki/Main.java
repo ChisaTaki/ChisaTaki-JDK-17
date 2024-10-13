@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.theokanning.openai.assistants.assistant.Assistant;
-import com.theokanning.openai.billing.BillingUsage;
 import com.theokanning.openai.service.OpenAiService;
 
 import dev.kurumidisciples.chisataki.commands.CommandCenter;

@@ -152,7 +152,7 @@ public class TicketInteraction extends ListenerAdapter {
 
   private Modal getReasonModal(String ticketNumber) {
     TextInput reason = TextInput.create("reason", "Reason", TextInputStyle.SHORT).setMinLength(5).build();
-    Modal reasonModal = Modal.create("reasonModal-" + ticketNumber, "Ticket Reason").addActionRows(ActionRow.of(reason))
+    Modal reasonModal = Modal.create("reasonModal-" + ticketNumber, "Ticket Reason").addComponents(ActionRow.of(reason))
         .build();
     return reasonModal;
   }

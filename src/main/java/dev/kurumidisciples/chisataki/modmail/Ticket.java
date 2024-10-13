@@ -4,8 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.json.JsonObject;
 
 import dev.kurumidisciples.chisataki.enums.StatusType;
@@ -148,11 +146,6 @@ public class Ticket implements GenericDatabaseTable{
 
   public boolean isClosed(){
     return getStatus() == StatusType.CLOSED;
-  }
-
-  @Deprecated
-  private static int countFiles() {
-    return TicketDatabaseUtils.countTickets();
   }
 
   @Override
