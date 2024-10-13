@@ -5,7 +5,7 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 
 public enum TakinaExpressions {
     
-    TAKINA_HAPPY("tHappy", "<:TakinaDerpPuppyEyes:1075336832012791808>"),
+    TAKINA_HAPPY("tHappy", "<:derpeyes:1295096273577447485>"),
     TAKINA_BLUSH("tBlush", "<:takinablush:1294807910639206421>"),
     TAKINA_SAD("tSad", "<:takinacry:1294808353947783268>"),
     TAKINA_HUH("tHuh", "<:TakinaProcessing:1014189860204073072>"),
