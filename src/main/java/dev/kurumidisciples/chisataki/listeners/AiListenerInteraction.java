@@ -42,7 +42,7 @@ public class AiListenerInteraction extends ListenerAdapter {
                 //if they have simply ignore them
                 if (UsageTableUtils.selectUserUsage(event.getAuthor().getIdLong()) != null){
                     UserUsage usage = UsageTableUtils.selectUserUsage(event.getAuthor().getIdLong());
-                    if (usage.hasReachedLimitOfDay(event.getGuild().getIdLong())){
+                    if (checkUsage(usage, event.getGuild().getIdLong())){
                         logger.info("User {} has reached the message limit for the day", event.getAuthor().getId());
                         //for debugging purposes we will responed to the user for now
                         event.getMessage().reply("You have reached the message limit for the day").mentionRepliedUser(true).submit().thenAccept(message -> {
@@ -64,5 +64,17 @@ public class AiListenerInteraction extends ListenerAdapter {
             }
         };
         executor.execute(messageThread);
+      }
+
+      private static boolean checkUsage(UserUsage usage, long guildId){
+        //check if the user has exceeded the message limit and if a day has passed since the last message reset their usage and return false
+        if (usage.hasReachedLimitOfDay(guildId) && System.currentTimeMillis() - usage.getLastMessage() > 86400000){
+            usage.setMessageCount(0);
+            usage.setReachedLimitOfDay(false);
+            UsageTableUtils.updateUserUsage(usage, guildId);
+            return false;
+        } else {
+            return usage.hasReachedLimitOfDay(guildId);
+        }
       }
 }

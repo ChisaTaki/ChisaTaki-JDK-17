@@ -92,7 +92,7 @@ public class BoosterDatabaseUtils {
     }
 
     protected static void updateRoleId(Booster booster){
-        updateRoleId(booster.getUserId(), Long.valueOf(booster.getRoleId()));
+        updateRoleId(booster.getUserId(), Long.parseLong(booster.getRoleId()));
     }
 
     public static List<Booster> getAllBoosters(){

@@ -104,15 +104,19 @@ public class AssistantMessageRequest {
 
         Run retrievedRun = aiService.retrieveRun(thread.getId(), run.getId());
 
-        do {
-            run = aiService.retrieveRun(thread.getId(), run.getId());
-        } while (!(run.getStatus().equals("completed")) && !(run.getStatus().equals("failed")));
+        while (!(retrievedRun.getStatus().equals("completed"))
+                && !(retrievedRun.getStatus().equals("failed"))
+                && !(retrievedRun.getStatus().equals("expired"))
+                && !(retrievedRun.getStatus().equals("incomplete"))
+                && !(retrievedRun.getStatus().equals("requires_action"))) {
+            retrievedRun = aiService.retrieveRun(thread.getId(), run.getId());
+        }
 
 
         OpenAiResponse<Message> response = aiService.listMessages(thread.getId(), MessageListSearchParameters.builder()
             .runId(retrievedRun.getId()).build());
         List<Message> messages = response.getData();
-        return new Response(messages.get(messages.size() - 1).getContent().get(0).getText().getValue()); //TODO Every user should have their own threads so they can have their own conversations
+        return new Response(messages.get(messages.size() - 1).getContent().get(0).getText().getValue());
     }
 
     public Response submitResponse(){
