@@ -33,7 +33,7 @@ jobs:
           PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
           SERVER_ID: ${{ secrets.SERVER_ID }}
         run: |
-          COMPRESS_URL="https://${{ secrets.PANEL_HOST }}/api/client/servers/$SERVER_ID/files/compress"
+          COMPRESS_URL="https://control.sparkedhost.us/api/client/servers/$SERVER_ID/files/compress"
           
           # Compress the existing ChisaTaki.jar into ChisaTaki-OLD.zip
           curl -X POST "$COMPRESS_URL" \
@@ -46,7 +46,7 @@ jobs:
           PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
           SERVER_ID: ${{ secrets.SERVER_ID }}
         run: |
-          DELETE_URL="https://${{ secrets.PANEL_HOST }}/api/client/servers/$SERVER_ID/files/delete"
+          DELETE_URL="https://control.sparkedhost.us/api/client/servers/$SERVER_ID/files/delete"
           
           # Delete the original ChisaTaki.jar after compression
           curl -X POST "$DELETE_URL" \
@@ -57,7 +57,7 @@ jobs:
       - name: Upload ChisaTaki.jar to Pterodactyl
         uses: rexlmanu/pterodactyl-upload-action@v2.1
         with:
-          panel-host: ${{ secrets.PANEL_HOST }}  # Pterodactyl panel URL (e.g., https://control.sparkedhost.us)
+          panel-host: https://control.sparkedhost.us  # Hardcoded Pterodactyl panel URL
           api-key: ${{ secrets.SPARKED_HOST }}  # Pterodactyl API key
           server-id: ${{ secrets.SERVER_ID }}  # Server ID for the target server
           source: "deploy/ChisaTaki.jar"  # Path to the JAR file to upload
