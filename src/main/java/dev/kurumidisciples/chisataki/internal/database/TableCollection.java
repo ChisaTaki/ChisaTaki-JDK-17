@@ -3,6 +3,7 @@ package dev.kurumidisciples.chisataki.internal.database;
 import java.util.List;
 
 import dev.kurumidisciples.chisataki.booster.BoosterDatabase;
+import dev.kurumidisciples.chisataki.captcha.WhitelistedUsersDatabase;
 import dev.kurumidisciples.chisataki.character.AiStatusTable;
 import dev.kurumidisciples.chisataki.character.UsageTable;
 import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
@@ -25,7 +26,8 @@ public class TableCollection {
             new QuoteSettingsDatabase(),
             new QuoteQuotaDatabase(),
             new UsageTable(),
-            new AiStatusTable()
+            new AiStatusTable(),
+            new WhitelistedUsersDatabase()
         );
     }
 }

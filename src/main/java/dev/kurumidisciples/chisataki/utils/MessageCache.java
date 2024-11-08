@@ -62,6 +62,10 @@ public class MessageCache {
     }
 
     public static int getSize() {
-        return messageMap.size();
+        int size = 0;
+        for (List<Message> messages : messageMap.values()) {
+            size += messages.size();
+        }
+        return size;
     }
 }

@@ -47,25 +47,23 @@ public class Ticket implements GenericDatabaseTable{
 
   
   /* This one has reason and staff */
-  protected Ticket(ResultSet set){
+  protected Ticket(ResultSet set) {
     try {
-      if (set.next()){
-      this.ticketNumber = set.getInt("ticket");
-      this.ticketId = set.getLong("ticket_id");
-      this.memberId = String.valueOf(set.getLong("member_id"));
-      if (set.getLong("staff_id") == 0) {
-              this.staffId = null;
-            } else {
-              this.staffId = String.valueOf(set.getLong("staff_id"));
-            }
-      this.subject = set.getString("subject");
-      this.body = set.getString("body");
-      this.status = StatusType.valueOfLabel(set.getString("status"));
-      this.reason = set.getString("reason");
+      if (set != null && !set.isClosed() && set.next()) {
+        this.ticketNumber = set.getInt("ticket");
+        this.ticketId = set.getLong("ticket_id");
+        this.memberId = String.valueOf(set.getLong("member_id"));
+        if (set.getLong("staff_id") == 0) {
+          this.staffId = null;
+        } else {
+          this.staffId = String.valueOf(set.getLong("staff_id"));
+        }
+        this.subject = set.getString("subject");
+        this.body = set.getString("body");
+        this.status = StatusType.valueOfLabel(set.getString("status"));
+        this.reason = set.getString("reason");
       }
     } catch (SQLException e) {
-      e.printStackTrace();
-    } catch (NullPointerException e) {
       e.printStackTrace();
     }
   }
@@ -106,7 +104,11 @@ public class Ticket implements GenericDatabaseTable{
   }
 
   public long getMemberId() {
-    return Long.parseLong(memberId);
+    if (memberId != null) {
+      return Long.parseLong(memberId);
+    } else {
+      return 0;
+    }
   }
 
   public JsonObject getJsonObject() {
