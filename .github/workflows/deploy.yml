@@ -1,0 +1,65 @@
+name: Deploy Java Project to SparkedHost via Pterodactyl API
+
+on:
+  push:
+    branches:
+      - main  # Adjust if you want deployment from a different branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
+
+      - name: Build with Maven
+        run: mvn clean install package  # Builds the JAR file with dependencies
+
+      - name: Rename JAR for Deployment
+        run: |
+          mkdir -p deploy
+          cp target/*-with-dependencies.jar deploy/ChisaTaki.jar  # Adjust this if your JAR name differs
+
+      - name: Compress existing ChisaTaki.jar
+        env:
+          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
+          PTERO_SERVER_ID: ${{ secrets.SERVER_ID }}
+        run: |
+          # Define Pterodactyl API URL for compression
+          COMPRESS_URL="https://control.sparkedhost.us/api/client/servers/$PTERO_SERVER_ID/files/compress"
+          
+          # Compress the existing ChisaTaki.jar into ChisaTaki-OLD.zip
+          curl -X POST "$COMPRESS_URL" \
+            -H "Authorization: Bearer $PTERO_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"root": "/", "files": ["ChisaTaki.jar"], "archive": "ChisaTaki-OLD.zip"}'
+
+      - name: Upload new ChisaTaki.jar to Pterodactyl
+        env:
+          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
+          PTERO_SERVER_ID: ${{ secrets.SERVER_ID }}
+        run: |
+          PTERO_API_URL="https://control.sparkedhost.us/api/client/servers/$PTERO_SERVER_ID/files/upload"
+          curl -X POST "$PTERO_API_URL" \
+            -H "Authorization: Bearer $PTERO_API_TOKEN" \
+            -H "Accept: application/json" \
+            -F "file=@deploy/ChisaTaki.jar" \
+            -F "directory=/"
+
+      - name: Restart Pterodactyl Server
+        env:
+          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
+          PTERO_SERVER_ID: ${{ secrets.SERVER_ID }}
+        run: |
+          POWER_URL="https://control.sparkedhost.us/api/client/servers/$PTERO_SERVER_ID/power"
+          curl -X POST "$POWER_URL" \
+            -H "Authorization: Bearer $PTERO_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"signal": "restart"}'
