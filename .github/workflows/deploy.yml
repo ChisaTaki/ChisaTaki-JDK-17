@@ -41,6 +41,19 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"root": "/", "files": ["ChisaTaki.jar"], "archive": "ChisaTaki-OLD.zip"}'
 
+      - name: Delete old ChisaTaki.jar after compression
+        env:
+          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
+          PTERO_SERVER_ID: ${{ secrets.SERVER_ID }}
+        run: |
+          DELETE_URL="https://control.sparkedhost.us/api/client/servers/$PTERO_SERVER_ID/files/delete"
+          
+          # Delete the original ChisaTaki.jar after compression
+          curl -X POST "$DELETE_URL" \
+            -H "Authorization: Bearer $PTERO_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"root": "/", "files": ["ChisaTaki.jar"]}'
+
       - name: Upload new ChisaTaki.jar to Pterodactyl
         env:
           PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
