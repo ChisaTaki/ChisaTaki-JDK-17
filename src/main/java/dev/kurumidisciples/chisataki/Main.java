@@ -46,6 +46,7 @@ public class Main {
     // we would use AccountType.CLIENT
     
     try {
+      System.out.println("Testing Action");
       Dotenv env = Dotenv.configure()
         .directory("crypt/")
         .load();
