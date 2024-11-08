@@ -1,4 +1,4 @@
-name: Deploy Java Project to SparkedHost via Pterodactyl API
+name: Deploy Java Project to SparkedHost via SFTP
 
 on:
   push:
@@ -8,11 +8,17 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    name: Deploy to Pterodactyl
+    name: Deploy to SparkedHost via SFTP
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '17'
 
       - name: Cache Maven Dependencies
         uses: actions/cache@v3
@@ -22,12 +28,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'adopt'
-          java-version: '17'
-
       - name: Build with Maven
         run: mvn clean install package  # Builds the JAR file with dependencies
 
@@ -36,38 +36,13 @@ jobs:
           mkdir -p deploy
           cp target/*-with-dependencies.jar deploy/ChisaTaki.jar  # Adjust this if your JAR name differs
 
-      - name: Compress existing ChisaTaki.jar
-        env:
-          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
-          SERVER_ID: ${{ secrets.SERVER_ID }}
-        run: |
-          COMPRESS_URL="https://control.sparkedhost.us/api/client/servers/$SERVER_ID/files/compress"
-          
-          # Compress the existing ChisaTaki.jar into ChisaTaki-OLD.zip
-          curl -X POST "$COMPRESS_URL" \
-            -H "Authorization: Bearer $PTERO_API_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{"root": "/", "files": ["ChisaTaki.jar"], "archive": "ChisaTaki-OLD.zip"}'
-
-      - name: Delete old ChisaTaki.jar after compression
-        env:
-          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
-          SERVER_ID: ${{ secrets.SERVER_ID }}
-        run: |
-          DELETE_URL="https://control.sparkedhost.us/api/client/servers/$SERVER_ID/files/delete"
-          
-          # Delete the original ChisaTaki.jar after compression
-          curl -X POST "$DELETE_URL" \
-            -H "Authorization: Bearer $PTERO_API_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{"root": "/", "files": ["ChisaTaki.jar"]}'
-
-      - name: Upload ChisaTaki.jar to Pterodactyl
-        uses: rexlmanu/pterodactyl-upload-action@v2.1
+      - name: Upload ChisaTaki.jar to SparkedHost via SFTP
+        uses: appleboy/scp-action@v0.1.0
         with:
-          panel-host: https://control.sparkedhost.us  # Hardcoded Pterodactyl panel URL
-          api-key: ${{ secrets.SPARKED_HOST }}  # Pterodactyl API key
-          server-id: ${{ secrets.SERVER_ID }}  # Server ID for the target server
-          source: "deploy/ChisaTaki.jar"  # Path to the JAR file to upload
-          target: "./"  # Directory in the server where you want to upload the file
-          restart: true  # Restart the server after successful upload
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USERNAME }}
+          password: ${{ secrets.SFTP_PASSWORD }}
+          port: ${{ secrets.SFTP_PORT }}
+          source: "deploy/ChisaTaki.jar"
+          target: "/path/on/server/ChisaTaki.jar"  # Update to your server path
+
