@@ -1,4 +1,4 @@
-name: Deploy Java Project to SparkedHost via SFTP
+name: Deploy Java Project to SparkedHost via SFTP and Pterodactyl API
 
 on:
   push:
@@ -36,13 +36,39 @@ jobs:
           mkdir -p deploy
           cp target/*-with-dependencies.jar deploy/ChisaTaki.jar  # Adjust this if your JAR name differs
 
+      - name: Compress existing ChisaTaki.jar using Pterodactyl API
+        env:
+          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
+          SERVER_ID: ${{ secrets.SERVER_ID }}
+        run: |
+          COMPRESS_URL="https://control.sparkedhost.us/api/client/servers/$SERVER_ID/files/compress"
+          
+          # Compress the existing ChisaTaki.jar into ChisaTaki-OLD.zip
+          curl -X POST "$COMPRESS_URL" \
+            -H "Authorization: Bearer $PTERO_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"root": "/", "files": ["ChisaTaki.jar"], "archive": "ChisaTaki-OLD.zip"}'
+
+      - name: Delete old ChisaTaki.jar after compression using Pterodactyl API
+        env:
+          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
+          SERVER_ID: ${{ secrets.SERVER_ID }}
+        run: |
+          DELETE_URL="https://control.sparkedhost.us/api/client/servers/$SERVER_ID/files/delete"
+          
+          # Delete the original ChisaTaki.jar after compression
+          curl -X POST "$DELETE_URL" \
+            -H "Authorization: Bearer $PTERO_API_TOKEN" \
+            -H "Content-Type: application/json" \
+            -d '{"root": "/", "files": ["ChisaTaki.jar"]}'
+
       - name: Upload ChisaTaki.jar to SparkedHost via SFTP
-        uses: appleboy/scp-action@v0.1.0
+        uses: mathiasgrimm/sftp-deploy@v1.0.0
         with:
-          host: ${{ secrets.SFTP_HOST }}
+          host: v-dtx-01.sparkedhost.us  # Hardcoded SFTP host
+          port: 2022
           username: ${{ secrets.SFTP_USERNAME }}
           password: ${{ secrets.SFTP_PASSWORD }}
-          port: ${{ secrets.SFTP_PORT }}
           source: "deploy/ChisaTaki.jar"
-          target: "/path/on/server/ChisaTaki.jar"  # Update to your server path
-
+          target: "/path/on/server/ChisaTaki.jar"  # Update with the correct path on your server
+          rm: false
