@@ -6,12 +6,13 @@ on:
       - main  # Adjust if you want deployment from a different branch
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    name: Deploy to Pterodactyl
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up JDK 17
         uses: actions/setup-java@v2
@@ -29,11 +30,10 @@ jobs:
 
       - name: Compress existing ChisaTaki.jar
         env:
-          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
-          PTERO_SERVER_ID: ${{ secrets.SERVER_ID }}
+          PTERO_API_TOKEN: ${{ secrets.API_KEY }}
+          SERVER_ID: ${{ secrets.SERVER_ID }}
         run: |
-          # Define Pterodactyl API URL for compression
-          COMPRESS_URL="https://control.sparkedhost.us/api/client/servers/$PTERO_SERVER_ID/files/compress"
+          COMPRESS_URL="https://${{ secrets.PANEL_HOST }}/api/client/servers/$SERVER_ID/files/compress"
           
           # Compress the existing ChisaTaki.jar into ChisaTaki-OLD.zip
           curl -X POST "$COMPRESS_URL" \
@@ -43,10 +43,10 @@ jobs:
 
       - name: Delete old ChisaTaki.jar after compression
         env:
-          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
-          PTERO_SERVER_ID: ${{ secrets.SERVER_ID }}
+          PTERO_API_TOKEN: ${{ secrets.API_KEY }}
+          SERVER_ID: ${{ secrets.SERVER_ID }}
         run: |
-          DELETE_URL="https://control.sparkedhost.us/api/client/servers/$PTERO_SERVER_ID/files/delete"
+          DELETE_URL="https://${{ secrets.PANEL_HOST }}/api/client/servers/$SERVER_ID/files/delete"
           
           # Delete the original ChisaTaki.jar after compression
           curl -X POST "$DELETE_URL" \
@@ -54,25 +54,13 @@ jobs:
             -H "Content-Type: application/json" \
             -d '{"root": "/", "files": ["ChisaTaki.jar"]}'
 
-      - name: Upload new ChisaTaki.jar to Pterodactyl
-        env:
-          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
-          PTERO_SERVER_ID: ${{ secrets.SERVER_ID }}
-        run: |
-          PTERO_API_URL="https://control.sparkedhost.us/api/client/servers/$PTERO_SERVER_ID/files/upload"
-          curl -X POST "$PTERO_API_URL" \
-            -H "Authorization: Bearer $PTERO_API_TOKEN" \
-            -H "Accept: application/json" \
-            -F "file=@deploy/ChisaTaki.jar" \
-            -F "directory=/"
+      - name: Upload ChisaTaki.jar to Pterodactyl
+        uses: rexlmanu/pterodactyl-upload-action@v2.1
+        with:
+          panel-host: ${{ secrets.PANEL_HOST }}  # Pterodactyl panel URL (e.g., https://control.sparkedhost.us)
+          api-key: ${{ secrets.API_KEY }}  # Pterodactyl API key
+          server-id: ${{ secrets.SERVER_ID }}  # Server ID for the target server
+          source: "deploy/ChisaTaki.jar"  # Path to the JAR file to upload
+          target: "./"  # Directory in the server where you want to upload the file
+          restart: true  # Restart the server after successful upload
 
-      - name: Restart Pterodactyl Server
-        env:
-          PTERO_API_TOKEN: ${{ secrets.SPARKED_HOST }}
-          PTERO_SERVER_ID: ${{ secrets.SERVER_ID }}
-        run: |
-          POWER_URL="https://control.sparkedhost.us/api/client/servers/$PTERO_SERVER_ID/power"
-          curl -X POST "$POWER_URL" \
-            -H "Authorization: Bearer $PTERO_API_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d '{"signal": "restart"}'
