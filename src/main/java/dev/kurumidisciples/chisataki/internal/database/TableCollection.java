@@ -11,6 +11,10 @@ import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabase
 import dev.kurumidisciples.chisataki.modmail.Ticket;
 import dev.kurumidisciples.chisataki.quotes.QuoteSettingsDatabase;
 import dev.kurumidisciples.chisataki.quotes.quota.QuoteQuotaDatabase;
+import dev.kurumidisciples.chisataki.secretsanta.Pairings;
+import dev.kurumidisciples.chisataki.secretsanta.SantaDatabase;
+import dev.kurumidisciples.chisataki.secretsanta.time.SantaClock;
+import dev.kurumidisciples.chisataki.secretsanta.time.TimeStorage;
 import dev.kurumidisciples.chisataki.shrine.ShrineDatabaseConst;
 import dev.kurumidisciples.chisataki.utils.CooldownUtils;
 
@@ -27,7 +31,10 @@ public class TableCollection {
             new QuoteQuotaDatabase(),
             new UsageTable(),
             new AiStatusTable(),
-            new WhitelistedUsersDatabase()
+            new WhitelistedUsersDatabase(),
+            new TimeStorage(),
+            new Pairings(),
+            new SantaDatabase()
         );
     }
 }

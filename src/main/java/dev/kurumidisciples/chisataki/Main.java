@@ -20,6 +20,8 @@ import dev.kurumidisciples.chisataki.listeners.WelcomeInteraction;
 import dev.kurumidisciples.chisataki.modmail.ModMailInteraction;
 import dev.kurumidisciples.chisataki.modmail.TicketInteraction;
 import dev.kurumidisciples.chisataki.rps.RpsInteraction;
+import dev.kurumidisciples.chisataki.secretsanta.SantaInteraction;
+import dev.kurumidisciples.chisataki.secretsanta.time.SantaClock;
 import dev.kurumidisciples.chisataki.tictactoe.TTTEventHandler;
 import dev.kurumidisciples.chisataki.tictactoe.TTTInteractionHandler;
 import dev.kurumidisciples.chisataki.utils.MessageCache;
@@ -73,7 +75,8 @@ public class Main {
               new TTTInteractionHandler(), 
               new TTTEventHandler(),
               new AiListenerInteraction(),
-              commandCenter
+              commandCenter,
+              new SantaInteraction()
           )
           .setActivity(Activity.customStatus("Attending ChisaTaki Wedding"))
           .build();
@@ -89,6 +92,8 @@ public class Main {
        assistant = aiService.retrieveAssistant(env.get("ASSISTANT_ID"));
       logger.info("OpenAI Service successfully built!");
       logger.info("Assistant successfully built!");
+      SantaClock.start();
+      logger.info("Santa Clock successfully started!");
 
     }
 

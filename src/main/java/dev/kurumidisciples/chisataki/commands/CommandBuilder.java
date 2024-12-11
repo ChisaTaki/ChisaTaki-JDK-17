@@ -1,6 +1,7 @@
 package dev.kurumidisciples.chisataki.commands;
 
 import dev.kurumidisciples.chisataki.commands.slash.BoosterCommand;
+import dev.kurumidisciples.chisataki.commands.slash.ChristmasCommand;
 import dev.kurumidisciples.chisataki.commands.message.MessageCommand;
 import dev.kurumidisciples.chisataki.commands.slash.AiPropertiesCommand;
 import dev.kurumidisciples.chisataki.commands.slash.AssKickCommand;
@@ -11,6 +12,7 @@ import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumidisciples.chisataki.commands.slash.MentionableCommand;
 import dev.kurumidisciples.chisataki.commands.slash.PercentageCommand;
 import dev.kurumidisciples.chisataki.commands.slash.RpsCommand;
+import dev.kurumidisciples.chisataki.commands.slash.SecretSantaCommand;
 import dev.kurumidisciples.chisataki.commands.slash.SendRoleEmbedsCommand;
 import dev.kurumidisciples.chisataki.commands.slash.SendRulesEmbed;
 import dev.kurumidisciples.chisataki.commands.slash.ShrineCountCommand;
@@ -68,7 +70,9 @@ public class CommandBuilder {
 				new TTTCommand(),
 				new BoosterCommand(),
 				new AssKickCommand(),
-				new AiPropertiesCommand()
+				new AiPropertiesCommand(),
+				new ChristmasCommand(),
+				new SecretSantaCommand()
 		};
 	}
 	
