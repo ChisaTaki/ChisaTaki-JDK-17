@@ -13,6 +13,7 @@ import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumidisciples.chisataki.enums.NumberEnums;
 import dev.kurumidisciples.chisataki.utils.MessageCache;
 import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.channel.ChannelType;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
@@ -37,6 +38,7 @@ public class MemeInteraction extends ListenerAdapter {
 	public void onMessageReceived(@Nonnull MessageReceivedEvent event) {
 		Thread messageThread = new Thread() {
 			public void run() {
+				if (event.getChannelType().equals(ChannelType.PRIVATE)) return;
 				MessageCache.storeMessage(event.getMessage());
 				if (event.getMessage().isWebhookMessage())
 					return;

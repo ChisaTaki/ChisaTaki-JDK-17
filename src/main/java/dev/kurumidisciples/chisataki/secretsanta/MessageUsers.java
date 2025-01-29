@@ -29,7 +29,7 @@ public class MessageUsers {
                 String message = generateMessage(santaUser, targetUser, target);
 
                 santaUser.openPrivateChannel().queue(
-                        (channel) -> channel.sendMessageEmbeds(createEmbed(SantaDatabaseUtils.getUser(santa), target)).queue(
+                        (channel) -> channel.sendMessage("**Please use this pairing instead of the one's you were previously given!**").setEmbeds(createEmbed(SantaDatabaseUtils.getUser(santa), target)).queue(
                                 null,
                                 (error) -> sendMessageError(santaUser, targetUser)
                         )
