@@ -197,3 +197,16 @@ public class WelcomeInteraction extends ListenerAdapter {
 	}
 
 }
+class ImageData {
+	public BufferedImage image;
+	public int frameWidth;
+	public int numberOfFrames;
+
+	public ImageData(BufferedImage image, int frameWidth, int numberOfFrames) {
+		this.image = image;
+		this.frameWidth = frameWidth;
+		this.numberOfFrames = numberOfFrames;
+	}
+
+
+}

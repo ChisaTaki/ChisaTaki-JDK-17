@@ -255,11 +255,11 @@ public class TicketInteraction extends ListenerAdapter {
         MessageEmbed embed = new EmbedBuilder()
                 .setColor(new Color(144, 96, 233))
                 .setTitle("Ticket #" + ticket.getTicketNumber())
-                .addField("Subject", ticket.getSubject(), false)
-                .addField("Body", ticket.getBody(), false)
-                .addField("Member", guild.getMemberById(ticket.getMemberId()).getAsMention(), false)
-                .addField("Staff", guild.getMemberById(ticket.getStaffId()).getAsMention(), false)
-                .addField("Reason", ticket.getReason(), false)
+                .addField("Subject", ticket.getSubject() != null ? ticket.getSubject() : "N/A", false)
+                .addField("Body", ticket.getBody() != null ? ticket.getBody() : "N/A", false)
+                .addField("Member", guild.getMemberById(ticket.getMemberId()) != null ? guild.getMemberById(ticket.getMemberId()).getAsMention() : "N/A", false)
+                .addField("Staff", guild.getMemberById(ticket.getStaffId()) != null ? guild.getMemberById(ticket.getStaffId()).getAsMention() : "N/A", false)
+                .addField("Reason", ticket.getReason() != null ? ticket.getReason() : "N/A", false)
                 .build();
 
         compressToZip(htmlStream, textStream, attachments).thenAccept(zipStream -> {

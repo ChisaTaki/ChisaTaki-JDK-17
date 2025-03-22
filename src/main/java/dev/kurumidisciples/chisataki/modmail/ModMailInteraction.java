@@ -1,8 +1,6 @@
 package dev.kurumidisciples.chisataki.modmail;
 
 import java.awt.Color;
-import java.util.List;
-
 import javax.annotation.Nonnull;
 
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
