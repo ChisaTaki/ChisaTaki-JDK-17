@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
+import net.dv8tion.jda.api.components.actionrow.*;
 
 @SuppressWarnings("null")
 public class RpsCommand extends SlashCommand {
@@ -29,7 +30,7 @@ public class RpsCommand extends SlashCommand {
 
 		if (event.getSubcommandName().equals("singleplayer")) {
 			MessageCreateData matchStartMessage = MessageUtils.buildMessageCreateData("> So you've decided to challenge me...", RpsSinglePlayerHandler.getChallengerEmbed());
-			event.getHook().sendMessage(matchStartMessage).addActionRow(RpsLogic.getRpsButtons()).queue();
+			event.getHook().sendMessage(matchStartMessage).addComponents(ActionRow.of(RpsLogic.getRpsButtons())).queue();
 		} else if (event.getSubcommandName().equals("multiplayer")) {
 			
 			OptionMapping opponentOption = event.getOption("challenge");

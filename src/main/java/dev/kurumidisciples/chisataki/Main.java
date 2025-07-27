@@ -49,7 +49,6 @@ public class Main {
     // we would use AccountType.CLIENT
     
     try {
-      System.out.println("Testing Action");
       Dotenv env = Dotenv.configure()
         .directory("crypt/")
         .load();
@@ -66,8 +65,7 @@ public class Main {
               new RpsInteraction(),
               new SupportInteraction(), 
               new ShrineInteraction(),
-              new ShrineDeletionInteraction(), 
-              new RecordRolesInteraction(), 
+              new ShrineDeletionInteraction(),  
               new WelcomeInteraction(),
               new RuleInteraction(), 
               new RoleMenuInteraction(),
@@ -79,7 +77,7 @@ public class Main {
               commandCenter,
               new SantaInteraction()
           )
-          .setActivity(Activity.customStatus("Attending ChisaTaki Wedding"))
+          .setActivity(Activity.customStatus("On Honeymoon with Takina..."))
           .build();
       jda.awaitReady(); // awaits for the cache system to build
       logger.info("Chisataki Bot successfully built and connected to JDA!");

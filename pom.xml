@@ -5,6 +5,8 @@
 	<artifactId>chisataki</artifactId>
 	<version>3.3.1</version>
 
+	
+
 	<repositories>
 		<repository>
 			<id>mavenCentral</id>
@@ -221,9 +223,14 @@
 		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
-			<version>5.1.2</version>
+			<version>6.0.0-rc.1</version>
 			<type>jar</type>
 		</dependency>
+		<dependency>
+			<groupId>org.openrewrite.recipe</groupId>
+			<artifactId>rewrite-java-dependencies</artifactId>
+			<version>1.37.0</version>
+    	</dependency>
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-lang3</artifactId>
@@ -292,6 +299,28 @@
 			            </goals>
 			        </execution>
 			    </executions>
+			</plugin>
+			<plugin>
+				<groupId>org.openrewrite.maven</groupId>
+				<artifactId>rewrite-maven-plugin</artifactId>
+				<version>6.13.0</version>
+				<configuration>
+					<activeRecipes>
+					<recipe>net.dv8tion.MigrateComponentsV2</recipe>
+					</activeRecipes>
+				</configuration>
+				<dependencies>
+					<dependency>
+					<groupId>org.openrewrite.recipe</groupId>
+					<artifactId>rewrite-java-dependencies</artifactId>
+					<version>1.37.0</version>
+					</dependency>
+					<dependency>
+					<groupId>net.dv8tion</groupId>
+					<artifactId>JDA</artifactId>
+					<version>6.0.0-rc.1</version>
+					</dependency>
+				</dependencies>
 			</plugin>
 		</plugins>
 	</build>

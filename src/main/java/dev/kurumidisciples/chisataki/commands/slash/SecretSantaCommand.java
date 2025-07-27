@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
+import net.dv8tion.jda.api.components.actionrow.*;
 
 public class SecretSantaCommand extends SlashCommand{
     
@@ -31,7 +32,7 @@ public class SecretSantaCommand extends SlashCommand{
         
         SantaClock.setTime(event.getOption("time") == null ? System.currentTimeMillis() : event.getOption("time").getAsLong());
         event.getOption("channel").getAsChannel().asTextChannel()
-        .sendMessage("<@&1013809301342662726> We are hosting a Secret Santa Event again this year!").addEmbeds(createSantaEmbed()).setActionRow(SantaComponents.createButton()).queue();
+        .sendMessage("<@&1013809301342662726> We are hosting a Secret Santa Event again this year!").addEmbeds(createSantaEmbed()).addComponents(ActionRow.of(SantaComponents.createButton())).queue();
     }
 
     @Override

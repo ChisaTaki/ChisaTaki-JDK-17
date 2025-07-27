@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import dev.kurumidisciples.chisataki.commands.CommandWrapper;
 import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent;
+import net.dv8tion.jda.api.interactions.InteractionContextType;
 import net.dv8tion.jda.api.interactions.commands.Command.Type;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -18,7 +19,7 @@ public abstract class MessageCommand extends CommandWrapper {
 
 	@Override
 	public CommandData build() {
-		CommandData commandData = Commands.message(this.name).setGuildOnly(true);
+		CommandData commandData = Commands.message(this.name).setContexts(InteractionContextType.GUILD); // in 6.0.0 setGuildOnly() was removed, so we use setContexts instead
 		if (this.permission != null) {
 			commandData.setDefaultPermissions(this.permission);
 		}

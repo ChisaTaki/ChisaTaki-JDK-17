@@ -8,6 +8,7 @@ import dev.kurumidisciples.chisataki.commands.CommandWrapper;
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import net.dv8tion.jda.api.interactions.InteractionContextType;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.Command.Type;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
@@ -31,7 +32,7 @@ public abstract class SlashCommand extends CommandWrapper {
 	
 	@Override
 	public CommandData build() {
-		SlashCommandData commandData = Commands.slash(this.name, this.description).setGuildOnly(true);
+		SlashCommandData commandData = Commands.slash(this.name, this.description).setContexts(InteractionContextType.GUILD);
 		
 		if (CollectionUtils.isNotEmpty(this.subcommands)) {
 			commandData.addSubcommands(this.subcommands);

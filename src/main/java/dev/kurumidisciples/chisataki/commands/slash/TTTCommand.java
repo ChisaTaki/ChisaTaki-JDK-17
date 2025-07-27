@@ -3,12 +3,13 @@ package dev.kurumidisciples.chisataki.commands.slash;
 import java.util.List;
 
 import dev.kurumidisciples.chisataki.tictactoe.TTTChoice;
+import net.dv8tion.jda.api.components.selections.StringSelectMenu;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 @SuppressWarnings("null")
 public class TTTCommand extends SlashCommand {
@@ -34,7 +35,7 @@ public class TTTCommand extends SlashCommand {
             } else if (opponentOption.getAsUser().isBot()){
                 event.getHook().editOriginal("You cannot challenge a bot!").queue();
             } else {
-               event.getHook().editOriginal("Please select your Game Piece first!").setActionRow(generateChoiceMenu(event.getMember(), opponentOption.getAsMember())).queue();
+               event.getHook().editOriginal("Please select your Game Piece first!").setComponents(ActionRow.of(generateChoiceMenu(event.getMember(), opponentOption.getAsMember()))).queue();
             }
             
         }

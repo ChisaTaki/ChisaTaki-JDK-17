@@ -5,18 +5,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
+import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.components.container.Container;
+import net.dv8tion.jda.api.components.section.Section;
+import net.dv8tion.jda.api.components.textdisplay.TextDisplay;
+import net.dv8tion.jda.api.components.thumbnail.Thumbnail;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.selections.SelectMenu;
+import net.dv8tion.jda.api.components.selections.StringSelectMenu;
+import net.dv8tion.jda.api.components.separator.Separator;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.selections.SelectMenu;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 
 /**
  * Keep in mind that even if the `testing` option is set to true. The original embed will reply with the newest version of the dropdown options and button interactions
@@ -38,7 +45,7 @@ public class SendRulesEmbed extends SlashCommand {
 		ChannelEnum channelEnum = event.getOption("testing").getAsBoolean() ? ChannelEnum.BOT_HOUSE : ChannelEnum.RULES;
 		TextChannel rulesChannel = event.getGuild().getTextChannelById(channelEnum.getId());
 
-		rulesChannel.sendMessage(" ").setEmbeds(getInfoEmbed()).addActionRow(getSelectMenu()).addActionRow(getButtons()).queue();
+		rulesChannel.sendMessageComponents(getRulesContainer()).useComponentsV2().queue(); // uses the new components version
 
 		event.getHook().editOriginal("Rule embed sent successfully.").queue();
 	}
@@ -51,6 +58,47 @@ public class SendRulesEmbed extends SlashCommand {
 	@Override
 	public String getErrorMessage() {
 		return "This command is reserved to bot devs.";
+	}
+
+	private Container getRulesContainer() {
+		return Container.of(
+			/* Info Section */
+			Section.of(
+				Thumbnail.fromUrl("https://cdn.discordapp.com/icons/1010078628761055234/a_7d3721748fd11cefb09a37547a0f8ef8.webp"), // Thumbnail is a SectionAcceessoryComponent so it must be added first
+				TextDisplay.of("## Welcome to ChisaTaki!"),
+				TextDisplay.of("We are a server dedicated to ChisaTaki.\n" + //
+										"It also has a Chisato and Takina Fanclub integrated in it.\n" + //
+										"\n" + //
+										"Let's gather together to ~~worship~~ lead wholesome discussions and enjoy some time together with Lycoirs Recoil fans. Let's enjoy the harmony and ship Chisato and Takina all along.\\n")
+			),
+
+			Separator.createDivider(Separator.Spacing.SMALL),
+
+			TextDisplay.of("### About us"),
+			TextDisplay.of("This server is dedicated to **Lycoris Recoil (リコリス・リコイル)** original TV Anime Series set to be produced by A-1 Pictures and Director Shingo Adachi (SAO, To-Love Ru) featuring an original story by Asaura and Character Design by Imigimuru."),
+			
+			Separator.createDivider(Separator.Spacing.SMALL),
+
+			TextDisplay.of("### Story"),
+			TextDisplay.of("For these peaceful days――there’s a secret behind it all. A secret organization that prevents crimes: “DA - Direct Attack”. And their group of all-girl agents: “Lycoris”. \n\n This peaceful everyday life is all thanks to these young girls.\n\nThe elite Chisato Nishikigi is the strongest Lycoris agent of all time. Alongside is Takina Inoue, the talented but mysterious Lycoris.\n\nThey work together at one of its branches–Café LycoReco.\nHere, the orders this café takes range from coffee and sweets to childcare, shopping, teaching Japanese to foreign students, etc.\n\nThe free-spirited and optimistic pacifist, Chisato. And the cool-headed and efficient Takina.\n\nThe chaotic everyday lives of this mismatched duo begin!"),
+			
+			Separator.createDivider(Separator.Spacing.SMALL),
+
+			ActionRow.of(
+				Button.secondary("rules", "Server Rules").withEmoji(Emoji.fromCustom("LycorisLogo", 994615569833791498L, false)),
+				Button.secondary("strike", "Strike System").withEmoji(Emoji.fromCustom("LycorisFlower1", 994650226453397634L, false)),
+				Button.secondary("modmail", "Contact Staff").withEmoji(Emoji.fromUnicode("U+1F4E8"))
+			),
+			ActionRow.of(
+				StringSelectMenu.create("menu:info")
+					.setPlaceholder("Use this menu to learn more about our server.")
+					.addOption(/*label*/"Church Staff", /*value*/"adminSelect", /*description*/"Select to learn about our lovely staff.", Emoji.fromCustom("LycoReco", 993444445741645845L, false))
+					.addOption(/*label*/"Bar4bidden", /*value*/ "sisterSelect", "Select to view our translation server.", Emoji.fromCustom("KurumiPat", 1159555167973277847L, false))
+					.addOption(/*label*/"Shrine Info", /*value*/ "shrineSelect", /*description*/"Select to learn more about the Shrine Channels", Emoji.fromUnicode("U+26E9"))
+					.addOption("XP System", "xpSystem", "Select to learn about our XP System.", Emoji.fromCustom("YellowSpiderLily", 997605599531507873L, false))
+					.build()
+			)
+		).withAccentColor(ColorUtils.PURPLE);
 	}
 
 	private List<MessageEmbed> getInfoEmbed() {

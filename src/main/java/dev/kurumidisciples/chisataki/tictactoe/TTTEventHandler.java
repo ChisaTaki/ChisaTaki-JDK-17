@@ -12,6 +12,9 @@ import dev.kurumidisciples.chisataki.rps.RpsLogic;
 import dev.kurumidisciples.chisataki.rps.RpsResult;
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -19,8 +22,6 @@ import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
 @SuppressWarnings("null")
@@ -35,7 +36,7 @@ public class TTTEventHandler extends ListenerAdapter{
     @Override
     public void onButtonInteraction(@Nonnull ButtonInteractionEvent event) {
         tttExecutor.execute(() -> {
-            String buttonId = event.getButton().getId();
+            String buttonId = event.getButton().getCustomId();
 
             if (buttonId.startsWith(TTT_PREFIX)) {
                 event.deferEdit().queue();
@@ -53,7 +54,7 @@ public class TTTEventHandler extends ListenerAdapter{
         }
 
         private void handleTTTRequestAcceptance(ButtonInteractionEvent event) {
-            TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getId());
+            TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getCustomId());
             Member member = event.getMember();
             if (!TTTRequestCurrentMember(member, setup)){
                 cannotInteract(event);
@@ -64,14 +65,14 @@ public class TTTEventHandler extends ListenerAdapter{
                 event.getHook().deleteOriginal().queue();
                 List<List<Button>> ttt = createTicTacToeBoard(setup, /* Player1 is always the player that goes first */setup.getPlayer1());
                 event.getChannel().sendMessage(setup.getPlayer1().getAsMention() + " its your turn!")
-                .addActionRow(ttt.get(0))
-                .addActionRow(ttt.get(1))
-                .addActionRow(ttt.get(2))
+                .addComponents(ActionRow.of(ttt.get(0)))
+                .addComponents(ActionRow.of(ttt.get(1)))
+                .addComponents(ActionRow.of(ttt.get(2)))
                 .queue(); 
         }
     
         private void handleTTTRequestRejection(ButtonInteractionEvent event) {
-            TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getId());
+            TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getButton().getCustomId());
             Member member = event.getMember();
             if (!TTTRequestCurrentMember(member, setup)){
                 cannotInteract(event);
@@ -114,7 +115,7 @@ public class TTTEventHandler extends ListenerAdapter{
             for (int j = 0; j < currentBoard.get(i).size(); j++) {
                 // i represents the row, j represents the column
                 if (i == buttonToDisable.getRow() && j == buttonToDisable.getColumn()){
-                    row.add(Button.of(ButtonStyle.SECONDARY, buttonToDisable.getButton().getId(), emojiToSet).asDisabled());
+                    row.add(Button.of(ButtonStyle.SECONDARY, buttonToDisable.getButton().getCustomId(), emojiToSet).asDisabled());
                 }
                 else{
                     row.add(currentBoard.get(i).get(j).withId("TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + nextPlayer.getId()));
@@ -127,10 +128,10 @@ public class TTTEventHandler extends ListenerAdapter{
 
 
     private void handleTTTSelection(ButtonInteractionEvent event) {
-        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromButton(event, event.getButton().getId());
+        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromButton(event, event.getButton().getCustomId());
         Button pressedButton = event.getButton();
-        int row = Integer.parseInt(pressedButton.getId().split("-")[1]);
-        int column = Integer.parseInt(pressedButton.getId().split("-")[2]);
+        int row = Integer.parseInt(pressedButton.getCustomId().split("-")[1]);
+        int column = Integer.parseInt(pressedButton.getCustomId().split("-")[2]);
         ButtonInfo buttonInfo = new ButtonInfo(pressedButton, row, column);
         Member player = event.getMember();
         Member currentPlayer = TTTUtils.getCurrentPlayerFromTTTBoard(event, buttonInfo.getButton());
@@ -172,9 +173,9 @@ public class TTTEventHandler extends ListenerAdapter{
         event.getHook().deleteOriginal().queue(null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
         Message message = event.getChannel()
                 .sendMessage(nextPlayer.getAsMention() + " its your turn!")
-                .addActionRow(updatedBoard.get(0))
-                .addActionRow(updatedBoard.get(1))
-                .addActionRow(updatedBoard.get(2))
+                .addComponents(ActionRow.of(updatedBoard.get(0)))
+                .addComponents(ActionRow.of(updatedBoard.get(1)))
+                .addComponents(ActionRow.of(updatedBoard.get(2)))
                 .complete();
 
         message.delete().queueAfter(10L, java.util.concurrent.TimeUnit.MINUTES, null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));

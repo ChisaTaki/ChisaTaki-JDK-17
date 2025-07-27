@@ -7,12 +7,13 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
@@ -43,7 +44,7 @@ public class RpsInteraction extends ListenerAdapter {
 					
 					MessageCreateData opponentMessage = RpsMultiPlayerHandler.getOpponentMessage(challenger, opponent, matchStartTime);
 					List<Button> opponentButtons = RpsLogic.getRpsButtons(challenger, opponent, challengerChoice);
-					Message message = event.getGuildChannel().asTextChannel().sendMessage(opponentMessage).addActionRow(opponentButtons).complete();
+					Message message = event.getGuildChannel().asTextChannel().sendMessage(opponentMessage).setComponents(ActionRow.of(opponentButtons)).complete();
 					message.delete().queueAfter(10, TimeUnit.MINUTES, null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
 				} else if (event.getComponentId().startsWith("btnRpsMR-")) {
 					// btnRpsMR-<opponentId>-<opponentChoice>-<challengerId>-<challengerChoice>

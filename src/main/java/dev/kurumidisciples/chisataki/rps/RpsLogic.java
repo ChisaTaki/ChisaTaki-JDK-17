@@ -9,9 +9,9 @@ import java.util.Random;
 import dev.kurumidisciples.chisataki.enums.GifEnum;
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import dev.kurumidisciples.chisataki.utils.UserUtils;
+import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 public class RpsLogic {
 

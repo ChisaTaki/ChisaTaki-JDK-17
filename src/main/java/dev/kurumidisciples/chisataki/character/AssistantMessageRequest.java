@@ -24,6 +24,7 @@ import dev.kurumidisciples.chisataki.Main;
 import dev.kurumidisciples.chisataki.character.expressions.ExpressionUtil;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.utils.AttachmentProxy;
+import net.dv8tion.jda.api.utils.NamedAttachmentProxy;
 
 import java.util.Optional;
 import java.util.ArrayList;
@@ -62,7 +63,7 @@ public class AssistantMessageRequest {
     }
 
     @SuppressWarnings("null")
-    public Response submitRequest(Optional<List<AttachmentProxy>> attachments){
+    public Response submitRequest(Optional<List<NamedAttachmentProxy>> attachments){
         
 
         // Retrieve the assistant and the OpenAiService
@@ -71,7 +72,7 @@ public class AssistantMessageRequest {
 
         List<ImageContent> imageContents = new ArrayList<>();
         if (attachments.isPresent()) {
-            List<AttachmentProxy> attachmentProxies = attachments.get();
+            List<NamedAttachmentProxy> attachmentProxies = attachments.get();
             for (AttachmentProxy temp : attachmentProxies) {
                 imageContents.add(new ImageContent(new ImageUrl(temp.getUrl())));
             }

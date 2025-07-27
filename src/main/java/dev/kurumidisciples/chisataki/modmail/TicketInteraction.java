@@ -1,6 +1,7 @@
 package dev.kurumidisciples.chisataki.modmail;
 
 import java.awt.Color;
+import java.awt.Desktop.Action;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -23,6 +24,9 @@ import dev.kurumidisciples.chisataki.utils.HTMLUtils;
 import dev.kurumidisciples.chisataki.utils.MessageCache;
 import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.textinput.TextInput;
+import net.dv8tion.jda.api.components.textinput.TextInputStyle;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.Message.Attachment;
@@ -31,9 +35,6 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.text.TextInput;
-import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.utils.FileUpload;
 
@@ -86,10 +87,11 @@ public class TicketInteraction extends ListenerAdapter {
 
         // Disable the claim ticket button
         event.getMessage().editMessageEmbeds(event.getMessage().getEmbeds().get(0))
-                .setActionRow(
+                .setComponents(
+                    ActionRow.of(
                         event.getMessage().getButtons().get(0).asDisabled(),
                         event.getMessage().getButtons().get(1),
-                        event.getMessage().getButtons().get(2))
+                        event.getMessage().getButtons().get(2))) /* Will need to update later as getButtons() deprecated */
                 .queue();
     }
 

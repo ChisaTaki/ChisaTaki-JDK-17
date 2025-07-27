@@ -5,11 +5,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import dev.kurumidisciples.chisataki.secretsanta.time.SantaClock;
+import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.interactions.modals.ModalMapping;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 public class SantaInteraction extends ListenerAdapter {
 
@@ -30,7 +31,7 @@ public class SantaInteraction extends ListenerAdapter {
                     } else {
                         event.reply("You're already registered! If you’d like to completely withdraw, please confirm below.")
                             .setEphemeral(true)
-                            .setActionRow(Button.danger("button:santa-withdraw", "Withdraw"))
+                            .setComponents(ActionRow.of(Button.danger("button:santa-withdraw", "Withdraw")))
                             .queue();
                     }
                 } else {

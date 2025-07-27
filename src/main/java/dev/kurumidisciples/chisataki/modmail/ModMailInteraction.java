@@ -1,10 +1,16 @@
 package dev.kurumidisciples.chisataki.modmail;
 
 import java.awt.Color;
+import java.awt.Desktop.Action;
+
 import javax.annotation.Nonnull;
 
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.textinput.TextInput;
+import net.dv8tion.jda.api.components.textinput.TextInputStyle;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -14,10 +20,6 @@ import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.text.TextInput;
-import net.dv8tion.jda.api.interactions.components.text.TextInputStyle;
 import net.dv8tion.jda.api.interactions.modals.Modal;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
@@ -27,7 +29,7 @@ public class ModMailInteraction extends ListenerAdapter {
     @Override
     public void onSlashCommandInteraction(@Nonnull SlashCommandInteractionEvent event) {
         if (event.getName().equals("sdfsa")) {
-            event.reply(" ").addActionRow(Button.success("modmail", "ModMail")).queue();
+            event.reply(" ").addComponents(ActionRow.of(Button.success("modmail", "ModMail"))).queue();
         }
     }
 
@@ -129,14 +131,15 @@ public class ModMailInteraction extends ListenerAdapter {
                                 .setColor(new Color(144, 96, 233))
                                 .build()
                 )
-                .addActionRow(
+                .setComponents(
+                    ActionRow.of(
                         Button.success("claim-" + ticket.getTicketNumber(), "Claim Ticket")
                                 .withEmoji(Emoji.fromUnicode("U+1F4EC")),
                         Button.danger("close-" + ticket.getTicketNumber(), "Close Ticket")
                                 .withEmoji(Emoji.fromUnicode("U+1F512")),
                         Button.danger("closereason-" + ticket.getTicketNumber(), "Close Ticket With Reason")
                                 .withEmoji(Emoji.fromUnicode("U+1F50F"))
-                )
+                ))
                 .build();
     }
 

@@ -3,10 +3,10 @@ package dev.kurumidisciples.chisataki.tictactoe;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.interactions.Interaction;
-import net.dv8tion.jda.api.interactions.components.ActionRow;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 @SuppressWarnings("all")
 public class TTTUtils {
@@ -70,7 +70,7 @@ public class TTTUtils {
     }
 
     public static Member getCurrentPlayerFromTTTBoard(Interaction event, Button button){
-        String[] ids = button.getId().split("-");
+        String[] ids = button.getCustomId().split("-");
         return event.getGuild().getMemberById(ids[7]);
     }
 }

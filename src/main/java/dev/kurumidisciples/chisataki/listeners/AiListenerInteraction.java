@@ -17,6 +17,7 @@ import net.dv8tion.jda.api.entities.Message.MentionType;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.AttachmentProxy;
+import net.dv8tion.jda.api.utils.NamedAttachmentProxy;
 
 import java.util.Optional;
 import java.util.List;
@@ -55,7 +56,7 @@ public class AiListenerInteraction extends ListenerAdapter {
                 //if the user has not reached the message limit, we will respond to the user by contacting the AI assistant
                 AssistantMessageRequest request = new AssistantMessageRequest(event.getMessage().getContentStripped(), event.getMember(), event.getGuild().getIdLong());
                 // max number of attachments is 3 for now
-                Optional<List<AttachmentProxy>> attachments = event.getMessage().getAttachments().isEmpty() ? Optional.empty() : Optional.of(event.getMessage().getAttachments().stream().limit(3).map(attach -> attach.getProxy()).toList());
+                Optional<List<NamedAttachmentProxy>> attachments = event.getMessage().getAttachments().isEmpty() ? Optional.empty() : Optional.of(event.getMessage().getAttachments().stream().limit(3).map(attach -> attach.getProxy()).toList());
                 logger.info("Requesting response from AI");
                 AssistantMessageRequest.Response response = request.submitRequest(attachments);
                 logger.info("Response received from AI");

@@ -8,13 +8,14 @@ import javax.annotation.Nonnull;
 
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import net.dv8tion.jda.api.interactions.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 
 @SuppressWarnings("null")
@@ -25,7 +26,7 @@ public class TTTInteractionHandler extends ListenerAdapter{
     @Override
     public void onStringSelectInteraction(@Nonnull StringSelectInteractionEvent event){
         tttExecutor.execute(() -> {
-            if (event.getComponent().getId().startsWith("menu:TTT-")){
+            if (event.getComponent().getCustomId().startsWith("menu:TTT-")){
                 event.deferEdit().queue();
                 event.getHook().deleteOriginal().queue();
                 TTTGameSetup setup = TTTUtils.rebuildGameSetupFromMenu(event, event.getComponentId());
@@ -33,7 +34,7 @@ public class TTTInteractionHandler extends ListenerAdapter{
                 
                 event.getChannel().sendMessage(setup.getPlayer2().getAsMention() + " you've been requested to play Tic Tac Toe by " + setup.getPlayer1().getAsMention() + ".")
                 .setEmbeds(createRequestEmbed(setup))
-                .setActionRow(createRequestButtons(setup))
+                .setComponents(ActionRow.of(createRequestButtons(setup)))
                 .queue(message -> {
                     message.delete().queueAfter(10L, java.util.concurrent.TimeUnit.MINUTES, null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
                 });

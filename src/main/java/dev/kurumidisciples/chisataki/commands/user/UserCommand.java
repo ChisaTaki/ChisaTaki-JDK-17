@@ -4,6 +4,7 @@ import dev.kurumidisciples.chisataki.commands.CommandWrapper;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.events.interaction.command.UserContextInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
+import net.dv8tion.jda.api.interactions.InteractionContextType;
 import net.dv8tion.jda.api.interactions.commands.Command.Type;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
@@ -16,7 +17,7 @@ public abstract class UserCommand extends CommandWrapper {
 
 	@Override
 	public CommandData build() {
-		CommandData commandData = Commands.user(this.name).setGuildOnly(true);
+		CommandData commandData = Commands.user(this.name).setContexts(InteractionContextType.GUILD);
 		if (this.permission != null) {
 			commandData.setDefaultPermissions(this.permission);
 		}
