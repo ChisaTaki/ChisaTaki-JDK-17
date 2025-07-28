@@ -67,9 +67,9 @@ public class SendRulesEmbed extends SlashCommand {
 				Thumbnail.fromUrl("https://cdn.discordapp.com/icons/1010078628761055234/a_7d3721748fd11cefb09a37547a0f8ef8.webp"), // Thumbnail is a SectionAcceessoryComponent so it must be added first
 				TextDisplay.of("## Welcome to ChisaTaki!"),
 				TextDisplay.of("We are a server dedicated to ChisaTaki.\n" + //
-										"It also has a Chisato and Takina Fanclub integrated in it.\n" + //
+										"It also has a Chisato and Takina Fanclub integrated in it." + //
 										"\n" + //
-										"Let's gather together to ~~worship~~ lead wholesome discussions and enjoy some time together with Lycoirs Recoil fans. Let's enjoy the harmony and ship Chisato and Takina all along.\\n")
+										"Let's gather together to ~~worship~~ lead wholesome discussions and enjoy some time together with Lycoirs Recoil fans. Let's enjoy the harmony and ship Chisato and Takina all along.")
 			),
 
 			Separator.createDivider(Separator.Spacing.SMALL),
@@ -80,7 +80,7 @@ public class SendRulesEmbed extends SlashCommand {
 			Separator.createDivider(Separator.Spacing.SMALL),
 
 			TextDisplay.of("### Story"),
-			TextDisplay.of("For these peaceful days――there’s a secret behind it all. A secret organization that prevents crimes: “DA - Direct Attack”. And their group of all-girl agents: “Lycoris”. \n\n This peaceful everyday life is all thanks to these young girls.\n\nThe elite Chisato Nishikigi is the strongest Lycoris agent of all time. Alongside is Takina Inoue, the talented but mysterious Lycoris.\n\nThey work together at one of its branches–Café LycoReco.\nHere, the orders this café takes range from coffee and sweets to childcare, shopping, teaching Japanese to foreign students, etc.\n\nThe free-spirited and optimistic pacifist, Chisato. And the cool-headed and efficient Takina.\n\nThe chaotic everyday lives of this mismatched duo begin!"),
+			TextDisplay.of("For these peaceful days――there’s a secret behind it all. A secret organization that prevents crimes: “DA - Direct Attack”. And their group of all-girl agents: “Lycoris”. \n\n This peaceful everyday life is all thanks to these young girls.\n\nThe elite Chisato Nishikigi is the strongest Lycoris agent of all time. Alongside is Takina Inoue, the talented but mysterious Lycoris.\n\nThey work together at one of its branches–Café LycoReco. Here, the orders this café takes range from coffee and sweets to childcare, shopping, teaching Japanese to foreign students, etc.\n\nThe free-spirited and optimistic pacifist, Chisato. And the cool-headed and efficient Takina.\n\nThe chaotic everyday lives of this mismatched duo begin!"),
 			
 			Separator.createDivider(Separator.Spacing.SMALL),
 
