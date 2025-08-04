@@ -24,20 +24,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import dev.kurumidisciples.chisataki.enums.ChannelEnum;
-import dev.kurumidisciples.chisataki.shrine.ChisatoShrineInteractionHandler;
 import dev.kurumidisciples.chisataki.utils.AnimatedGifEncoder;
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.components.container.Container;
-import net.dv8tion.jda.api.components.textdisplay.TextDisplay;
 import net.dv8tion.jda.api.components.filedisplay.FileDisplay;
+import net.dv8tion.jda.api.components.textdisplay.TextDisplay;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
-import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.FileUpload;
-import net.dv8tion.jda.internal.components.textdisplay.TextDisplayImpl;
 
 @SuppressWarnings("null")
 public class WelcomeInteraction extends ListenerAdapter {
@@ -48,9 +45,7 @@ public class WelcomeInteraction extends ListenerAdapter {
 
 	private static final Logger logger = LoggerFactory.getLogger(WelcomeInteraction.class);
 
-	SlashCommandInteractionEvent event;
-
-	private static Font DEFAULT_FONT;
+	private static final Font DEFAULT_FONT;
 	private static Random RANDOM = new Random();
 
 	static {
@@ -64,33 +59,38 @@ public class WelcomeInteraction extends ListenerAdapter {
         DEFAULT_FONT = tempFont;
     }
 
-
+    @Override
 	public void onGuildMemberJoin(@Nonnull GuildMemberJoinEvent event){
 		threadPool.execute(() -> {
 			if (!event.getMember().getUser().isBot()) {
 				int guildSize = event.getGuild().getMembers().size();
-				String channelId = ChannelEnum.WELCOME.getId();
 				
 				try {
-					event.getGuild().getTextChannelById(channelId).sendMessageComponents(
-						getWelcomeContainer(event)
+					event.getGuild().getTextChannelById(ChannelEnum.WELCOME.getId()).sendMessageComponents(
+						getWelcomeContainer(event.getMember(), event.getGuild().getMembers().size())
 					).useComponentsV2().queue();
 				} catch (IOException e) {
-					e.printStackTrace();
-					event.getGuild().getTextChannelById(channelId).sendMessage("Hello " + event.getMember().getAsMention() + "!").setEmbeds(createEmbedFailure(guildSize)).queue();
+					logger.error("Failed to create welcome message for " + event.getMember().getUser().getName(), e);
+					try {
+                        event.getGuild().getTextChannelById(ChannelEnum.WELCOME.getId()).sendMessageComponents(
+                            createFailureContainer(event.getMember(), guildSize)
+                        ).useComponentsV2().queue();
+                    } catch (IOException e1) {
+                       logger.error("Failed to create fallback welcome message for " + event.getMember().getUser().getName(), e1);
+                    }
 				}
 			}
 		});
 	}
 
-	private static Container getWelcomeContainer(GuildMemberJoinEvent event) throws IOException {
+	private static Container getWelcomeContainer(Member member, int guildSize) throws IOException {
 		return Container.of(
 			TextDisplay.of("## Welcome to the Church of ChisaTaki!"),
 			TextDisplay.of(
 				"Read <#1010080963927232573> and pick roles in <#1024037775743406111>. Enjoy your stay as you worship ChisaTaki~"
 			),
-			FileDisplay.fromFile(FileUpload.fromData(createWelcomeGif(event.getMember()), "welcome.gif")),
-			TextDisplay.of("-# Worshipper Count: " + event.getGuild().getMembers().size())
+			FileDisplay.fromFile(FileUpload.fromData(createWelcomeGif(member), "welcome.gif")),
+			TextDisplay.of("-# Worshipper Count: " + guildSize)
 		).withAccentColor(ColorUtils.PURPLE);
 	}
 
@@ -106,6 +106,15 @@ public class WelcomeInteraction extends ListenerAdapter {
 
 		return builder.build();
 	}
+
+    private static Container createFailureContainer(Member member, int guildSize) throws IOException {
+        return Container.of(
+            TextDisplay.of("## Welcome to the Church of ChisaTaki!"),
+            TextDisplay.of("Read <#1010080963927232573> and pick roles in <#1024037775743406111>. Enjoy your stay as you worship ChisaTaki~"),
+            FileDisplay.fromFile(FileUpload.fromData(createWelcomeGif(member), "welcome.gif")),
+            TextDisplay.of("-# Worshipper Count: " + guildSize)
+        ).withAccentColor(ColorUtils.PURPLE);
+    }
 
 	private static MessageEmbed createEmbedFailure(int guildSize) {
 		EmbedBuilder builder = new EmbedBuilder();
