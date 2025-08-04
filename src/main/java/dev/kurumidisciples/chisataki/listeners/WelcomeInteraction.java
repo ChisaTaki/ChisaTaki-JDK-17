@@ -29,6 +29,8 @@ import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.components.container.Container;
 import net.dv8tion.jda.api.components.filedisplay.FileDisplay;
+import net.dv8tion.jda.api.components.mediagallery.MediaGallery;
+import net.dv8tion.jda.api.components.mediagallery.MediaGalleryItem;
 import net.dv8tion.jda.api.components.textdisplay.TextDisplay;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -83,13 +85,13 @@ public class WelcomeInteraction extends ListenerAdapter {
 		});
 	}
 
-	private static Container getWelcomeContainer(Member member, int guildSize) throws IOException {
+	public static Container getWelcomeContainer(Member member, int guildSize) throws IOException {
 		return Container.of(
 			TextDisplay.of("## Welcome to the Church of ChisaTaki!"),
 			TextDisplay.of(
 				"Read <#1010080963927232573> and pick roles in <#1024037775743406111>. Enjoy your stay as you worship ChisaTaki~"
 			),
-			FileDisplay.fromFile(FileUpload.fromData(createWelcomeGif(member), "welcome.gif")),
+            MediaGallery.of(MediaGalleryItem.fromFile(FileUpload.fromData(createWelcomeGif(member), "welcome.gif"))),
 			TextDisplay.of("-# Worshipper Count: " + guildSize)
 		).withAccentColor(ColorUtils.PURPLE);
 	}
@@ -111,7 +113,7 @@ public class WelcomeInteraction extends ListenerAdapter {
         return Container.of(
             TextDisplay.of("## Welcome to the Church of ChisaTaki!"),
             TextDisplay.of("Read <#1010080963927232573> and pick roles in <#1024037775743406111>. Enjoy your stay as you worship ChisaTaki~"),
-            FileDisplay.fromFile(FileUpload.fromData(createWelcomeGif(member), "welcome.gif")),
+            MediaGallery.of(MediaGalleryItem.fromFile(FileUpload.fromData(createWelcomeGif(member), "welcome.gif"))),
             TextDisplay.of("-# Worshipper Count: " + guildSize)
         ).withAccentColor(ColorUtils.PURPLE);
     }

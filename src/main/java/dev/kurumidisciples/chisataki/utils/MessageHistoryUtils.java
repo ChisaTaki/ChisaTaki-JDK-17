@@ -3,6 +3,9 @@ package dev.kurumidisciples.chisataki.utils;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
@@ -10,6 +13,8 @@ import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 
 public class MessageHistoryUtils {
     private static final String BOT_ID = "1070074991653167144";
+
+    final static Logger logger = LoggerFactory.getLogger(MessageHistoryUtils.class);
     private static final int DEFAULT_RETRIEVE_COUNT = 2;
 
     public static boolean isConsecutiveMessage(Member member, TextChannel textChannel, String sentMessageId) {
@@ -42,7 +47,7 @@ public class MessageHistoryUtils {
             history.retrievePast(DEFAULT_RETRIEVE_COUNT).submit().get();
             return history.getRetrievedHistory();
         } catch (InterruptedException | ExecutionException e) {
-            // Log the error or handle it appropriately
+            logger.error("Failed to retrieve message history from channel: " + textChannel.getId(), e);
             return null;
         }
     }
