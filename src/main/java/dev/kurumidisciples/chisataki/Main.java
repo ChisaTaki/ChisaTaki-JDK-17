@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.theokanning.openai.assistants.assistant.Assistant;
 import com.theokanning.openai.service.OpenAiService;
 
+import dev.kurumidisciples.chisataki.alerts.ErrorListener;
 import dev.kurumidisciples.chisataki.commands.CommandCenter;
 import dev.kurumidisciples.chisataki.internal.database.Database;
 import dev.kurumidisciples.chisataki.listeners.AiListenerInteraction;
@@ -35,6 +36,9 @@ import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 
+
+
+
 public class Main {
   final static Logger logger = LoggerFactory.getLogger(Main.class);
   final static int gcSec = 3600;
@@ -44,6 +48,18 @@ public class Main {
   private static OpenAiService aiService;
 
   public static void main(String[] args) {
+
+    
+        var iFactory = org.slf4j.LoggerFactory.getILoggerFactory();
+        if (!(iFactory instanceof ch.qos.logback.classic.LoggerContext ctx)) {
+          throw new IllegalStateException("Not using Logback; got " + iFactory.getClass());
+        }
+        var tee = new ErrorListener(); // AppenderBase
+        tee.setName("ErrorTee");
+        tee.setContext(ctx);
+        tee.start();
+        var root = ctx.getLogger(org.slf4j.Logger.ROOT_LOGGER_NAME);
+        if (root.getAppender("ErrorTee") == null) root.addAppender(tee);
     // We construct a builder for a BOT account. If we wanted to use a CLIENT
     // account
     // we would use AccountType.CLIENT
