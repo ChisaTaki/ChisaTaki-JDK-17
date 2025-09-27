@@ -20,7 +20,7 @@ import net.dv8tion.jda.api.events.interaction.ModalInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import net.dv8tion.jda.api.interactions.modals.Modal;
+import net.dv8tion.jda.api.modals.Modal;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
@@ -45,7 +45,7 @@ public class ModMailInteraction extends ListenerAdapter {
         if (event.getModalId().equals("mailModal")) {
             Guild guild = event.getGuild();
             if (guild == null) {
-                event.reply("Error: Guild not found").setEphemeral(true).queue();
+                event.reply("Error: Guild not found. How did that happen?").setEphemeral(true).queue();
                 return;
             }
             event.deferReply(true).queue();
