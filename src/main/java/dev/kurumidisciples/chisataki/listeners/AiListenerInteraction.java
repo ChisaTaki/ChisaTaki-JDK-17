@@ -1,7 +1,12 @@
 package dev.kurumidisciples.chisataki.listeners;
 
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.annotation.Nonnull;
 
@@ -58,10 +63,44 @@ public class AiListenerInteraction extends ListenerAdapter {
                 // max number of attachments is 3 for now
                 Optional<List<NamedAttachmentProxy>> attachments = event.getMessage().getAttachments().isEmpty() ? Optional.empty() : Optional.of(event.getMessage().getAttachments().stream().limit(3).map(attach -> attach.getProxy()).toList());
                 logger.info("Requesting response from AI");
-                AssistantMessageRequest.Response response = request.submitRequest(attachments);
-                logger.info("Response received from AI");
 
-                event.getMessage().reply(response.getMessage(event.getMember())).mentionRepliedUser(true).queue();
+                ExecutorService executor = Executors.newSingleThreadExecutor();
+                Future<AssistantMessageRequest.Response> responseFromAi = executor.submit(() -> {
+                    logger.info("Requesting response from AI");
+                    return request.submitRequest(attachments);
+                });
+
+                try {
+                    AssistantMessageRequest.Response response = responseFromAi.get(10, TimeUnit.SECONDS);
+                    logger.info("Response received from AI");
+
+                    event.getMessage()
+                        .reply(response.getMessage(event.getMember()))
+                        .mentionRepliedUser(true)
+                        .queue();
+
+                } catch (TimeoutException te) {
+                    logger.warn("AI request timed out after 10 seconds; cancelling task");
+                    responseFromAi.cancel(true);       // Interrupt the task if possible
+                    event.getMessage()
+                        .reply("<:KurumiSip:1154898166634782851>: RoboChisato and RoboTakina are taking too long to respond. They might be on a mission. Please try again later.")
+                        .mentionRepliedUser(true)
+                        .queue();
+
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    logger.error("Interrupted while waiting for AI response", ie);
+
+                } catch (ExecutionException ee) {
+                    logger.error("AI request failed", ee.getCause());
+                    event.getMessage()
+                        .reply("<:KurumiSip:1154898166634782851>: RoboChisato and RoboTakina are having some issues. Please try again later.")
+                        .mentionRepliedUser(true)
+                        .queue();
+
+                } finally {
+                    executor.shutdownNow();
+                }
             }
         };
         executor.execute(messageThread);
