@@ -9,6 +9,8 @@ import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.label.Label;
+import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.components.textinput.TextInput;
 import net.dv8tion.jda.api.components.textinput.TextInputStyle;
 import net.dv8tion.jda.api.entities.Guild;
@@ -52,7 +54,7 @@ public class ModMailInteraction extends ListenerAdapter {
 
             TextChannel templateChannel = guild.getTextChannelById("1011966579610755102");
             if (templateChannel == null) {
-                event.getHook().sendMessage("Error: Template channel not found").setEphemeral(true).queue();
+                event.getHook().sendMessage("Error: Template channel not found. Contact Bot Dev.").setEphemeral(true).queue();
                 return;
             }
 
@@ -86,20 +88,26 @@ public class ModMailInteraction extends ListenerAdapter {
     }
 
     private static Modal getModMailModal() {
-        TextInput subject = TextInput.create("subject", "Subject", TextInputStyle.SHORT)
-                .setPlaceholder("Subject of this ticket")
-                .setMinLength(10)
-                .setMaxLength(100)
+        StringSelectMenu subject = StringSelectMenu.create("menu:subject")
+                .setPlaceholder("Select a concern")
+                .addOption("Report a user", "Report a user")
+                .addOption("Appeal a punishment", "Appeal a punishment")
+                .addOption("Request help", "Request help")
+                .addOption("Other", "Other")
+                .setRequired(true)
                 .build();
 
-        TextInput body = TextInput.create("body", "Body", TextInputStyle.PARAGRAPH)
-                .setPlaceholder("Your concerns go here")
+        TextInput body = TextInput.create("body", TextInputStyle.PARAGRAPH)
+                .setPlaceholder("Body of your message")
                 .setMinLength(10)
                 .setMaxLength(1000)
                 .build();
 
         return Modal.create("mailModal", "Contact Staff")
-                .addComponents(ActionRow.of(subject), ActionRow.of(body))
+                .addComponents(
+                    Label.of("Subject", subject),
+                    Label.of("Body", body)
+                )
                 .build();
     }
 
