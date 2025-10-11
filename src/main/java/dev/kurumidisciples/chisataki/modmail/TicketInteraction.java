@@ -25,6 +25,7 @@ import dev.kurumidisciples.chisataki.utils.MessageCache;
 import dev.kurumidisciples.chisataki.utils.RoleUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.label.Label;
 import net.dv8tion.jda.api.components.textinput.TextInput;
 import net.dv8tion.jda.api.components.textinput.TextInputStyle;
 import net.dv8tion.jda.api.entities.Guild;
@@ -89,9 +90,9 @@ public class TicketInteraction extends ListenerAdapter {
         event.getMessage().editMessageEmbeds(event.getMessage().getEmbeds().get(0))
                 .setComponents(
                     ActionRow.of(
-                        event.getMessage().getButtons().get(0).asDisabled(),
-                        event.getMessage().getButtons().get(1),
-                        event.getMessage().getButtons().get(2))) /* Will need to update later as getButtons() deprecated */
+                        event.getMessage().getComponents().get(0).asActionRow().getButtons().get(0).asDisabled(),
+                        event.getMessage().getComponents().get(0).asActionRow().getButtons().get(1),
+                        event.getMessage().getComponents().get(0).asActionRow().getButtons().get(2))) /* Will need to update later as getButtons() deprecated */
                 .queue();
     }
 
@@ -169,7 +170,7 @@ public class TicketInteraction extends ListenerAdapter {
         Guild guild = event.getGuild();
 
         // Remove user's permission from the channel
-        channel.getManager().removePermissionOverride(ticket.getMemberId()).queue();
+        channel.getManager().removePermissionOverride(ticket.getMemberId()).queueAfter(10, TimeUnit.SECONDS);
 
         // Retrieve messages asynchronously
         channel.sendMessage("*Closing Ticket...*").complete();
@@ -186,15 +187,19 @@ public class TicketInteraction extends ListenerAdapter {
         }
         
         event.reply("Ticket closed with reason: " + ticket.getReason()).queue();
-        channel.delete().queueAfter(10, TimeUnit.SECONDS);
+        channel.delete().queueAfter(30, TimeUnit.SECONDS);
     }
 
     private Modal getReasonModal(String ticketNumber) {
-        TextInput reason = TextInput.create("reason", "Reason", TextInputStyle.SHORT)
+        TextInput reason = TextInput.create("reason", TextInputStyle.SHORT)
+                .setPlaceholder("Reason")
                 .setMinLength(5)
                 .build();
         return Modal.create("reasonModal-" + ticketNumber, "Ticket Reason")
-                .addComponents(ActionRow.of(reason))
+                .addComponents(Label.of(
+                    "Please provide a reason for closing this ticket.",
+                    reason
+                ))
                 .build();
     }
 
@@ -224,6 +229,7 @@ public class TicketInteraction extends ListenerAdapter {
         return data.toString();
     }
 
+    @Deprecated
     private List<Message> combineMessages(List<Message> messages1, List<Message> messages2) {
         List<Message> combined = new ArrayList<>(messages1);
         for (Message message : messages2) {
