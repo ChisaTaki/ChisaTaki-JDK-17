@@ -5,7 +5,7 @@ import java.util.List;
 import dev.kurumidisciples.chisataki.booster.BoosterDatabase;
 import dev.kurumidisciples.chisataki.captcha.WhitelistedUsersDatabase;
 import dev.kurumidisciples.chisataki.character.AiStatusTable;
-import dev.kurumidisciples.chisataki.character.UsageTable;
+import dev.kurumidisciples.chisataki.character.GlobalThread;
 import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 import dev.kurumidisciples.chisataki.modmail.Ticket;
@@ -29,12 +29,12 @@ public class TableCollection {
             new BoosterDatabase(),
             new QuoteSettingsDatabase(),
             new QuoteQuotaDatabase(),
-            new UsageTable(),
             new AiStatusTable(),
             new WhitelistedUsersDatabase(),
             new TimeStorage(),
             new Pairings(),
-            new SantaDatabase()
+            new SantaDatabase(),
+            new GlobalThread()
         );
     }
 }

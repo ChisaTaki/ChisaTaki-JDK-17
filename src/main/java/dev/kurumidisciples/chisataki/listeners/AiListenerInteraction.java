@@ -42,14 +42,14 @@ public class AiListenerInteraction extends ListenerAdapter {
                 
                 
                 if (!event.getMessage().getMentions().isMentioned(user, MentionType.USER) || !(event.getChannel().getId().equals(ChannelEnum.BOT_CHANNEL.getId())) ) return; //ignore all messages that don't mention the bot
-                logger.info("Message mentioning the bot received from user: {}", event.getAuthor().getId());
+                logger.info("Message mentioning the bot received from user: {}[{}]", event.getAuthor().getName(), event.getAuthor().getId());
                 
                 //check if the user has exceeded the message limit
                 //if they have simply ignore them
                 if (UsageTableUtils.selectUserUsage(event.getAuthor().getIdLong()) != null){
                     UserUsage usage = UsageTableUtils.selectUserUsage(event.getAuthor().getIdLong());
                     if (checkUsage(usage, event.getGuild().getIdLong())){
-                        logger.info("User {} has reached the message limit for the day", event.getAuthor().getId());
+                        logger.info("User {}[{}] has reached the message limit for the day", event.getAuthor().getName(), event.getAuthor().getId());
                         //for debugging purposes we will responed to the user for now
                         event.getMessage().reply("You have reached the message limit for the day").mentionRepliedUser(true).submit().thenAccept(message -> {
                             message.delete().queueAfter(10, java.util.concurrent.TimeUnit.SECONDS);
@@ -58,7 +58,7 @@ public class AiListenerInteraction extends ListenerAdapter {
                     }
                 }
                 event.getChannel().sendTyping().queue(); // let the user know that the bot saw there message and is typing a response
-                //if the user has not reached the message limit, we will respond to the user by contacting the AI assistant
+                //if the user has not reached the message limit, we will respond to the user by contacting the AI assistant currently disabled
                 AssistantMessageRequest request = new AssistantMessageRequest(event.getMessage().getContentStripped(), event.getMember(), event.getGuild().getIdLong());
                 // max number of attachments is 3 for now
                 Optional<List<NamedAttachmentProxy>> attachments = event.getMessage().getAttachments().isEmpty() ? Optional.empty() : Optional.of(event.getMessage().getAttachments().stream().limit(3).map(attach -> attach.getProxy()).toList());

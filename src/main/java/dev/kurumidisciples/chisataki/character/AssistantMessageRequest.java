@@ -80,18 +80,19 @@ public class AssistantMessageRequest {
 
         Thread thread = null;
         // Check if the user has a thread else create a new one
-        String userThreadId = UsageTableUtils.selectUserThreadId(member.getIdLong());
-        if (userThreadId == null) {
+        String guildThreadId = GlobalThreadUtils.getThreadIdFromGuild(guildId); //changed to use a global thread per guild
+        if (guildThreadId == null) {
             ThreadRequest threadRequest = ThreadRequest.builder().build();
             thread = aiService.createThread(threadRequest);
+            GlobalThreadUtils.insertGuildThread(guildId, thread.getId());
         } else {
-            thread = aiService.retrieveThread(userThreadId);
+            thread = aiService.retrieveThread(guildThreadId);
         }
         
-        updateUsage(thread.getId()); //will update usage for the given user, or create a new usage if it doesn't exist and push it to the database
+        //updateUsage(thread.getId()); //will update usage for the given user, or create a new usage if it doesn't exist and push it to the database
 
         MessageRequestBuilder requestBuilder = MessageRequest.builder()
-        .content(userMessage);
+        .content(member.getEffectiveName() + " said: " + userMessage);
         if (!imageContents.isEmpty()) {
             requestBuilder.content(imageContents);
         }
@@ -124,7 +125,7 @@ public class AssistantMessageRequest {
         return submitRequest(Optional.empty());
     }
 
-
+    @Deprecated
     private void updateUsage(String threadId) {
         UserUsage usage = UsageTableUtils.selectUserUsage(member.getIdLong());
         long currentTime = System.currentTimeMillis();
