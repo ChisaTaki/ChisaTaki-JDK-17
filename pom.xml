@@ -33,6 +33,25 @@
 	<dependencies>
 
 		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.23.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>2.23.1</version>
+		</dependency>
+
+
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+			<version>1.5.18</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 			<version>1.5.3</version>
@@ -223,7 +242,7 @@
 		<dependency>
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
-			<version>6.0.0-rc.1</version>
+			<version>6.0.0</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -318,7 +337,7 @@
 					<dependency>
 					<groupId>net.dv8tion</groupId>
 					<artifactId>JDA</artifactId>
-					<version>6.0.0-rc.1</version>
+					<version>6.0.0</version>
 					</dependency>
 				</dependencies>
 			</plugin>
