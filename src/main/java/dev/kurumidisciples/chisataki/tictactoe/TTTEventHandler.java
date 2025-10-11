@@ -118,7 +118,8 @@ public class TTTEventHandler extends ListenerAdapter{
                     row.add(Button.of(ButtonStyle.SECONDARY, buttonToDisable.getButton().getCustomId(), emojiToSet).asDisabled());
                 }
                 else{
-                    row.add(currentBoard.get(i).get(j).withId("TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + nextPlayer.getId()));
+                    Button tempButtoon = Button.of(currentBoard.get(i).get(j).getStyle(), "TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + nextPlayer.getId(), currentBoard.get(i).get(j).getLabel());
+                    row.add(tempButtoon);
                 }
             }
             updatedBoard.add(row);
@@ -161,7 +162,7 @@ public class TTTEventHandler extends ListenerAdapter{
     
     private List<List<Button>> extractButtonsFromMessage(Message message) {
         List<List<Button>> buttons = new ArrayList<>();
-        message.getActionRows().forEach(actionRow -> buttons.add(actionRow.getButtons()));
+        message.getComponents().forEach(actionRow -> buttons.add(actionRow.asActionRow().getButtons()));
         return buttons;
     }
     
