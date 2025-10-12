@@ -92,7 +92,7 @@ public class Main {
               commandCenter,
               new SantaInteraction()
           )
-          .setActivity(Activity.customStatus("On Honeymoon with Takina..."))
+          .setActivity(Activity.customStatus("On Honeymoon with Takina... (Release Candidate Ver)"))
           .build();
       jda.awaitReady(); // awaits for the cache system to build
       logger.info("Chisataki Bot successfully built and connected to JDA!");
