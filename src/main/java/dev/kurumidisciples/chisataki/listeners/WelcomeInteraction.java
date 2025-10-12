@@ -68,9 +68,10 @@ public class WelcomeInteraction extends ListenerAdapter {
 				int guildSize = event.getGuild().getMembers().size();
 				
 				try {
-					event.getGuild().getTextChannelById(ChannelEnum.WELCOME.getId()).sendMessageComponents(
-						getWelcomeContainer(event.getMember(), event.getGuild().getMembers().size())
-					).useComponentsV2().queue();
+                    event.getGuild().getTextChannelById(ChannelEnum.WELCOME.getId()).sendMessage("Hello " + event.getMember().getAsMention())
+                        .setComponents(getWelcomeContainer(event.getMember(), event.getGuild().getMembers().size()))
+                        .useComponentsV2()
+                        .queue();
 				} catch (IOException e) {
 					logger.error("Failed to create welcome message for " + event.getMember().getUser().getName(), e);
 					try {
