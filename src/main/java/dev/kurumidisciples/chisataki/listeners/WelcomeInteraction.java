@@ -68,17 +68,20 @@ public class WelcomeInteraction extends ListenerAdapter {
 				int guildSize = event.getGuild().getMembers().size();
 				
 				try {
-                    event.getGuild().getTextChannelById(ChannelEnum.WELCOME.getId()).sendMessage("Hello " + event.getMember().getAsMention())
+                    /*event.getGuild().getTextChannelById(ChannelEnum.WELCOME.getId()).sendMessage("Hello " + event.getMember().getAsMention())
                         .setComponents(getWelcomeContainer(event.getMember(), event.getGuild().getMembers().size()))
                         .useComponentsV2()
-                        .queue();
+                        .queue(); */
+                        event.getGuild().getTextChannelById(ChannelEnum.WELCOME.getId()).sendMessage("Hello " + event.getMember().getAsMention() + "!").setEmbeds(buildEmbed(guildSize))
+					.setFiles(FileUpload.fromData(createWelcomeGif(event.getMember()), "welcome.gif")).queue();
 				} catch (IOException e) {
 					logger.error("Failed to create welcome message for " + event.getMember().getUser().getName(), e);
 					try {
-                        event.getGuild().getTextChannelById(ChannelEnum.WELCOME.getId()).sendMessageComponents(
+                       /*  event.getGuild().getTextChannelById(ChannelEnum.WELCOME.getId()).sendMessageComponents(
                             createFailureContainer(event.getMember(), guildSize)
-                        ).useComponentsV2().queue();
-                    } catch (IOException e1) {
+                        ).useComponentsV2().queue(); */
+                        event.getGuild().getTextChannelById(ChannelEnum.WELCOME.getId()).sendMessage("Hello " + event.getMember().getAsMention() + "!").setEmbeds(createEmbedFailure(guildSize)).queue();
+                    } catch (Exception e1) {
                        logger.error("Failed to create fallback welcome message for " + event.getMember().getUser().getName(), e1);
                     }
 				}
