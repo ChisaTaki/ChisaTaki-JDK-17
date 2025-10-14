@@ -71,7 +71,7 @@ public class AiListenerInteraction extends ListenerAdapter {
                 });
 
                 try {
-                    AssistantMessageRequest.Response response = responseFromAi.get(10, TimeUnit.SECONDS);
+                    AssistantMessageRequest.Response response = responseFromAi.get(60, TimeUnit.SECONDS);
                     logger.info("Response received from AI");
 
                     event.getMessage()
