@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,22 +25,27 @@ import net.dv8tion.jda.api.entities.emoji.EmojiUnion;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
+import net.dv8tion.jda.api.utils.NamedAttachmentProxy;
 
 @SuppressWarnings("null")
 public class BoosterCommand extends SlashCommand {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(BoosterCommand.class);
-    
+
     public BoosterCommand() {
         super("boost", "modify your benefits as a booster");
         subcommands = new ArrayList<SubcommandData>();
         subcommands.add(new SubcommandData("role", "modify your booster role")
-            .addOption(OptionType.STRING, "name" , "the name of the role you want to set", false)
-            .addOption(OptionType.STRING, "color", "hex code of the color you want to set. include '#'", false)
-            .addOption(OptionType.STRING, "icon", "emote to set as your icon", false)
-        );
-        subcommands.add(new SubcommandData("remove", "Remove your booster role")); // removes the booster from the database and deletes the role in the guild
-        subcommands.add(new SubcommandData("claim", "claim your booster role")); // adds the booster to the database and creates a generic role for them to modify to their liking
+                .addOption(OptionType.STRING, "name", "the name of the role you want to set", false)
+                .addOption(OptionType.STRING, "color", "hex code of the color you want to set. include '#'", false)
+                .addOption(OptionType.STRING, "icon", "emote to set as your icon", false)
+                .addOption(OptionType.ATTACHMENT, "image", "image to set as your icon", false));
+        subcommands.add(new SubcommandData("remove", "Remove your booster role")); // removes the booster from the
+                                                                                   // database and deletes the role in
+                                                                                   // the guild
+        subcommands.add(new SubcommandData("claim", "claim your booster role")); // adds the booster to the database and
+                                                                                 // creates a generic role for them to
+                                                                                 // modify to their liking
     }
 
     @Override
@@ -55,17 +63,28 @@ public class BoosterCommand extends SlashCommand {
                 event.reply("You can only modify one aspect of your role at a time!").setEphemeral(true).queue();
             } else {
                 String option = event.getOptions().get(0).getName();
-                String value = event.getOptions().get(0).getAsString();
                 switch (option) {
                     case "name":
+                        String value = event.getOptionsByName("name").get(0).getAsString();
                         modifyRoleName(event, booster, value);
                         break;
                     case "color":
+                        value = event.getOptionsByName("color").get(0).getAsString();
                         modifyRoleColor(event, booster, value);
                         break;
                     case "icon":
+                        value = event.getOptionsByName("icon").get(0).getAsString();
                         modifyRoleIcon(event, booster, value);
                         break;
+                    case "image":
+                        if (!event.getOptionsByName("image").get(0).getAsAttachment().isImage()) {
+                            event.reply("The attachment you provided is not an image! Please provide a valid image.")
+                                    .setEphemeral(true).queue();
+                            return;
+                        }
+                        modifyRoleIcon(event, booster,
+                                event.getOptionsByName("image").get(0).getAsAttachment().getProxy());
+
                 }
             }
         } else if (name.equals("claim")) {
@@ -76,11 +95,14 @@ public class BoosterCommand extends SlashCommand {
             String uuid = UUID.randomUUID().toString();
             /* create role and add it to event user */
             event.getGuild().createRole().setName(uuid).queue(role -> {
-                event.getGuild().modifyRolePositions().selectPosition(role).moveAbove(event.getGuild().getRoleById(RoleEnum.BOOSTER.getId())).queue();
+                event.getGuild().modifyRolePositions().selectPosition(role)
+                        .moveAbove(event.getGuild().getRoleById(RoleEnum.BOOSTER.getId())).queue();
                 event.getGuild().addRoleToMember(event.getMember(), role).queue();
                 BoosterDatabaseUtils.insertBooster(userId, role.getIdLong());
-                event.replyEmbeds(BoosterEmbedUtils.getRoleClaimEmbed(event.getInteraction(), role)).setEphemeral(false).queue();
-                LOGGER.info("Booster role claimed for user " + userId + " with role " + role.getId() + " and name " + uuid);
+                event.replyEmbeds(BoosterEmbedUtils.getRoleClaimEmbed(event.getInteraction(), role)).setEphemeral(false)
+                        .queue();
+                LOGGER.info(
+                        "Booster role claimed for user " + userId + " with role " + role.getId() + " and name " + uuid);
             });
         } else if (name.equals("remove")) {
             Booster booster = BoosterDatabaseUtils.getBooster(userId);
@@ -89,12 +111,16 @@ public class BoosterCommand extends SlashCommand {
             } else {
                 Role role = event.getGuild().getRoleById(Long.valueOf(booster.getRoleId()));
                 if (role == null) {
-                    event.reply("You have a registered role in the database, but the role doesn't exist in the server. Contact a bot developer through a ticket.").setEphemeral(true).queue();
+                    event.reply(
+                            "You have a registered role in the database, but the role doesn't exist in the server. Contact a bot developer through a ticket.")
+                            .setEphemeral(true).queue();
                     return;
                 }
                 BoosterDatabaseUtils.deleteBooster(userId);
                 role.delete().queue();
-                event.reply(String.format("Role (%s) has been successfully removed. You can reclaim the role at anytime.", role.getId())).setEphemeral(false).queue();
+                event.reply(String.format(
+                        "Role (%s) has been successfully removed. You can reclaim the role at anytime.", role.getId()))
+                        .setEphemeral(false).queue();
                 LOGGER.info("Booster role removed for user " + userId + " with role " + role.getId());
             }
         }
@@ -107,72 +133,168 @@ public class BoosterCommand extends SlashCommand {
     }
 
     @Override
-    public String getErrorMessage(){
-        return "Please boost cstk to get gay colors! <3 Or use the command <#" + ChannelEnum.BOOSTER_CHANNEL.getId() + "> to get your booster role!";
+    public String getErrorMessage() {
+        return "Please boost cstk to get gay colors! <3 Or use the command <#" + ChannelEnum.BOOSTER_CHANNEL.getId()
+                + "> to get your booster role!";
     }
 
-
-    private static void modifyRoleIcon(SlashCommandInteractionEvent event, Booster booster, String icon){
+    private static void modifyRoleIcon(SlashCommandInteractionEvent event, Booster booster, String icon) {
         Role role = event.getGuild().getRoleById(Long.valueOf(booster.getRoleId()));
 
         if (role == null) {
-            event.reply("Your role does not exist!").setEphemeral(true).queue();
+            event.reply("Your role does not exist! Please claim your role before using this command.")
+                    .setEphemeral(true).queue();
             return;
         }
         EmojiUnion emoji = Emoji.fromFormatted(icon);
 
-        if (emoji.getType() == Emoji.Type.CUSTOM){
-            try{
-            InputStream stream = emoji.asCustom().getImage().download().get();
-            role.getManager().setIcon(Icon.from(stream)).queue();
-            } catch (InterruptedException | ExecutionException e){
-                event.reply("Unable to retrieve your emote from the API. Please try again later or contact a moderator.").setEphemeral(true).queue();
-                LOGGER.error("Failed to retrieve emote image from ImageProxy for user " + event.getUser().getId() + " and emote " + emoji.asCustom().getId(), e);
-            } catch (IOException e){
-                event.reply("Failed to read emote image. Please try again later or contact a moderator.").setEphemeral(true).queue();
-                LOGGER.error("Failed to convert InputStream to Icon for user " + event.getUser().getId() + " and emote " + emoji.asCustom().getId(), e);
+        if (emoji.getType() == Emoji.Type.CUSTOM) {
+            try {
+                InputStream stream = emoji.asCustom().getImage().download().get();
+                role.getManager().setIcon(Icon.from(stream)).queue();
+            } catch (InterruptedException | ExecutionException e) {
+                event.reply(
+                        "Unable to retrieve your emote from the API. Please try again later or contact a moderator.")
+                        .setEphemeral(true).queue();
+                LOGGER.error("Failed to retrieve emote image from ImageProxy for user " + event.getUser().getId()
+                        + " and emote " + emoji.asCustom().getId(), e);
+            } catch (IOException e) {
+                event.reply("Failed to read emote image. Please try again later or contact a moderator.")
+                        .setEphemeral(true).queue();
+                LOGGER.error("Failed to convert InputStream to Icon for user " + event.getUser().getId() + " and emote "
+                        + emoji.asCustom().getId(), e);
             }
-        } else if (emoji.getType() == Emoji.Type.UNICODE){
+        } else if (emoji.getType() == Emoji.Type.UNICODE) {
             role.getManager().setIcon(emoji.asUnicode().getAsCodepoints()).queue();
         }
         role = event.getGuild().getRoleById(Long.valueOf(booster.getRoleId()));
         event.replyEmbeds(BoosterEmbedUtils.getRoleIconEmbed(event, role)).setEphemeral(false).queue();
-        LOGGER.info("Role icon updated for user " + event.getUser().getId() + " and role " + role.getId() + " with icon " + icon);
+        LOGGER.info("Role icon updated for user " + event.getUser().getId() + " and role " + role.getId()
+                + " with icon " + icon);
     }
 
-    private static void modifyRoleName(SlashCommandInteractionEvent event, Booster booster, String name){
+    private static void modifyRoleIcon(SlashCommandInteractionEvent event, Booster booster, NamedAttachmentProxy proxy) {
+        // defer reply since downloading the image may take some time
+
+        Role role = event.getGuild().getRoleById(Long.valueOf(booster.getRoleId()));
+
+        if (role == null) {
+            event.reply("Your role does not exist! Please claim your role before using this command.")
+                    .setEphemeral(true).queue();
+            return;
+        }
+
+        event.deferReply().queue();
+
+        try {
+            InputStream stream = proxy.download().get(); // download the image from the attachment
+            
+            if (!meetsDiscordLimtits(stream)) {
+                event.getHook().sendMessage(
+                        "The image you provided exceeds Discord's limits for role icons (256x256 pixels and less than 256KB in size). Please provide a different image.")
+                        .queue(message -> message.delete().queueAfter(20, java.util.concurrent.TimeUnit.SECONDS));
+                return;
+            }
+
+            role.getManager().setIcon(Icon.from(stream)).queue(); 
+
+            LOGGER.info("Role icon updated for user " + event.getUser().getId() + " and role " + role.getId()
+                    + " with attachment " + proxy.getFileName());
+
+            event.getHook().editOriginalEmbeds(BoosterEmbedUtils.getRoleIconEmbed(event, role)).queue();
+        } catch (InterruptedException | ExecutionException e) {
+            event.getHook().sendMessage("An error occured. Please try again later or contact a moderator.")
+                    .queue(message -> message.delete().queueAfter(20, java.util.concurrent.TimeUnit.SECONDS));
+            LOGGER.error("Failed to retrieve image from AttachmentProxy for user " + event.getUser().getId()
+                    + " and attachment " + proxy.getFileName(), e);
+            return;
+        } catch (IOException e) {
+            event.getHook().sendMessage("An error occured. Please try again later or contact a moderator.")
+                    .queue(message -> message.delete().queueAfter(20, java.util.concurrent.TimeUnit.SECONDS));
+            LOGGER.error("Failed to convert InputStream to Icon for user " + event.getUser().getId()
+                    + " and attachment " + proxy.getFileName(), e);
+            return;
+        }
+
+    }
+
+    private static void modifyRoleName(SlashCommandInteractionEvent event, Booster booster, String name) {
+        Role role = event.getGuild().getRoleById(Long.valueOf(booster.getRoleId()));
+
+        if (role == null) {
+            event.reply("Your role does not exist! Please claim your role before using this command.")
+                    .setEphemeral(true).queue();
+            return;
+        }
+        try {
+            role.getManager().setName(name).queue();
+            LOGGER.info("Role name updated for user " + event.getUser().getId() + " and role " + role.getId()
+                    + " with name " + name);
+            event.replyEmbeds(BoosterEmbedUtils.getRoleNameEmbed(event, role, name)).setEphemeral(false).queue();
+        } catch (IllegalArgumentException e) {
+            event.reply(
+                    "The name you have entered exceeds 100 characters! If you believe this is an error contact a moderator.")
+                    .setEphemeral(true).queue();
+            LOGGER.error("Failed to update role name for user " + event.getUser().getId() + " and role " + role.getId()
+                    + " with name " + name, e);
+        }
+    }
+
+    private static void modifyRoleColor(SlashCommandInteractionEvent event, Booster booster, String hexcode) {
         Role role = event.getGuild().getRoleById(Long.valueOf(booster.getRoleId()));
 
         if (role == null) {
             event.reply("Your role does not exist!").setEphemeral(true).queue();
             return;
         }
-        try{
-        role.getManager().setName(name).queue();
-        LOGGER.info("Role name updated for user " + event.getUser().getId() + " and role " + role.getId() + " with name " + name);
-        event.replyEmbeds(BoosterEmbedUtils.getRoleNameEmbed(event, role, name)).setEphemeral(false).queue();
-        } catch (IllegalArgumentException e){
-            event.reply("The name you have entered exceeds 100 characters! If you believe this is an error contact a moderator.").setEphemeral(true).queue();
-            LOGGER.error("Failed to update role name for user " + event.getUser().getId() + " and role " + role.getId() + " with name " + name, e);
-        }
-    }
-
-    private static void modifyRoleColor(SlashCommandInteractionEvent event, Booster booster, String hexcode){
-        Role role = event.getGuild().getRoleById(Long.valueOf(booster.getRoleId()));
-
-        if (role == null) {
-            event.reply("Your role does not exist!").setEphemeral(true).queue();
-            return;
-        }
-        try{
-        //remove the # from the hexcode
-        hexcode = hexcode.substring(1);
-        role.getManager().setColor(Integer.parseInt(hexcode, 16)).queue();
-        LOGGER.info("Role color updated for user " + event.getUser().getId() + " and role " + role.getId() + " with color " + hexcode);
-        event.replyEmbeds(BoosterEmbedUtils.getRoleColorEmbed(event, role, Integer.parseInt(hexcode, 16))).setEphemeral(false).queue();
-        } catch (NumberFormatException e){
+        try {
+            // remove the # from the hexcode
+            hexcode = hexcode.substring(1);
+            role.getManager().setColor(Integer.parseInt(hexcode, 16)).queue();
+            LOGGER.info("Role color updated for user " + event.getUser().getId() + " and role " + role.getId()
+                    + " with color " + hexcode);
+            event.replyEmbeds(BoosterEmbedUtils.getRoleColorEmbed(event, role, Integer.parseInt(hexcode, 16)))
+                    .setEphemeral(false).queue();
+        } catch (NumberFormatException e) {
             event.reply("Invalid hex code!").setEphemeral(true).queue();
-            LOGGER.error("Failed to update role color for user " + event.getUser().getId() + " and role " + role.getId() + " with color " + hexcode, e);
+            LOGGER.error("Failed to update role color for user " + event.getUser().getId() + " and role " + role.getId()
+                    + " with color " + hexcode, e);
+        }
+    }
+
+    private static Boolean meetsDiscordLimtits(InputStream stream) {
+        // Discord limits role icons to 256x256 pixels and less than 256KB in size
+        try {
+            BufferedImage image = ImageIO.read(stream);
+            if (image == null) {
+                LOGGER.warn("Failed to read image from stream");
+                return false;
+            }
+
+            // Check dimensions
+            int width = image.getWidth();
+            int height = image.getHeight();
+            if (width > 256 || height > 256) {
+                LOGGER.warn("Image dimensions exceed Discord limit: {}x{}", width, height);
+                return false;
+            }
+
+            // Check file size (256KB = 262144 bytes)
+            byte[] buffer = new byte[1024];
+            long totalBytes = 0;
+            int bytesRead;
+            while ((bytesRead = stream.read(buffer)) != -1) {
+                totalBytes += bytesRead;
+                if (totalBytes > 262144) {
+                    LOGGER.warn("Image size exceeds Discord limit: {} bytes", totalBytes);
+                    return false;
+                }
+            }
+
+            return true;
+        } catch (IOException e) {
+            LOGGER.error("Error validating image dimensions and size", e);
+            return false;
         }
     }
 }
