@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import dev.kurumidisciples.chisataki.internal.database.Database;
 import dev.kurumidisciples.chisataki.internal.database.exceptions.InitializationException;
 
+@Deprecated
 public class UsageTableUtils {
     
 

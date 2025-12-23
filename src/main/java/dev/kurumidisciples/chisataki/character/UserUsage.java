@@ -1,5 +1,6 @@
 package dev.kurumidisciples.chisataki.character;
 
+@Deprecated
 public class UserUsage {
     
 

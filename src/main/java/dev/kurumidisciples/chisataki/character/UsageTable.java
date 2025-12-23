@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
 
+@Deprecated
 public class UsageTable implements GenericDatabaseTable {
 
 
