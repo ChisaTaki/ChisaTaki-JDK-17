@@ -32,7 +32,7 @@ public class Database {
 
     /**
      * This method is used to initialize the database.
-     * The database used is a SQL database and is connected to the sparkedhost database platform.
+     * The database used is a SQL database and is connected to locally run database.
      * Sharding is not supported at the moment.
      */
     protected static void init() {

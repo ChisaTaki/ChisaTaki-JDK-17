@@ -8,6 +8,7 @@ import dev.kurumidisciples.chisataki.character.AiStatusTable;
 import dev.kurumidisciples.chisataki.character.GlobalThread;
 import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
 import dev.kurumidisciples.chisataki.internal.database.middlemen.GenericDatabaseTable;
+import dev.kurumidisciples.chisataki.introduction.IntroductionUsers;
 import dev.kurumidisciples.chisataki.modmail.Ticket;
 import dev.kurumidisciples.chisataki.quotes.QuoteSettingsDatabase;
 import dev.kurumidisciples.chisataki.quotes.quota.QuoteQuotaDatabase;
@@ -34,7 +35,8 @@ public class TableCollection {
             new TimeStorage(),
             new Pairings(),
             new SantaDatabase(),
-            new GlobalThread()
+            new GlobalThread(),
+            new IntroductionUsers()
         );
     }
 }
