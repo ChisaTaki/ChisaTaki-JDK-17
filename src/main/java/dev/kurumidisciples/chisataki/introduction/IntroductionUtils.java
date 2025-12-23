@@ -30,7 +30,7 @@ public class IntroductionUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(IntroductionUtils.class);
 
-    /*
+    /**
      * Checks if a user has an introduction message set.
      * @param userId The ID of the user to check.
      */
