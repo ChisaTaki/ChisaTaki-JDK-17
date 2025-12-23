@@ -1,7 +1,10 @@
 package dev.kurumidisciples.chisataki.utils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,4 +54,30 @@ public class MessageHistoryUtils {
             return null;
         }
     }
+
+    public static CompletableFuture<List<Message>> getAllChannelHistory(TextChannel textChannel){
+        MessageHistory history = textChannel.getHistory();
+        CompletableFuture<List<Message>> future = retrieve(history, new ArrayList<>());
+        return future;
+    }
+
+    private static CompletableFuture<List<Message>> retrieve(MessageHistory history, List<Message> allMessages) {
+        CompletableFuture<List<Message>> future = new CompletableFuture<>();
+
+        history.retrievePast(100).queueAfter(1, TimeUnit.SECONDS, messages -> {
+            if (messages.isEmpty()) {
+                logger.debug("Total Messages: {}", allMessages.size());
+                future.complete(allMessages);
+                return;
+            }
+
+            allMessages.addAll(messages);
+
+            retrieve(history, allMessages)
+                .thenAccept(future::complete);
+        }, future::completeExceptionally);
+
+        return future;
+    }
+
 }

@@ -9,6 +9,7 @@ import dev.kurumidisciples.chisataki.commands.slash.DebugCommand;
 import dev.kurumidisciples.chisataki.commands.slash.EmbedCommand;
 import dev.kurumidisciples.chisataki.commands.slash.GifCommand;
 import dev.kurumidisciples.chisataki.commands.slash.IgnoreCommand;
+import dev.kurumidisciples.chisataki.commands.slash.IntroductionSearchCommand;
 import dev.kurumidisciples.chisataki.commands.slash.MentionableCommand;
 import dev.kurumidisciples.chisataki.commands.slash.PercentageCommand;
 import dev.kurumidisciples.chisataki.commands.slash.RpsCommand;
@@ -72,7 +73,8 @@ public class CommandBuilder {
 				new AssKickCommand(),
 				new AiPropertiesCommand(),
 				new ChristmasCommand(),
-				new SecretSantaCommand()
+				new SecretSantaCommand(),
+				new IntroductionSearchCommand()
 		};
 	}
 	
