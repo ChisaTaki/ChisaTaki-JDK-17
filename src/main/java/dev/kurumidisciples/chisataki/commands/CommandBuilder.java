@@ -72,7 +72,7 @@ public class CommandBuilder {
 				new BoosterCommand(),
 				new AssKickCommand(),
 				new AiPropertiesCommand(),
-				new ChristmasCommand(),
+				//new ChristmasCommand(),
 				new SecretSantaCommand(),
 				new IntroductionSearchCommand()
 		};
