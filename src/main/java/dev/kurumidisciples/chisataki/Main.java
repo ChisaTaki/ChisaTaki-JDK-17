@@ -10,6 +10,7 @@ import dev.kurumidisciples.chisataki.alerts.ErrorListener;
 import dev.kurumidisciples.chisataki.commands.CommandCenter;
 import dev.kurumidisciples.chisataki.internal.database.Database;
 import dev.kurumidisciples.chisataki.listeners.AiListenerInteraction;
+import dev.kurumidisciples.chisataki.listeners.IntroductionListener;
 import dev.kurumidisciples.chisataki.listeners.MemeInteraction;
 import dev.kurumidisciples.chisataki.listeners.RoleMenuInteraction;
 import dev.kurumidisciples.chisataki.listeners.RuleInteraction;
@@ -89,6 +90,7 @@ public class Main {
               new TTTInteractionHandler(), 
               new TTTEventHandler(),
               new AiListenerInteraction(),
+              new IntroductionListener(),
               commandCenter,
               new SantaInteraction()
           )
