@@ -64,7 +64,7 @@ public class QuoteContextCommand extends MessageCommand  {
                 }
                 InputStream stream = new ByteArrayInputStream(baos.toByteArray());
                 FileUpload file = FileUpload.fromData(stream, "quote.png");
-                message.editMessageEmbeds(generateQuoteEmbed()).setContent(member.getAsMention() + " a quote has been generated for you!").setFiles(file).queue();
+                message.editMessageEmbeds(generateQuoteEmbed()).setContent(member.getAsMention() + " a quote has been generated for you! " + event.getTarget().getJumpUrl()).setFiles(file).queue();
             });
         });
 
