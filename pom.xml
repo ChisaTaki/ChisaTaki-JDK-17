@@ -3,7 +3,7 @@
 
 	<groupId>dev.kurumidisciples</groupId>
 	<artifactId>chisataki</artifactId>
-	<version>3.3.1</version>
+	<version>0.0.0</version>
 
 	
 
@@ -11,7 +11,7 @@
 		<repository>
 			<id>mavenCentral</id>
 			<name>mavenCentral</name>
-			<url>http://repo1.maven.org/maven2</url>
+			<url>https://repo1.maven.org/maven2</url>
 		</repository>
 		<repository>
 			<id>mattmalec-repo</id>
@@ -243,6 +243,12 @@
 			<groupId>net.dv8tion</groupId>
 			<artifactId>JDA</artifactId>
 			<version>6.3.1</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>com.openai</groupId>
+			<artifactId>openai-java</artifactId>
+			<version>4.23.0</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
