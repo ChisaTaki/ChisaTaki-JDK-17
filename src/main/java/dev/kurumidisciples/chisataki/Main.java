@@ -3,6 +3,8 @@ package dev.kurumidisciples.chisataki;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.theokanning.openai.assistants.assistant.Assistant;
 import com.theokanning.openai.service.OpenAiService;
 
@@ -46,6 +48,8 @@ public class Main {
 
   private static Assistant assistant;
   private static OpenAiService aiService;
+
+  private static OpenAIClient client;
 
   public static void main(String[] args) {
 
@@ -106,6 +110,7 @@ public class Main {
 
        aiService = new OpenAiService(env.get("OPENAI_API_KEY"));
        assistant = aiService.retrieveAssistant(env.get("ASSISTANT_ID"));
+       client = OpenAIOkHttpClient.builder().apiKey(env.get("OPENAI_API_KEY")).build();
       logger.info("OpenAI Service successfully built!");
       logger.info("Assistant successfully built!");
       //SantaClock.start();
@@ -129,5 +134,9 @@ public class Main {
 
   public static OpenAiService getAiService() {
     return aiService;
+  }
+
+  public static OpenAIClient getAiClient(){
+    return client;
   }
 }
