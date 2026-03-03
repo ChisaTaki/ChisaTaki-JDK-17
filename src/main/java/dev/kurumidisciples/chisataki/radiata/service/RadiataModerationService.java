@@ -6,6 +6,7 @@ import com.openai.models.moderations.ModerationModel;
 
 import dev.kurumidisciples.chisataki.Main;
 import dev.kurumidisciples.chisataki.radiata.database.ViolationRecordUtils;
+import dev.kurumidisciples.chisataki.radiata.notification.RadiataNotificationService;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -71,8 +72,9 @@ public final class RadiataModerationService {
             boolean flagged = response.flagged();
 
             if (flagged) {
+                logger.info("Message {} flagged by moderation model. Firing notification. Categories: {}", task.event().getMessageId(), response.categories());
                 ViolationRecordUtils.insertViolationRecord(task.event(), task.getDataUrl(), response.categories().toString()); // may cause errors as it is unchecked whether this works.
-                // TODO: notification service call
+                RadiataNotificationService.notifyModerators(response, task);
             }
 
         } catch (Exception e) {
