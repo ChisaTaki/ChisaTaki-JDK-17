@@ -48,13 +48,14 @@ public class RadiataImageListener extends ListenerAdapter {
                             RadiataModerationTask task = new RadiataModerationTask(
                                         bytes,
                                         attachment.getContentType(),
-                                        event
+                                        event,
+                                        attachment.getProxy()
                                     );
 
                             RadiataModerationService.enqueue(task);
 
                         } catch (Exception e) {
-                            logger.error("Failed preparing moderation task", e);
+                            logger.error("Failed to process attachment {}", attachment.getUrl(), e);
                         }
                     });
                 }
