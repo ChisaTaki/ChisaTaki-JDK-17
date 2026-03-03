@@ -17,6 +17,7 @@ import dev.kurumidisciples.chisataki.commands.slash.SecretSantaCommand;
 import dev.kurumidisciples.chisataki.commands.slash.SendRoleEmbedsCommand;
 import dev.kurumidisciples.chisataki.commands.slash.SendRulesEmbed;
 import dev.kurumidisciples.chisataki.commands.slash.ShrineCountCommand;
+import dev.kurumidisciples.chisataki.commands.slash.ShutdownCommand;
 import dev.kurumidisciples.chisataki.commands.slash.SlashCommand;
 import dev.kurumidisciples.chisataki.commands.slash.TTTCommand;
 import dev.kurumidisciples.chisataki.commands.slash.TestImageCommand;
@@ -74,7 +75,8 @@ public class CommandBuilder {
 				new AiPropertiesCommand(),
 				//new ChristmasCommand(),
 				new SecretSantaCommand(),
-				new IntroductionSearchCommand()
+				new IntroductionSearchCommand(),
+				new ShutdownCommand()
 		};
 	}
 	
