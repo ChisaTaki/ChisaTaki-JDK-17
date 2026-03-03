@@ -6,15 +6,18 @@ import java.util.Base64;
 import java.util.HexFormat;
 
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
+import net.dv8tion.jda.api.utils.NamedAttachmentProxy;
 
 public class RadiataModerationTask {
 
     private final String hash;
     private final String dataUrl;
     private final MessageReceivedEvent event;
+    private final NamedAttachmentProxy attachment;
 
-    public RadiataModerationTask(byte[] imageBytes, String contentType, MessageReceivedEvent event) throws NoSuchAlgorithmException{
+    public RadiataModerationTask(byte[] imageBytes, String contentType, MessageReceivedEvent event, NamedAttachmentProxy attachment) throws NoSuchAlgorithmException{
         this.event = event;
+        this.attachment = attachment;
         // 1️⃣ Hash first
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         this.hash = HexFormat.of().formatHex(digest.digest(imageBytes));
@@ -28,4 +31,5 @@ public class RadiataModerationTask {
     public MessageReceivedEvent event() { return event; }
     public String getDataUrl() { return dataUrl; }
     public String getHash() { return hash; }
+    public NamedAttachmentProxy getAttachment() { return attachment; }
 }
