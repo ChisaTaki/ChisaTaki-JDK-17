@@ -101,7 +101,7 @@ public class TTTEventHandler extends ListenerAdapter{
             List<Button> row = new ArrayList<>();
             for (int j = 0; j < 3; j++) {
                 // i represents the row, j represents the column
-                row.add(Button.of(ButtonStyle.SECONDARY, "TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + currentPlayer.getId(), "‎"));
+                row.add(Button.of(ButtonStyle.SECONDARY, "TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + currentPlayer.getId(), "_"));
             }
             ttt.add(row);
         }
@@ -118,7 +118,7 @@ public class TTTEventHandler extends ListenerAdapter{
                     row.add(Button.of(ButtonStyle.SECONDARY, buttonToDisable.getButton().getCustomId(), emojiToSet).asDisabled());
                 }
                 else{
-                    Button tempButtoon = Button.of(currentBoard.get(i).get(j).getStyle(), "TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + nextPlayer.getId(), currentBoard.get(i).get(j).getLabel());
+                    Button tempButtoon = Button.of(currentBoard.get(i).get(j).getStyle(), "TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + nextPlayer.getId(), currentBoard.get(i).get(j).getLabel() == null ? "_" : currentBoard.get(i).get(j).getLabel());
                     row.add(tempButtoon);
                 }
             }
