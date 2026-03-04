@@ -6,7 +6,12 @@ import dev.kurumidisciples.chisataki.enums.ChannelEnum;
 import dev.kurumidisciples.chisataki.radiata.service.RadiataModerationTask;
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.emoji.Emoji;
+import net.dv8tion.jda.api.entities.emoji.UnicodeEmoji;
 import net.dv8tion.jda.api.utils.NamedAttachmentProxy;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.buttons.Button;
+import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.components.container.Container;
 import net.dv8tion.jda.api.components.section.Section;
 import net.dv8tion.jda.api.components.separator.Separator;
@@ -28,6 +33,10 @@ public class RadiataNotificationService {
         TextChannel notificationChannel = task.event().getGuild().getTextChannelById(ChannelEnum.BOT_HOUSE.getId());
 
         Container notification = createNotificationContainer(result.categories(), task.event().getMessage(), task.getAttachment());
+
+        logger.info("Sending notification to moderators for message ID: " + task.event().getMessage().getId());
+        
+        notificationChannel.sendMessageComponents(notification).useComponentsV2().queue();
     }
 
     private static Container createNotificationContainer(Moderation.Categories categories, Message actor, NamedAttachmentProxy image){
@@ -40,7 +49,14 @@ public class RadiataNotificationService {
             Separator.createDivider(Separator.Spacing.SMALL),
             
             TextDisplay.of("Image attached to the flagged message:"),
-            MediaGallery.of(MediaGalleryItem.fromUrl(image.getUrl()))
+            MediaGallery.of(MediaGalleryItem.fromUrl(image.getUrl())),
+
+            Separator.createDivider(Separator.Spacing.SMALL),
+
+            ActionRow.of(
+                Button.of(ButtonStyle.LINK, "Jump To Message", actor.getJumpUrl()),
+                Button.of(ButtonStyle.DANGER, "Delete Message", "button:radiata:delete:" + actor.getId()).withEmoji(Emoji.fromUnicode("U+274C"))
+            )
 
             
         ).withAccentColor(ColorUtils.PURPLE);
