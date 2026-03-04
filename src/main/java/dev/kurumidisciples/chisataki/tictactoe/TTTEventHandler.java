@@ -118,8 +118,13 @@ public class TTTEventHandler extends ListenerAdapter{
                     row.add(Button.of(ButtonStyle.SECONDARY, buttonToDisable.getButton().getCustomId(), emojiToSet).asDisabled());
                 }
                 else{
-                    Button tempButtoon = Button.of(currentBoard.get(i).get(j).getStyle(), "TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + nextPlayer.getId(), currentBoard.get(i).get(j).getLabel() == null ? "_" : currentBoard.get(i).get(j).getLabel());
-                    row.add(tempButtoon);
+                    if (currentBoard.get(i).get(j).getEmoji() == null){
+                       Button tempButtoon = Button.of(currentBoard.get(i).get(j).getStyle(), "TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + nextPlayer.getId(), "_").withDisabled(currentBoard.get(i).get(j).isDisabled());
+                       row.add(tempButtoon);
+                    } else{
+                        Button tempButtoon = Button.of(currentBoard.get(i).get(j).getStyle(), "TTT-" + i + "-" + j + "-" + setup.getPlayer1().getId() + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId() + "-" +  setup.getPlayer2Choice().getString() + "-" + nextPlayer.getId(), currentBoard.get(i).get(j).getEmoji()).withDisabled(currentBoard.get(i).get(j).isDisabled());
+                        row.add(tempButtoon);
+                    }
                 }
             }
             updatedBoard.add(row);
