@@ -28,7 +28,7 @@ public class RadiataImageListener extends ListenerAdapter {
      */
     @SuppressWarnings("null")
     @Override
-    public void onMessageReceived(@SuppressWarnings("null") MessageReceivedEvent event){
+    public void onMessageReceived(MessageReceivedEvent event){
         executor.execute(() -> {
             if (event.getMessage().getAttachments().isEmpty() || event.getChannel().asTextChannel().isNSFW()) {
                 return;
