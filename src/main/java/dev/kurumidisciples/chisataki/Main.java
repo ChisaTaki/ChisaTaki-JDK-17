@@ -22,6 +22,7 @@ import dev.kurumidisciples.chisataki.listeners.SupportInteraction;
 import dev.kurumidisciples.chisataki.listeners.WelcomeInteraction;
 import dev.kurumidisciples.chisataki.modmail.ModMailInteraction;
 import dev.kurumidisciples.chisataki.modmail.TicketInteraction;
+import dev.kurumidisciples.chisataki.radiata.listener.RadiataImageListener;
 import dev.kurumidisciples.chisataki.rps.RpsInteraction;
 import dev.kurumidisciples.chisataki.secretsanta.MessageUsers;
 import dev.kurumidisciples.chisataki.secretsanta.SantaInteraction;
@@ -95,6 +96,7 @@ public class Main {
               new TTTEventHandler(),
               new AiListenerInteraction(),
               new IntroductionListener(),
+              new RadiataImageListener(),
               commandCenter,
               new SantaInteraction()
           )
