@@ -63,6 +63,7 @@ public class RadiataImageListener extends ListenerAdapter {
         });
     }
 
+    @SuppressWarnings("null")
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event){
         executor.execute(() -> {
