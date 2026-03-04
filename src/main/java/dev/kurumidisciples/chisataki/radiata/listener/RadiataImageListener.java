@@ -65,6 +65,12 @@ public class RadiataImageListener extends ListenerAdapter {
 
     @Override
     public void onButtonInteraction(ButtonInteractionEvent event){
-        //handle the button interaction for deleting the message containin the offending image
+        executor.execute(() -> {
+            if (event.getComponentId().startsWith("button:radiata:delete:")){
+                String messageId = event.getComponentId().split(":")[3];
+                event.getChannel().asTextChannel().deleteMessageById(messageId).queue();
+                event.reply("Message deleted.").setEphemeral(true).queue();
+            }
+        });
     }
 }
