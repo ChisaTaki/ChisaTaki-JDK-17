@@ -34,6 +34,8 @@ public class RadiataImageListener extends ListenerAdapter {
                 return;
             }
 
+            logger.info("Received message {} with {} attachments in channel {}", event.getMessageId(), event.getMessage().getAttachments().size(), event.getChannel().getId());
+
             for (Attachment attachment : event.getMessage().getAttachments()){
                 // process the attachment and check if it's an image
                 if (attachment.getContentType() != null && attachment.getContentType().startsWith("image/")) {

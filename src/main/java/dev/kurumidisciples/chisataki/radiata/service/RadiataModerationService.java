@@ -64,17 +64,20 @@ public final class RadiataModerationService {
             ModerationCreateParams params =
                     ModerationCreateParams.builder()
                             .model(ModerationModel.OMNI_MODERATION_LATEST)
-                            .input(task.getDataUrl()) // base64 data URL
+                            .input(task.getAttachment().getUrl()) // base64 data URL
                             .build();
 
             Moderation response = Main.getAiClient().moderations().create(params).results().get(0);
 
             boolean flagged = response.flagged();
 
+
             if (flagged) {
                 logger.info("Message {} flagged by moderation model. Firing notification. Categories: {}", task.event().getMessageId(), response.categories());
-                ViolationRecordUtils.insertViolationRecord(task.event(), task.getDataUrl(), response.categories().toString()); // may cause errors as it is unchecked whether this works.
+               // ViolationRecordUtils.insertViolationRecord(task.event(), task.getDataUrl(), response.categories().toString()); // may cause errors as it is unchecked whether this works. fix later
                 RadiataNotificationService.notifyModerators(response, task);
+            } else {
+                logger.info("Message {} passed moderation. Categories: {}", task.event().getMessageId(), response.categories());
             }
 
         } catch (Exception e) {

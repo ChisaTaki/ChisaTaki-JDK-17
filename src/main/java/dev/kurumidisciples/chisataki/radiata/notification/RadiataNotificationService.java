@@ -44,21 +44,33 @@ public class RadiataNotificationService {
             Section.of(
                 Thumbnail.fromUrl("https://media.discordapp.net/attachments/1076249070273843260/1478523767415378043/11309433.png"),
                 TextDisplay.of("A message containing potentially harmful content was detected by Radiata."),
-                TextDisplay.of("Categories flagged: " + categories.toString())
+                TextDisplay.of("**Categories flagged:** " + formatCategories(categories))
             ),
             Separator.createDivider(Separator.Spacing.SMALL),
             
             TextDisplay.of("Image attached to the flagged message:"),
-            MediaGallery.of(MediaGalleryItem.fromUrl(image.getUrl())),
+            MediaGallery.of(MediaGalleryItem.fromUrl(image.getUrl()).withSpoiler(true)),
 
             Separator.createDivider(Separator.Spacing.SMALL),
 
             ActionRow.of(
-                Button.of(ButtonStyle.LINK, "Jump To Message", actor.getJumpUrl()),
-                Button.of(ButtonStyle.DANGER, "Delete Message", "button:radiata:delete:" + actor.getId()).withEmoji(Emoji.fromUnicode("U+274C"))
+                Button.link(actor.getJumpUrl(), "Jump to Message"),
+                Button.of(ButtonStyle.DANGER,"button:radiata:delete:" + actor.getId(), "Delete Message").withEmoji(Emoji.fromUnicode("U+274C"))
             )
 
             
         ).withAccentColor(ColorUtils.PURPLE);
+    }
+
+    private static String formatCategories(Moderation.Categories categories) {
+        StringBuilder sb = new StringBuilder();
+        if (categories.hate()) sb.append("Hate ");
+        if (categories.hateThreatening()) sb.append("Hate Threatening ");
+        if (categories.selfHarm()) sb.append("Self-Harm ");
+        if (categories.sexual()) sb.append("Sexual ");
+        if (categories.sexualMinors()) sb.append("Sexual Minors ");
+        if (categories.violence()) sb.append("Violence ");
+        if (categories.violenceGraphic()) sb.append("Violence Graphic ");
+        return sb.toString().trim();
     }
 }
