@@ -25,7 +25,7 @@ public class PreparedStatementFactory {
      * @throws InitializationException
      * @throws SQLException
      */
-    public static PreparedStatement create(String sql) throws InitializationException, SQLException{
+    protected static PreparedStatement create(String sql) throws InitializationException, SQLException{
         return Database.getConnection().prepareStatement(sql);
     }
 }

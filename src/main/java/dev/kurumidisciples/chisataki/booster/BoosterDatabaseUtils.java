@@ -9,6 +9,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import dev.kurumidisciples.chisataki.internal.database.Database;
 import dev.kurumidisciples.chisataki.internal.database.PreparedStatementFactory;
 import dev.kurumidisciples.chisataki.internal.database.exceptions.InitializationException;
 
@@ -29,7 +30,7 @@ public class BoosterDatabaseUtils {
     private static final Logger LOGGER = LoggerFactory.getLogger(BoosterDatabaseUtils.class);
 
     public static Booster insertBooster(long userId, long roleid){
-        try (PreparedStatement statement = PreparedStatementFactory.create(INSERT_BOOSTER)) {
+        try (PreparedStatement statement = Database.createStatement(INSERT_BOOSTER)) {
             statement.setLong(1, userId);
             statement.setLong(2, roleid);
             statement.executeUpdate();
@@ -42,7 +43,7 @@ public class BoosterDatabaseUtils {
        
 
     public static void deleteBooster(long userId){
-        try (PreparedStatement statement = PreparedStatementFactory.create(DELETE_BOOSTER)) {
+        try (PreparedStatement statement = Database.createStatement(DELETE_BOOSTER)) {
             statement.setLong(1, userId);
             statement.executeUpdate();
         } catch (SQLException | InitializationException e) {
@@ -51,7 +52,7 @@ public class BoosterDatabaseUtils {
     }
 
     public static boolean isBooster(long userId){
-        try (PreparedStatement statement = PreparedStatementFactory.create(SELECT_BOOSTER)) {
+        try (PreparedStatement statement = Database.createStatement(SELECT_BOOSTER)) {
             statement.setLong(1, userId);
             try (var resultSet = statement.executeQuery()) {
                 return resultSet.next();
@@ -63,7 +64,7 @@ public class BoosterDatabaseUtils {
     }
 
     public static void updateRoleId(long userId, long roleId){
-        try (PreparedStatement statement = PreparedStatementFactory.create(UPDATE_ROLE_ID)) {
+        try (PreparedStatement statement = Database.createStatement(UPDATE_ROLE_ID)) {
             statement.setLong(1, roleId);
             statement.setLong(2, userId);
             statement.executeUpdate();
@@ -73,7 +74,7 @@ public class BoosterDatabaseUtils {
     }
 
     public static Booster getBooster(long userId){
-        try (PreparedStatement statement = PreparedStatementFactory.create(SELECT_BOOSTER)) {
+        try (PreparedStatement statement = Database.createStatement(SELECT_BOOSTER)) {
             statement.setLong(1, userId);
             try (var resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
@@ -92,7 +93,7 @@ public class BoosterDatabaseUtils {
 
     public static List<Booster> getAllBoosters(){
         List<Booster> boosters = new ArrayList<>();
-        try (PreparedStatement statement = PreparedStatementFactory.create(SELECT_ALL_BOOSTERS)) {
+        try (PreparedStatement statement = Database.createStatement(SELECT_ALL_BOOSTERS)) {
             try (var resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     boosters.add(new Booster(resultSet.getLong("user_id"), String.valueOf(resultSet.getLong("role_id"))));

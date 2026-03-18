@@ -19,7 +19,7 @@ public class ViolationRecordUtils {
 
 
     public static boolean insertViolationRecord(MessageReceivedEvent event, String imageUrl, String moderationResult) {
-        try (PreparedStatement statement = PreparedStatementFactory.create(INSERT_VIOLATION_RECORD)) {
+        try (PreparedStatement statement = Database.createStatement(INSERT_VIOLATION_RECORD)) {
             statement.setString(1, event.getAuthor().getId());
             statement.setString(2, imageUrl);
             statement.setString(3, moderationResult);
@@ -32,7 +32,7 @@ public class ViolationRecordUtils {
     }
 
     public static ViolationRecord getViolationRecordsByUser(String userId) {
-        try (PreparedStatement statement = PreparedStatementFactory.create(SELECT_VIOLATION_RECORDS_BY_USER)) {
+        try (PreparedStatement statement = Database.createStatement(SELECT_VIOLATION_RECORDS_BY_USER)) {
             statement.setString(1, userId);
             var resultSet = statement.executeQuery();
             while (resultSet.next()) {
