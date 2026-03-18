@@ -31,10 +31,6 @@ public final class RadiataModerationService {
         startWorkers();
     }
 
-    private RadiataModerationService() {
-        // Prevent instantiation
-    }
-
     private static void startWorkers() {
         for (int i = 0; i < WORKER_THREADS; i++) {
             workers.submit(RadiataModerationService::processLoop);
