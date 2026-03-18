@@ -12,7 +12,7 @@ public class BoosterEmbedUtils {
 
     public static MessageEmbed getRoleClaimEmbed(Interaction event, Role role){
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setAuthor(event.getMember().getEffectiveName(), null, event.getMember().getUser().getEffectiveAvatarUrl());
+        embed.setAuthor(event.getMember().getEffectiveName(), null, event.getMember().getEffectiveAvatarUrl());
         embed.setDescription("You have successfully claimed your role as a booster!\n\n You can now modify your role using the `/boost role` command.");
         embed.setColor(ColorUtils.PURPLE);
         embed.setFooter("Your custom role id is " + role.getId());
@@ -21,7 +21,7 @@ public class BoosterEmbedUtils {
 
     public static MessageEmbed getRoleColorEmbed(Interaction event, Role role, int color){
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setAuthor(event.getMember().getEffectiveName(), null, event.getMember().getUser().getEffectiveAvatarUrl());
+        embed.setAuthor(event.getMember().getEffectiveName(), null, event.getMember().getEffectiveAvatarUrl());
         embed.setTitle("Edited Role Color!");
         embed.setColor(color);
         embed.setFooter("Role ID: " + role.getId());
@@ -30,20 +30,20 @@ public class BoosterEmbedUtils {
 
     public static MessageEmbed getRoleNameEmbed(Interaction event, Role role, String name){
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setAuthor(event.getMember().getEffectiveName(), null, event.getMember().getUser().getEffectiveAvatarUrl());
+        embed.setAuthor(event.getMember().getEffectiveName(), null, event.getMember().getEffectiveAvatarUrl());
         embed.setTitle("Edited Role Name!");
         embed.setDescription("Role name is now " + name + "!");
-        embed.setColor(role.getColor());
+        embed.setColor(role.getColors().getPrimary());
         embed.setFooter("Role ID: " + role.getId());
         return embed.build();
     }
 
     public static MessageEmbed getRoleIconEmbed(Interaction event, Role role){
         EmbedBuilder embed = new EmbedBuilder();
-        embed.setAuthor(event.getMember().getEffectiveName(), null, event.getMember().getUser().getEffectiveAvatarUrl());
+        embed.setAuthor(event.getMember().getEffectiveName(), null, event.getMember().getEffectiveAvatarUrl());
         embed.setTitle("Edited Role Icon!");
         embed.setThumbnail(role.getIcon().getIconUrl());
-        embed.setColor(role.getColor());
+        embed.setColor(role.getColors().getPrimary());
         embed.setFooter("Role ID: " + role.getId());
         return embed.build();
     }
