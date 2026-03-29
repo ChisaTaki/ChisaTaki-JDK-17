@@ -1,4 +1,4 @@
-package dev.kurumidisciples.chisataki.tictactoe;
+package dev.kurumidisciples.chisataki.games.tictactoe;
 
 import java.util.List;
 import java.util.concurrent.ExecutorService;

@@ -2,7 +2,7 @@ package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.util.List;
 
-import dev.kurumidisciples.chisataki.tictactoe.TTTChoice;
+import dev.kurumidisciples.chisataki.games.tictactoe.TTTChoice;
 import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.entities.Member;

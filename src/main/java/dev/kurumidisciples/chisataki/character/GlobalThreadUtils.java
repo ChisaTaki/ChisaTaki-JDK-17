@@ -37,8 +37,7 @@ public class GlobalThreadUtils {
     }
 
     public static boolean insertGuildThread(long guildId, String threadId) {
-        try {
-            PreparedStatement statement = Database.createStatement(INSERT_GUILD_THREAD);
+        try {PreparedStatement statement = Database.createStatement(INSERT_GUILD_THREAD);
             statement.setLong(1, guildId);
             statement.setString(2, threadId);
             return statement.executeUpdate() > 0;

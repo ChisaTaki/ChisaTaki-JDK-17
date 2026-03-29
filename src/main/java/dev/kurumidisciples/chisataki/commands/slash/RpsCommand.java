@@ -2,9 +2,9 @@ package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.util.List;
 
-import dev.kurumidisciples.chisataki.rps.RpsLogic;
-import dev.kurumidisciples.chisataki.rps.RpsMultiPlayerHandler;
-import dev.kurumidisciples.chisataki.rps.RpsSinglePlayerHandler;
+import dev.kurumidisciples.chisataki.games.rps.RpsLogic;
+import dev.kurumidisciples.chisataki.games.rps.RpsMultiPlayerHandler;
+import dev.kurumidisciples.chisataki.games.rps.RpsSinglePlayerHandler;
 import dev.kurumidisciples.chisataki.utils.MessageUtils;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;

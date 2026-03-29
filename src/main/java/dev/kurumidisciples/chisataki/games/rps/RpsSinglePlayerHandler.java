@@ -1,4 +1,4 @@
-package dev.kurumidisciples.chisataki.rps;
+package dev.kurumidisciples.chisataki.games.rps;
 
 import dev.kurumidisciples.chisataki.utils.UserUtils;
 import net.dv8tion.jda.api.entities.Member;

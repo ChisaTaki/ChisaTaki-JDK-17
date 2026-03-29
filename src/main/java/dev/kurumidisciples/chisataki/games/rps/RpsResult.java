@@ -1,4 +1,4 @@
-package dev.kurumidisciples.chisataki.rps;
+package dev.kurumidisciples.chisataki.games.rps;
 
 import java.awt.Color;
 

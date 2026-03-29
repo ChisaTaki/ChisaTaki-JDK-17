@@ -1,4 +1,4 @@
-package dev.kurumidisciples.chisataki.tictactoe;
+package dev.kurumidisciples.chisataki.games.tictactoe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,8 +8,8 @@ import java.util.concurrent.Executors;
 import javax.annotation.Nonnull;
 
 import dev.kurumidisciples.chisataki.enums.GifEnum;
-import dev.kurumidisciples.chisataki.rps.RpsLogic;
-import dev.kurumidisciples.chisataki.rps.RpsResult;
+import dev.kurumidisciples.chisataki.games.rps.RpsLogic;
+import dev.kurumidisciples.chisataki.games.rps.RpsResult;
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
