@@ -13,6 +13,7 @@ import dev.kurumidisciples.chisataki.commands.CommandCenter;
 import dev.kurumidisciples.chisataki.games.rps.RpsInteraction;
 import dev.kurumidisciples.chisataki.games.tictactoe.TTTEventHandler;
 import dev.kurumidisciples.chisataki.games.tictactoe.TTTInteractionHandler;
+import dev.kurumidisciples.chisataki.honeytrap.HoneyTrapInteraction;
 import dev.kurumidisciples.chisataki.internal.database.Database;
 import dev.kurumidisciples.chisataki.listeners.AiListenerInteraction;
 import dev.kurumidisciples.chisataki.listeners.IntroductionListener;
@@ -98,7 +99,8 @@ public class Main {
               new IntroductionListener(),
               new RadiataImageListener(),
               commandCenter,
-              new SantaInteraction()
+              new SantaInteraction(),
+              new HoneyTrapInteraction()
           )
           .setActivity(Activity.customStatus("On Honeymoon with Takina..."))
           .build();

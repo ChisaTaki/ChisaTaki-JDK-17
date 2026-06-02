@@ -8,6 +8,10 @@ import java.sql.Timestamp;
 
 import javax.imageio.ImageIO;
 
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import dev.kurumidisciples.chisataki.commands.message.MessageCommand;
 import dev.kurumidisciples.chisataki.quotes.QuoteSettings;
 import dev.kurumidisciples.chisataki.quotes.QuoteSettingsUtils;
@@ -22,6 +26,8 @@ import net.dv8tion.jda.api.utils.FileUpload;
 
 @SuppressWarnings("null")
 public class QuoteContextCommand extends MessageCommand  {
+
+    final static Logger logger = LoggerFactory.getLogger(QuoteContextCommand.class);
     
     public QuoteContextCommand(){
         super("Make it a Quote!");
@@ -38,7 +44,8 @@ public class QuoteContextCommand extends MessageCommand  {
         QuoteSettings settings = QuoteSettingsUtils.selectSettings(event.getGuild().getId());
 
         if (settings == null) {
-            event.getHook().editOriginal("No settings found for this server!").queue();
+            logger.warn("Quote settings were not found in database for server {}", event.getGuild().getId());
+            event.getHook().editOriginal("No settings found for this server! Please contact the moderators.").queue();
             return;
         } 
 
