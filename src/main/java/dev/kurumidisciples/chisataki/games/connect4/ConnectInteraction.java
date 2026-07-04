@@ -1,8 +1,8 @@
 package dev.kurumidisciples.chisataki.games.connect4;
 
-import java.util.HashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
@@ -51,11 +51,62 @@ public class ConnectInteraction extends ListenerAdapter {
             }
 
             String response = getDenyOrAccept(event.getCustomId());
+
+
+            switch (response){
+                case "deny":
+                    logger.info("user {} rejected a connect 4 request", event.getMember().getId());
+                    event.getMessage().delete().queueAfter(3, TimeUnit.SECONDS);
+                case "accept":
+
+            }
         });
     }
 
-    private static HashMap<Integer, String> createBoard() {
-        // implement later
+    private static char[][] createBoard(int rows, int cols) {
+
+        char[][] board = new char[rows][cols];
+
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                board[row][col] = '.';
+            }
+        }
+
+        return board;
+    }
+
+    private static String renderBoard(char[][] board) {
+
+        StringBuilder output = new StringBuilder();
+
+        for (int row = 0; row < 6; row++) {
+
+            for (int col = 0; col < 7; col++) {
+
+                char cell = board[row][col];
+
+                if (cell == 'R') {
+                    output.append("🔴");
+                } else if (cell == 'Y') {
+                    output.append("🟡");
+                } else {
+                    output.append("⚪");
+                }
+
+            }
+
+            output.append("\n");
+        }
+
+        // Add column indicators at the bottom
+        output.append("1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣");
+
+        return output.toString();
+    }
+
+    // discord can only handle 5 buttons per action row
+    private static Button[] createDropButtons(int numberOfButtons){
         return null;
     }
 

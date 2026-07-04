@@ -11,13 +11,12 @@ import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEve
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
-import scala.annotation.implicitAmbiguous;
 
-public class C4Command extends SlashCommand {
+public class ConnectCommand extends SlashCommand {
 
-    private static final Logger logger = LoggerFactory.getLogger(C4Command.class);
+    private static final Logger logger = LoggerFactory.getLogger(ConnectCommand.class);
     
-    public C4Command(){
+    public ConnectCommand(){
         super("connect4", "Play a game of connect 4 with Takina and Chisato");
         subcommands.add(new SubcommandData("multiplayer", "play with a server member")
             .addOption(OptionType.USER, "user", "The member you want to play with", true));
