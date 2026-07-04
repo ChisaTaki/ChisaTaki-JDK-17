@@ -1,5 +1,8 @@
 package dev.kurumidisciples.chisataki;
 
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +78,7 @@ public class Main {
         .directory("crypt/")
         .load();
       CommandCenter commandCenter = new CommandCenter();
-      Database.start();
+     //Database.start();
       jda = JDABuilder.createDefault(env.get("TOKEN"))
           .enableIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
           .enableCache(CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY, CacheFlag.EMOJI, CacheFlag.MEMBER_OVERRIDES,
@@ -101,7 +104,7 @@ public class Main {
               commandCenter,
               new SantaInteraction(),
               new HoneyTrapInteraction()
-          )
+          ) 
           .setActivity(Activity.customStatus("On Honeymoon with Takina..."))
           .build();
       jda.awaitReady(); // awaits for the cache system to build
@@ -117,6 +120,8 @@ public class Main {
        client = OpenAIOkHttpClient.builder().apiKey(env.get("OPENAI_API_KEY")).build();
       logger.info("OpenAI Service successfully built!");
       logger.info("Assistant successfully built!");
+
+      //deleteMangadexDynastyMessages();
       //SantaClock.start();
     }
 
@@ -126,6 +131,29 @@ public class Main {
     catch (Exception e) {
       e.printStackTrace();
     }
+  }
+
+  private static int deleteMangadexDynastyMessages(){
+
+    Pattern mangaLinkPattern = Pattern.compile(
+    "(?i)\\bhttps?://(?:www\\.)?(?:mangadex\\.org|dynasty-scans\\.com|dynastyscans\\.com)/\\S+"
+);
+    int deletedCount = 0;
+    jda.getGuilds().forEach(guild -> {
+      guild.getTextChannels().forEach(channel ->{
+        if (channel.getName().toLowerCase().equals("members-logs")) return;
+        logger.info("Checking channel {} of guild {} for manga links...", channel.getName(), guild.getName());
+        channel.getIterableHistory().cache(false).forEach(message -> {
+          if (mangaLinkPattern.matcher(message.getContentStripped()).find()) {
+            message.delete().queueAfter(10, TimeUnit.SECONDS,
+              success -> logger.info("Deleted message with manga link in channel {} of guild {}", channel.getName(), guild.getName()),
+              error -> logger.error("Failed to delete message with manga link in channel {} of guild {}", channel.getName(), guild.getName(), error)
+            );
+          }
+        });
+      });
+    });
+    return deletedCount;
   }
 
   public static JDA getJDA() {
