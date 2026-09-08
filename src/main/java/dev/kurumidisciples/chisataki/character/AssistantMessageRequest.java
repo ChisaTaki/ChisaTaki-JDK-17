@@ -63,7 +63,7 @@ public class AssistantMessageRequest {
     }
 
     @SuppressWarnings("null")
-    public Response submitRequest(Optional<List<NamedAttachmentProxy>> attachments){
+    /*public Response submitRequest(Optional<List<NamedAttachmentProxy>> attachments){
         
 
         // Retrieve the assistant and the OpenAiService
@@ -119,6 +119,10 @@ public class AssistantMessageRequest {
             .runId(retrievedRun.getId()).build());
         List<Message> messages = response.getData();
         return new Response(messages.get(messages.size() - 1).getContent().get(0).getText().getValue());
+    }
+        */
+    public Response submitRequest(Optional<List<NamedAttachmentProxy>> attachments){
+        return null;
     }
 
     public Response submitResponse(){

@@ -45,7 +45,7 @@ public class AiListenerInteraction extends ListenerAdapter {
                 logger.info("Message mentioning the bot received from user: {}[{}]", event.getAuthor().getName(), event.getAuthor().getId());
                 
                 //check if the user has exceeded the message limit
-                //if they have simply ignore them
+               /* //if they have simply ignore them
                 if (UsageTableUtils.selectUserUsage(event.getAuthor().getIdLong()) != null){
                     UserUsage usage = UsageTableUtils.selectUserUsage(event.getAuthor().getIdLong());
                     if (checkUsage(usage, event.getGuild().getIdLong())){
@@ -100,9 +100,9 @@ public class AiListenerInteraction extends ListenerAdapter {
 
                 } finally {
                     executor.shutdownNow();
-                }
+                } */
             }
-        };
+        }; 
         executor.execute(messageThread);
       }
 

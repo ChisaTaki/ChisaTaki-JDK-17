@@ -115,8 +115,8 @@ public class Main {
       MessageCache.setMaxSize(10000);
       logger.info("Message Cache Size: {}", MessageCache.getMaxSize());
 
-       aiService = new OpenAiService(env.get("OPENAI_API_KEY"));
-       assistant = aiService.retrieveAssistant(env.get("ASSISTANT_ID"));
+      // aiService = new OpenAiService(env.get("OPENAI_API_KEY"));
+       //assistant = aiService.retrieveAssistant(env.get("ASSISTANT_ID"));
        client = OpenAIOkHttpClient.builder().apiKey(env.get("OPENAI_API_KEY")).build();
       logger.info("OpenAI Service successfully built!");
       logger.info("Assistant successfully built!");
