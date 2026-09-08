@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import dev.kurumidisciples.chisataki.Main;
 import dev.kurumidisciples.chisataki.enums.GifEnum;
 import dev.kurumidisciples.chisataki.games.rps.RpsLogic;
 import dev.kurumidisciples.chisataki.games.rps.RpsResult;
@@ -49,7 +48,8 @@ public class TTTEventHandler extends ListenerAdapter {
     }
 
     private void handleTTTRequestAcceptance(ButtonInteractionEvent event) {
-        boolean isSinglePlayer = event.getComponentId().split("-")[2].equals(Main.getJDA().getSelfUser().getId()) ? true : false;
+        // Request IDs: action-player1-piece1-player2-piece2.
+        boolean isSinglePlayer = event.getComponentId().split("-")[3].equals(event.getJDA().getSelfUser().getId());
         TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getComponentId(), isSinglePlayer);
         if (!playersAvailable(event, setup)) {
             return;
@@ -64,7 +64,7 @@ public class TTTEventHandler extends ListenerAdapter {
     }
 
     private void handleTTTRequestRejection(ButtonInteractionEvent event) {
-        boolean isSinglePlayer = event.getComponentId().split("-")[2].equals(Main.getJDA().getSelfUser().getId()) ? true : false;
+        boolean isSinglePlayer = event.getComponentId().split("-")[3].equals(event.getJDA().getSelfUser().getId());
         TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getComponentId(), isSinglePlayer);
         if (!playersAvailable(event, setup)) {
             return;
@@ -95,12 +95,13 @@ public class TTTEventHandler extends ListenerAdapter {
     }
 
     private void handleTTTSelection(ButtonInteractionEvent event) {
+        // Board IDs: TTT-row-column-player1-piece1-player2-piece2-currentPlayer.
         String[] parts = event.getComponentId().split("-");
         if (parts.length != 8 || !event.getUser().getId().equals(parts[7])) {
             cannotInteract(event);
             return;
         }
-        boolean isSinglePlayer = event.getComponentId().split("-")[2].equals(Main.getJDA().getSelfUser().getId()) ? true : false;
+        boolean isSinglePlayer = parts[5].equals(event.getJDA().getSelfUser().getId());
         TTTGameSetup setup = TTTUtils.rebuildGameSetupFromButton(event, event.getComponentId(), isSinglePlayer);
         if (!playersAvailable(event, setup)) {
             return;
