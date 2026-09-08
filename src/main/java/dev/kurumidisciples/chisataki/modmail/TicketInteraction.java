@@ -155,7 +155,7 @@ public class TicketInteraction extends ListenerAdapter {
         }
 
             // Inform the user and delete the channel after a delay
-            event.reply("Ticket closed with no reason.").queue();
+            event.reply("Ticket closed with no reason. Deleting channel in 10 seconds.").queue();
             channel.delete().queueAfter(10, TimeUnit.SECONDS);
         
     }

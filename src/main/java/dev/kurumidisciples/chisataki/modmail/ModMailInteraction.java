@@ -2,6 +2,11 @@ package dev.kurumidisciples.chisataki.modmail;
 
 import java.awt.Color;
 import java.awt.Desktop.Action;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
 
 import javax.annotation.Nonnull;
 
@@ -26,7 +31,11 @@ import net.dv8tion.jda.api.modals.Modal;
 import net.dv8tion.jda.api.utils.messages.MessageCreateBuilder;
 import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 public class ModMailInteraction extends ListenerAdapter {
+
+    private static final Logger logger = LoggerFactory.getLogger(ModMailInteraction.class);
 
     @Override
     public void onSlashCommandInteraction(@Nonnull SlashCommandInteractionEvent event) {
@@ -44,48 +53,134 @@ public class ModMailInteraction extends ListenerAdapter {
 
     @Override
     public void onModalInteraction(@Nonnull ModalInteractionEvent event) {
-        if (event.getModalId().equals("mailModal")) {
-            Guild guild = event.getGuild();
-            if (guild == null) {
-                event.reply("Error: Guild not found. How did that happen?").setEphemeral(true).queue();
-                return;
-            }
-            event.deferReply(true).queue();
+    if (!event.getModalId().equals("mailModal")) {
+        return;
+    }
 
-            TextChannel templateChannel = guild.getTextChannelById("1011966579610755102");
-            if (templateChannel == null) {
-                event.getHook().sendMessage("Error: Template channel not found. Contact Bot Dev.").setEphemeral(true).queue();
-                return;
-            }
+    Guild guild = event.getGuild();
 
-            int ticketNumber = countFiles(); // Or another method to generate unique ticket numbers
+    if (guild == null) {
+        event.reply("Error: Guild not found. How did that happen?")
+                .setEphemeral(true)
+                .queue();
+        return;
+    }
 
+    event.deferReply(true).queue();
+
+    TextChannel templateChannel =
+            guild.getTextChannelById("1011966579610755102");
+
+    if (templateChannel == null) {
+        event.getHook()
+                .editOriginal("Error: Template channel not found. Contact Bot Dev.")
+                .queue();
+        return;
+    }
+
+    int ticketNumber = countFiles();
+
+    // Keep track of the channel so we can delete it if something fails
+    AtomicReference<TextChannel> createdChannel = new AtomicReference<>();
+
+    CompletableFuture<Void> ticketCreation =
             guild.createCopyOfChannel(templateChannel)
                     .setName("Ticket-" + ticketNumber)
                     .setTopic("This is a Ticket Channel and therefore it is temporary.")
                     .setPosition(0)
-                    .queue(ticketChannel -> {
-                        // Build the ticket
-                        Ticket ticket = TicketBuilder.buildTicket(ticketNumber, event.getInteraction(), ticketChannel.getIdLong());
+                    .submit()
 
-                        // Set permission override
-                        ticketChannel.getManager()
-                                .putMemberPermissionOverride(event.getMember().getIdLong(), 137439464512L, 0L)
-                                .queue();
+                    .thenCompose(ticketChannel -> {
+                        createdChannel.set(ticketChannel);
 
-                        // Send redirection embed
-                        event.getHook().editOriginalEmbeds(getRedirectionEmbed(ticketChannel)).queue();
+                        Ticket ticket = TicketBuilder.buildTicket(
+                                ticketNumber,
+                                event.getInteraction(),
+                                ticketChannel.getIdLong()
+                        );
 
-                        // Send message in ticket channel
-                        ticketChannel.sendMessage(createContentEmbed(ticket, event.getMember())).queue();
+                        // Set permissions first
+                        return ticketChannel.getManager().putMemberPermissionOverride(event.getUser().getIdLong(),137439464512L,0L).submit()
 
-                        // Send notification
-                        sendNotification(guild, ticket);
-                    }, throwable -> {
-                        event.getHook().sendMessage("Error creating ticket channel").setEphemeral(true).queue();
-                    });
+                                // Send the ticket message
+                                .thenCompose(ignored ->
+                                    ticketChannel.sendMessage(createContentEmbed(ticket,event.getMember())).submit()
+                                )
+
+                                // Update the user's ephemeral response
+                                .thenCompose(ignored ->
+                                    event.getHook().editOriginalEmbeds(getRedirectionEmbed(ticketChannel)).submit()
+                                )
+
+                                .thenAccept(ignored -> {
+                                    sendNotification(guild, ticket);
+                                });
+                    })
+
+                    // Whole operation gets 15 seconds
+                    .orTimeout(15, TimeUnit.SECONDS);
+
+    ticketCreation.whenComplete((ignored, throwable) -> {
+        if (throwable == null) {
+            logger.info("Ticket {} created successfully.", ticketNumber);
+            return;
         }
-    }
+
+        Throwable cause = throwable;
+
+        // CompletableFuture often wraps the actual exception
+        if (cause instanceof CompletionException && cause.getCause() != null) {
+            cause = cause.getCause();
+        }
+
+        logger.error(
+                "Ticket {} creation failed: {}",
+                ticketNumber,
+                cause.getMessage(),
+                cause
+        );
+
+        String errorMessage;
+
+        if (cause instanceof TimeoutException) {
+            errorMessage =
+                    "Ticket creation timed out. Something went wrong while creating your ticket. "
+                    + "Please try again or contact the bot developer.";
+        } else if (cause instanceof NullPointerException) {
+            errorMessage =
+                    "One or more required fields were missing from the modal. "
+                    + "Please try again or contact the bot developer.";
+        } else {
+            errorMessage =
+                    "Something went wrong while creating your ticket. "
+                    + "Please try again or contact the bot developer.";
+        }
+
+        event.getHook()
+                .editOriginal(errorMessage)
+                .queue(
+                        null,
+                        replyError -> logger.error(
+                                "Could not send ticket error message.",
+                                replyError
+                        )
+                );
+
+        // Clean up the half-created channel
+        TextChannel ticketChannel = createdChannel.get();
+
+        if (ticketChannel != null) {
+            ticketChannel.delete().queue(
+                    null,
+                    deleteError -> logger.error(
+                            "Could not clean up failed ticket channel {}.",
+                            ticketChannel.getId(),
+                            deleteError
+                    )
+            );
+        }
+    });
+}
 
     private static Modal getModMailModal() {
         StringSelectMenu subject = StringSelectMenu.create("menu:subject")
