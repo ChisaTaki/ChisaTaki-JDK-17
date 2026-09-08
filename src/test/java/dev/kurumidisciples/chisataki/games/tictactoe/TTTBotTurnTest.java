@@ -37,6 +37,7 @@ import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.requests.RestAction;
 import net.dv8tion.jda.api.requests.restaction.AuditableRestAction;
 import net.dv8tion.jda.api.requests.restaction.MessageCreateAction;
+import net.dv8tion.jda.api.requests.restaction.WebhookMessageEditAction;
 import net.dv8tion.jda.api.requests.restaction.interactions.MessageEditCallbackAction;
 import net.dv8tion.jda.api.requests.restaction.interactions.ReplyCallbackAction;
 import net.dv8tion.jda.api.utils.messages.MessageEditData;
@@ -48,6 +49,9 @@ class TTTBotTurnTest {
     private final List<MessageEditData> edits = new ArrayList<>();
     private final List<Runnable> successfulEdits = new ArrayList<>();
     private final List<Consumer<Throwable>> failedEdits = new ArrayList<>();
+    private final List<MessageEditData> botEdits = new ArrayList<>();
+    private final List<Runnable> successfulBotEdits = new ArrayList<>();
+    private final List<Consumer<Throwable>> failedBotEdits = new ArrayList<>();
     private final List<ScheduledFuture<?>> expirations = new ArrayList<>();
     private JDA jda;
     private Guild guild;
@@ -56,6 +60,7 @@ class TTTBotTurnTest {
     private MessageChannelUnion channel;
     private MessageEditCallbackAction defer;
     private InteractionHook hook;
+    private RestAction<Void> typing;
     private TTTEventHandler handler;
     private boolean completeEdits = true;
 
@@ -77,6 +82,8 @@ class TTTBotTurnTest {
         when(guild.getSelfMember()).thenReturn(self);
         channel = mock(MessageChannelUnion.class);
         when(channel.getId()).thenReturn("555555555555555555");
+        typing = mock(RestAction.class);
+        when(channel.sendTyping()).thenReturn(typing);
         MessageCreateAction send = mock(MessageCreateAction.class, RETURNS_SELF);
         when(channel.sendMessage(any(CharSequence.class))).thenReturn(send);
         doAnswer(call -> {
@@ -105,6 +112,27 @@ class TTTBotTurnTest {
             call.<Consumer<Void>>getArgument(0).accept(null);
             return null;
         }).when(delete).queue(any(), any());
+        doAnswer(call -> {
+            MessageEditData data = call.getArgument(0);
+            WebhookMessageEditAction<Message> edit = mock(WebhookMessageEditAction.class);
+            doAnswer(queued -> {
+                assertEquals(5L, queued.<Long>getArgument(0));
+                assertEquals(TimeUnit.SECONDS, queued.getArgument(1));
+                botEdits.add(data);
+                successfulBotEdits.add(() -> {
+                    applyEdit(data);
+                    queued.<Consumer<Message>>getArgument(2).accept(message(List.of()));
+                });
+                failedBotEdits.add(queued.getArgument(3));
+                return mock(ScheduledFuture.class);
+            }).when(edit).queueAfter(anyLong(), any(TimeUnit.class), any(), any(Consumer.class));
+            doAnswer(queued -> {
+                applyEdit(data);
+                queued.<Consumer<Message>>getArgument(0).accept(message(List.of()));
+                return null;
+            }).when(edit).queue(any(), any());
+            return edit;
+        }).when(hook).editOriginal(any(MessageEditData.class));
     }
 
     @AfterEach
@@ -120,12 +148,19 @@ class TTTBotTurnTest {
         assertEquals(0, occupied(latestBoard()));
         clearInvocations(channel, hook);
         ButtonInteractionEvent firstClick = click(latestBoard(), 0, 0);
+        assertEquals(1, occupied(latestBoard()), "Show the human move before the bot responds");
+        assertTrue(latestBoard().stream().flatMap(List::stream).allMatch(Button::isDisabled));
+        assertEquals("ChisaTaki is thinking...", edits.get(0).getContent());
+        verify(typing).queue();
+        finishBotMove();
         assertEquals(2, occupied(latestBoard()), "A human move must be followed by a bot move");
         char[][] firstTurn = TTTUtils.discordButtonsToCharBoardFromButton(latestBoard());
         assertEquals(humanChoice.getString().charAt(0), firstTurn[0][0]);
         assertEquals(TTTChoice.getAlternate(humanChoice).getString().charAt(0), firstTurn[1][1]);
 
         ButtonInteractionEvent secondClick = click(latestBoard(), 2, 2);
+        assertEquals(3, occupied(latestBoard()));
+        finishBotMove();
         assertEquals(4, occupied(latestBoard()), "The bot must also respond on subsequent turns");
         for (List<Button> row : latestBoard()) {
             for (Button button : row) {
@@ -135,15 +170,18 @@ class TTTBotTurnTest {
         }
         assertTrue(results.isEmpty());
         assertEquals(2, edits.size());
-        assertEquals(human.getAsMention() + " it's your turn!", edits.get(1).getContent());
+        assertEquals(2, botEdits.size());
+        assertEquals(human.getAsMention() + " it's your turn!", botEdits.get(1).getContent());
+        verify(typing, times(2)).queue();
         verify(firstClick).editMessage(any(MessageEditData.class));
         verify(secondClick).editMessage(any(MessageEditData.class));
         verify(firstClick, never()).deferEdit();
         verify(secondClick, never()).deferEdit();
         verify(hook, never()).deleteOriginal();
         verify(channel, never()).sendMessage(any(CharSequence.class));
-        verify(expirations.get(0)).cancel(false);
-        verify(expirations.get(1)).cancel(false);
+        for (int i = 0; i < expirations.size() - 1; i++) {
+            verify(expirations.get(i)).cancel(false);
+        }
     }
 
     @Test
@@ -158,6 +196,12 @@ class TTTBotTurnTest {
         verify(duplicate).reply(anyString());
 
         successfulEdits.get(0).run();
+        assertEquals(1, occupied(latestBoard()));
+        ButtonInteractionEvent duringDelay = click(latestBoard(), 2, 2);
+        verify(duringDelay, never()).editMessage(any(MessageEditData.class));
+        verify(duringDelay).reply(anyString());
+        assertEquals(1, botEdits.size());
+        finishBotMove();
         assertEquals(2, occupied(latestBoard()));
         assertEquals('x', TTTUtils.discordButtonsToCharBoardFromButton(latestBoard())[0][0]);
     }
@@ -166,10 +210,12 @@ class TTTBotTurnTest {
     void delayedClickFromTheOldBoardCannotReplayACompletedTurn() {
         List<List<Button>> original = soloBoard(board("   ", "   ", "   "));
         click(original, 0, 0);
+        finishBotMove();
         click(original, 2, 2);
         assertEquals(1, edits.size());
         assertEquals(2, occupied(latestBoard()));
         click(latestBoard(), 2, 2);
+        finishBotMove();
         assertEquals(2, edits.size());
         assertEquals(4, occupied(latestBoard()));
     }
@@ -182,10 +228,31 @@ class TTTBotTurnTest {
         failedEdits.get(0).accept(new IllegalStateException("Simulated Discord edit failure"));
         assertTrue(boards.isEmpty());
         assertTrue(expirations.isEmpty());
+        assertTrue(botEdits.isEmpty());
+        verify(channel, never()).sendTyping();
 
         click(original, 2, 2);
         assertEquals(2, edits.size(), "A failed edit must release the turn for another click");
         successfulEdits.get(1).run();
+        finishBotMove();
+        assertEquals(2, occupied(latestBoard()));
+        char[][] visible = TTTUtils.discordButtonsToCharBoardFromButton(latestBoard());
+        assertEquals(' ', visible[0][0]);
+        assertEquals('x', visible[2][2]);
+    }
+
+    @Test
+    void failedBotEditRestoresTheOriginalBoardForRetry() {
+        List<List<Button>> original = soloBoard(board("   ", "   ", "   "));
+        click(original, 0, 0);
+        assertEquals(1, occupied(latestBoard()));
+        failedBotEdits.get(0).accept(new IllegalStateException("Simulated delayed edit failure"));
+        assertEquals(0, occupied(latestBoard()));
+        assertTrue(latestBoard().stream().flatMap(List::stream).noneMatch(Button::isDisabled));
+
+        click(latestBoard(), 2, 2);
+        assertEquals(2, botEdits.size());
+        finishBotMove();
         assertEquals(2, occupied(latestBoard()));
         char[][] visible = TTTUtils.discordButtonsToCharBoardFromButton(latestBoard());
         assertEquals(' ', visible[0][0]);
@@ -209,6 +276,8 @@ class TTTBotTurnTest {
         handler.onButtonInteraction(second);
         assertEquals(2, occupied(latestBoard()));
         assertEquals(human.getAsMention() + " it's your turn!", edits.get(1).getContent());
+        assertTrue(botEdits.isEmpty());
+        verify(channel, never()).sendTyping();
     }
 
     @Test
@@ -223,18 +292,23 @@ class TTTBotTurnTest {
         click(TTTUtils.createBoard(setup, board("   ", "   ", "   "), human), 0, 0);
         assertEquals(1, occupied(latestBoard()));
         assertTrue(latestBoard().get(0).get(1).getCustomId().endsWith("-" + otherBot.getId()));
+        assertTrue(botEdits.isEmpty());
+        verify(channel, never()).sendTyping();
     }
 
     @Test
     void botWinEndsTheGame() {
         TTTUtils.scheduleBoardExpiry(message(List.of()));
         click(soloBoard(board("oo ", "x  ", "x  ")), 1, 1);
+        assertTrue(results.isEmpty());
+        finishBotMove();
         assertEquals(1, results.size());
         assertEquals("ChisaTaki has won the game!", results.get(0).getTitle());
-        assertTrue(boards.isEmpty());
-        assertResultReplacesBoard();
+        assertEquals(1, boards.size(), "Only the temporary thinking board precedes the result");
+        assertResultReplacesBoard(botEdits.get(0));
         verify(expirations.get(0)).cancel(false);
-        assertEquals(1, expirations.size(), "A result must not get another deletion timer");
+        verify(expirations.get(1)).cancel(false);
+        assertEquals(2, expirations.size(), "A result must not get another deletion timer");
     }
 
     @Test
@@ -243,7 +317,9 @@ class TTTBotTurnTest {
         assertEquals(1, results.size());
         assertEquals("Player has won the game!", results.get(0).getTitle());
         assertTrue(boards.isEmpty());
-        assertResultReplacesBoard();
+        assertResultReplacesBoard(edits.get(0));
+        assertTrue(botEdits.isEmpty());
+        verify(channel, never()).sendTyping();
     }
 
     @Test
@@ -252,14 +328,28 @@ class TTTBotTurnTest {
         assertEquals(1, results.size());
         assertEquals("The game has ended in a draw!", results.get(0).getFields().get(0).getValue());
         assertTrue(boards.isEmpty());
-        assertResultReplacesBoard();
+        assertResultReplacesBoard(edits.get(0));
+        assertTrue(botEdits.isEmpty());
+        verify(channel, never()).sendTyping();
     }
 
-    private void assertResultReplacesBoard() {
+    private void assertResultReplacesBoard(MessageEditData result) {
         assertEquals(1, edits.size());
-        assertEquals("", edits.get(0).toData().getString("content"), "Clear the old turn text");
-        assertEquals(0, edits.get(0).toData().getArray("components").length(), "Remove playable buttons");
+        assertEquals("", result.toData().getString("content"), "Clear the old turn text");
+        assertEquals(0, result.toData().getArray("components").length(), "Remove playable buttons");
         verify(channel, never()).sendMessageEmbeds(any(MessageEmbed.class));
+    }
+
+    private void finishBotMove() {
+        successfulBotEdits.get(successfulBotEdits.size() - 1).run();
+    }
+
+    private void applyEdit(MessageEditData data) {
+        if (!data.getComponents().isEmpty()) {
+            boards.add(data.getComponents().stream()
+                .map(component -> component.asActionRow().getButtons()).toList());
+        }
+        results.addAll(data.getEmbeds());
     }
 
     private Member member(String id, boolean bot) {
@@ -310,11 +400,7 @@ class TTTBotTurnTest {
             MessageEditCallbackAction edit = mock(MessageEditCallbackAction.class);
             doAnswer(queued -> {
                 Runnable success = () -> {
-                    if (!data.getComponents().isEmpty()) {
-                        boards.add(data.getComponents().stream()
-                            .map(component -> component.asActionRow().getButtons()).toList());
-                    }
-                    results.addAll(data.getEmbeds());
+                    applyEdit(data);
                     queued.<Consumer<InteractionHook>>getArgument(0).accept(hook);
                 };
                 successfulEdits.add(success);

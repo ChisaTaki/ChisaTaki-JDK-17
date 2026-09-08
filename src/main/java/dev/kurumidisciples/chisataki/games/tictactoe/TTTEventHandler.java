@@ -26,8 +26,10 @@ import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.interactions.InteractionHook;
 import net.dv8tion.jda.api.requests.ErrorResponse;
 import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
+import net.dv8tion.jda.api.utils.messages.MessageEditData;
 
 @SuppressWarnings("null")
 public class TTTEventHandler extends ListenerAdapter {
@@ -161,35 +163,73 @@ public class TTTEventHandler extends ListenerAdapter {
         board[row][column] = choice.getString().charAt(0);
         Member nextPlayer = player1Turn ? setup.getPlayer2() : setup.getPlayer1();
 
-        if (setup.isSinglePlayer() && player1Turn) {
+        if (setup.isSinglePlayer() && player1Turn && !TTTLogic.isWin(board) && !TTTLogic.isFull(board)) {
+            MessageEditData original = new MessageEditBuilder().setReplace(true)
+                .setContent(setup.getPlayer1().getAsMention() + " it's your turn!")
+                .setComponents(extractButtonsFromMessage(event.getMessage()).stream().map(ActionRow::of).toList())
+                .build();
+            MessageEditData thinking = new MessageEditBuilder().setReplace(true)
+                .setContent(setup.getPlayer2().getEffectiveName() + " is thinking...")
+                .setComponents(TTTUtils.createBoard(setup, board, setup.getPlayer2()).stream()
+                    .map(buttons -> ActionRow.of(buttons.stream().map(Button::asDisabled).toList())).toList())
+                .build();
+
             TTTLogic.findBestMove(board, setup.getPlayer2Choice()).ifPresent(move ->
                 board[move.row()][move.column()] = setup.getPlayer2Choice().getString().charAt(0));
-            nextPlayer = setup.getPlayer1();
+            MessageEditData response = createTurnUpdate(setup, board, setup.getPlayer1());
+            boolean finished = TTTLogic.isWin(board) || TTTLogic.isFull(board);
+
+            // Acknowledge now; delaying the initial interaction response would time out.
+            event.editMessage(thinking).queue(hook -> {
+                TTTUtils.scheduleBoardExpiry(event.getMessage());
+                hook.editOriginal(response).queueAfter(5L, TimeUnit.SECONDS,
+                    ignored -> finishTurn(event, turnKey, finished),
+                    failure -> restoreBoard(event, hook, original, turnKey, failure));
+                event.getChannel().sendTyping().queue();
+            }, failure -> reportUpdateFailure(event, turnKey, failure));
+            return;
         }
 
+        boolean finished = TTTLogic.isWin(board) || TTTLogic.isFull(board);
+        event.editMessage(createTurnUpdate(setup, board, nextPlayer)).queue(
+            hook -> finishTurn(event, turnKey, finished),
+            failure -> reportUpdateFailure(event, turnKey, failure));
+    }
+
+    private MessageEditData createTurnUpdate(TTTGameSetup setup, char[][] board, Member nextPlayer) {
         List<List<Button>> updatedBoard = TTTUtils.createBoard(setup, board, nextPlayer);
         TTTChoice winner = TTTLogic.getWinner(board);
-        boolean finished = winner != null || TTTLogic.isDraw(board);
         MessageEditBuilder update = new MessageEditBuilder().setReplace(true);
         if (winner != null) {
             update.setEmbeds(generateWinnerEmbed(setup, setup.getPlayerFromChoice(winner), updatedBoard));
-        } else if (finished) {
+        } else if (TTTLogic.isDraw(board)) {
             update.setEmbeds(generateDrawEmbed(setup, updatedBoard));
         } else {
             update.setContent(nextPlayer.getAsMention() + " it's your turn!")
                 .setComponents(updatedBoard.stream().map(ActionRow::of).toList());
         }
 
-        // Acknowledge the click by editing its source message with BOTH moves in one request.
-        event.editMessage(update.build()).queue(hook -> {
-            CompletableFuture.delayedExecutor(10L, TimeUnit.MINUTES)
-                .execute(() -> consumedTurns.remove(turnKey));
-            if (finished) {
-                TTTUtils.cancelBoardExpiry(event.getMessageId());
-            } else {
-                TTTUtils.scheduleBoardExpiry(event.getMessage());
-            }
-        }, failure -> reportUpdateFailure(event, turnKey, failure));
+        return update.build();
+    }
+
+    private void finishTurn(ButtonInteractionEvent event, String turnKey, boolean finished) {
+        CompletableFuture.delayedExecutor(10L, TimeUnit.MINUTES)
+            .execute(() -> consumedTurns.remove(turnKey));
+        if (finished) {
+            TTTUtils.cancelBoardExpiry(event.getMessageId());
+        } else {
+            TTTUtils.scheduleBoardExpiry(event.getMessage());
+        }
+    }
+
+    private void restoreBoard(ButtonInteractionEvent event, InteractionHook hook, MessageEditData original,
+            String turnKey, Throwable failure) {
+        LOGGER.error("Could not update tic tac toe message {} with the bot response; restoring the board",
+            event.getMessageId(), failure);
+        hook.editOriginal(original).queue(ignored -> {
+            consumedTurns.remove(turnKey);
+            TTTUtils.scheduleBoardExpiry(event.getMessage());
+        }, restoreFailure -> reportUpdateFailure(event, turnKey, restoreFailure));
     }
 
     private void reportUpdateFailure(ButtonInteractionEvent event, String turnKey, Throwable failure) {
