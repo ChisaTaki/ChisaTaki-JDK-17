@@ -64,13 +64,13 @@ public class RadiataNotificationService {
 
     private static String formatCategories(Moderation.Categories categories) {
         StringBuilder sb = new StringBuilder();
-        if (categories.hate()) sb.append("Hate ");
-        if (categories.hateThreatening()) sb.append("Hate Threatening ");
-        if (categories.selfHarm()) sb.append("Self-Harm ");
-        if (categories.sexual()) sb.append("Sexual ");
-        if (categories.sexualMinors()) sb.append("Sexual Minors ");
-        if (categories.violence()) sb.append("Violence ");
-        if (categories.violenceGraphic()) sb.append("Violence Graphic ");
+        if (categories.hate()) sb.append("`Hate` ");
+        if (categories.hateThreatening()) sb.append("`Hate Threatening` ");
+        if (categories.selfHarm()) sb.append("`Self-Harm` ");
+        if (categories.sexual()) sb.append("`Sexual` ");
+        if (categories.sexualMinors()) sb.append("`Sexual Minors` ");
+        if (categories.violence()) sb.append("`Violence` ");
+        if (categories.violenceGraphic()) sb.append("`Violence Graphic` ");
         return sb.toString().trim();
     }
 }
