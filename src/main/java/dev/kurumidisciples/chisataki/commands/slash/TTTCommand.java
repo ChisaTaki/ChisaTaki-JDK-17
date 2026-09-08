@@ -46,7 +46,7 @@ public class TTTCommand extends SlashCommand {
             } else if (opponentOption.getAsMember().getId().equals(event.getMember().getId())){
                 event.getHook().editOriginal("You cannot challenge yourself!").queue();
             } else if (opponentOption.getAsUser().isBot()){
-                event.getHook().editOriginal("You cannot challenge a bot!").queue();
+                event.getHook().editOriginal("Please select singleplayer to play against a bot!").queue();
             } else {
                event.getHook().editOriginal("Please select your Game Piece first!").setComponents(ActionRow.of(generateChoiceMenu(event.getMember(), opponentOption.getAsMember()))).queue();
             }

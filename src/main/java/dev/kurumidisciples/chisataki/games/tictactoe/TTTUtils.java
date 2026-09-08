@@ -59,21 +59,21 @@ public class TTTUtils {
         return event.getGuild().getMemberById(id);
     }
     
-     public static TTTGameSetup rebuildGameSetupFromMenu(Interaction event, String id){
+     public static TTTGameSetup rebuildGameSetupFromMenu(Interaction event, String id, boolean isSinglePlayer){
         String[] ids = id.split("-");
-        return new TTTGameSetup(resolveMember(event, ids[1]), resolveMember(event, ids[2]));
+        return new TTTGameSetup(resolveMember(event, ids[1]), resolveMember(event, ids[2]), isSinglePlayer);
     }
 
-    public static TTTGameSetup rebuildGameSetupFromButton(Interaction event, String buttonId){
+    public static TTTGameSetup rebuildGameSetupFromButton(Interaction event, String buttonId, boolean isSinglePlayer){
         String[] ids = buttonId.split("-");
-        TTTGameSetup setup = new TTTGameSetup(resolveMember(event, ids[3]), resolveMember(event, ids[5]));
+        TTTGameSetup setup = new TTTGameSetup(resolveMember(event, ids[3]), resolveMember(event, ids[5]), isSinglePlayer);
         setup.setPlayer1Choice(TTTChoice.getChoice(ids[4]));
         return setup;
     }
 
-    public static TTTGameSetup rebuildGameSetupFromRequest(Interaction event, String id){
+    public static TTTGameSetup rebuildGameSetupFromRequest(Interaction event, String id, boolean isSinglePlayer){
         String[] ids = id.split("-");
-        TTTGameSetup setup = new TTTGameSetup(resolveMember(event, ids[1]), resolveMember(event, ids[3]));
+        TTTGameSetup setup = new TTTGameSetup(resolveMember(event, ids[1]), resolveMember(event, ids[3]), isSinglePlayer);
         setup.setPlayer1Choice(TTTChoice.getChoice(ids[2]));
         return setup;
     }

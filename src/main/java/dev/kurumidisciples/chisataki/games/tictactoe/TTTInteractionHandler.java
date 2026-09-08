@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import dev.kurumidisciples.chisataki.Main;
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.components.buttons.Button;
@@ -30,7 +31,8 @@ public class TTTInteractionHandler extends ListenerAdapter{
             event.reply("Only the player who started this game can choose a piece.").setEphemeral(true).queue();
             return;
         }
-        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromMenu(event, id);
+        boolean isSinglePlayer = event.getComponentId().split("-")[2].equals(Main.getJDA().getSelfUser().getId()) ? true : false;
+        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromMenu(event, id, isSinglePlayer);
         if (setup.getPlayer1() == null || setup.getPlayer2() == null) {
             event.reply("A player is no longer available. Please start a new game.").setEphemeral(true).queue();
             return;

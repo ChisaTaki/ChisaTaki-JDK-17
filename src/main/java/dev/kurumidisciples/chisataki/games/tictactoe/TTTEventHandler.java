@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import dev.kurumidisciples.chisataki.Main;
 import dev.kurumidisciples.chisataki.enums.GifEnum;
 import dev.kurumidisciples.chisataki.games.rps.RpsLogic;
 import dev.kurumidisciples.chisataki.games.rps.RpsResult;
@@ -48,7 +49,8 @@ public class TTTEventHandler extends ListenerAdapter {
     }
 
     private void handleTTTRequestAcceptance(ButtonInteractionEvent event) {
-        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getComponentId());
+        boolean isSinglePlayer = event.getComponentId().split("-")[2].equals(Main.getJDA().getSelfUser().getId()) ? true : false;
+        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getComponentId(), isSinglePlayer);
         if (!playersAvailable(event, setup)) {
             return;
         }
@@ -62,7 +64,8 @@ public class TTTEventHandler extends ListenerAdapter {
     }
 
     private void handleTTTRequestRejection(ButtonInteractionEvent event) {
-        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getComponentId());
+        boolean isSinglePlayer = event.getComponentId().split("-")[2].equals(Main.getJDA().getSelfUser().getId()) ? true : false;
+        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromRequest(event, event.getComponentId(), isSinglePlayer);
         if (!playersAvailable(event, setup)) {
             return;
         }
@@ -97,7 +100,8 @@ public class TTTEventHandler extends ListenerAdapter {
             cannotInteract(event);
             return;
         }
-        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromButton(event, event.getComponentId());
+        boolean isSinglePlayer = event.getComponentId().split("-")[2].equals(Main.getJDA().getSelfUser().getId()) ? true : false;
+        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromButton(event, event.getComponentId(), isSinglePlayer);
         if (!playersAvailable(event, setup)) {
             return;
         }
