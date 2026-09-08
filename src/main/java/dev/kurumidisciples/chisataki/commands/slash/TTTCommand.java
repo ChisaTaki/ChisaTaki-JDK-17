@@ -17,23 +17,36 @@ public class TTTCommand extends SlashCommand {
     public TTTCommand() {
         super("tic-tac-toe", "play tic tac toe");
         this.subcommands = List.of(
+            new SubcommandData("singleplayer", "Play against ChisaTaki"),
             new SubcommandData("multiplayer", "Request a match with another member").addOption(OptionType.USER, "opponent", "The opponent to challenge", true)
         );
     }
 
     @Override
     public void execute(SlashCommandInteractionEvent event) {
-        if (event.getSubcommandName().equals("multiplayer")){
+        if (event.getGuild() == null || event.getMember() == null) {
+            event.reply("This game can only be played in a server.").setEphemeral(true).queue();
+            return;
+        }
+
+        if ("singleplayer".equals(event.getSubcommandName())) {
+            event.reply("Choose your game piece! You go first against ChisaTaki.")
+                .setEphemeral(true)
+                .setComponents(ActionRow.of(generateChoiceMenu(event.getMember(), event.getGuild().getSelfMember())))
+                .queue();
+        } else if ("multiplayer".equals(event.getSubcommandName())) {
             //check if member is not in ingnore list
             event.deferReply(true).queue();
             OptionMapping opponentOption = event.getOption("opponent");
             
-            if (IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())) {
+            if (opponentOption == null || opponentOption.getAsMember() == null) {
+                event.getHook().editOriginal("Please choose a member of this server.").queue();
+            } else if (IgnoreCommand.isMemberIgnored(opponentOption.getAsMember().getId())) {
                event.getHook().editOriginal("This member wishes not to be challenged by other members").queue();
             } else if (opponentOption.getAsMember().getId().equals(event.getMember().getId())){
                 event.getHook().editOriginal("You cannot challenge yourself!").queue();
             } else if (opponentOption.getAsUser().isBot()){
-                event.getHook().editOriginal("You cannot challenge a bot!").queue();
+                event.getHook().editOriginal("Please select singleplayer to play against a bot!").queue();
             } else {
                event.getHook().editOriginal("Please select your Game Piece first!").setComponents(ActionRow.of(generateChoiceMenu(event.getMember(), opponentOption.getAsMember()))).queue();
             }

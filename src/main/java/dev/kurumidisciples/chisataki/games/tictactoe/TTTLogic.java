@@ -1,6 +1,60 @@
 package dev.kurumidisciples.chisataki.games.tictactoe;
 
+import java.util.Optional;
+
 public class TTTLogic {
+
+    public record Move(int row, int column) {}
+
+    /** Finds an optimal legal move without changing the supplied board. */
+    public static Optional<Move> findBestMove(char[][] board, TTTChoice botChoice) {
+        if (isWin(board) || isFull(board)) {
+            return Optional.empty();
+        }
+
+        Move bestMove = null;
+        int bestScore = Integer.MIN_VALUE;
+        for (int row = 0; row < 3; row++) {
+            for (int column = 0; column < 3; column++) {
+                if (board[row][column] != ' ') {
+                    continue;
+                }
+                board[row][column] = botChoice.getString().charAt(0);
+                int score = minimax(board, botChoice, false, 1);
+                board[row][column] = ' ';
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestMove = new Move(row, column);
+                }
+            }
+        }
+        return Optional.ofNullable(bestMove);
+    }
+
+    private static int minimax(char[][] board, TTTChoice botChoice, boolean botTurn, int depth) {
+        TTTChoice winner = getWinner(board);
+        if (winner != null) {
+            return winner == botChoice ? 10 - depth : depth - 10;
+        }
+        if (isFull(board)) {
+            return 0;
+        }
+
+        int bestScore = botTurn ? Integer.MIN_VALUE : Integer.MAX_VALUE;
+        char piece = (botTurn ? botChoice : TTTChoice.getAlternate(botChoice)).getString().charAt(0);
+        for (int row = 0; row < 3; row++) {
+            for (int column = 0; column < 3; column++) {
+                if (board[row][column] != ' ') {
+                    continue;
+                }
+                board[row][column] = piece;
+                int score = minimax(board, botChoice, !botTurn, depth + 1);
+                board[row][column] = ' ';
+                bestScore = botTurn ? Math.max(bestScore, score) : Math.min(bestScore, score);
+            }
+        }
+        return bestScore;
+    }
 
     public static boolean isWin(char[][] board) {
         return getWinner(board) != null;
