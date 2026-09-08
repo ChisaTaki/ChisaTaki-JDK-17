@@ -2,12 +2,16 @@ package dev.kurumidisciples.chisataki.games.tictactoe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.components.buttons.ButtonStyle;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.interactions.Interaction;
@@ -15,6 +19,7 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 
 @SuppressWarnings("all")
 public class TTTUtils {
+    private static final Map<String, ScheduledFuture<?>> BOARD_EXPIRATIONS = new ConcurrentHashMap<>();
 
     public static void startGame(MessageChannel channel, TTTGameSetup setup) {
         char[][] board = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
@@ -42,8 +47,28 @@ public class TTTUtils {
     public static void sendBoard(MessageChannel channel, List<List<Button>> board, Member currentPlayer) {
         channel.sendMessage(currentPlayer.getAsMention() + " it's your turn!")
             .setComponents(ActionRow.of(board.get(0)), ActionRow.of(board.get(1)), ActionRow.of(board.get(2)))
-            .queue(message -> message.delete().queueAfter(10L, TimeUnit.MINUTES, null,
-                new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE)));
+            .queue(TTTUtils::scheduleBoardExpiry);
+    }
+
+    public static void scheduleBoardExpiry(Message message) {
+        BOARD_EXPIRATIONS.compute(message.getId(), (id, previous) -> {
+            if (previous != null) {
+                previous.cancel(false);
+            }
+            return message.delete().queueAfter(10L, TimeUnit.MINUTES,
+                ignored -> BOARD_EXPIRATIONS.remove(id),
+                failure -> {
+                    BOARD_EXPIRATIONS.remove(id);
+                    new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE).accept(failure);
+                });
+        });
+    }
+
+    public static void cancelBoardExpiry(String messageId) {
+        ScheduledFuture<?> expiry = BOARD_EXPIRATIONS.remove(messageId);
+        if (expiry != null) {
+            expiry.cancel(false);
+        }
     }
 
     private static Member resolveMember(Interaction event, String id) {

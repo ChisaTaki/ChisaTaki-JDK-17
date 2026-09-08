@@ -1,15 +1,24 @@
 package dev.kurumidisciples.chisataki.games.tictactoe;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Nonnull;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import dev.kurumidisciples.chisataki.enums.GifEnum;
 import dev.kurumidisciples.chisataki.games.rps.RpsLogic;
 import dev.kurumidisciples.chisataki.games.rps.RpsResult;
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
@@ -18,6 +27,7 @@ import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.exceptions.ErrorHandler;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.ErrorResponse;
+import net.dv8tion.jda.api.utils.messages.MessageEditBuilder;
 
 @SuppressWarnings("null")
 public class TTTEventHandler extends ListenerAdapter {
@@ -25,6 +35,8 @@ public class TTTEventHandler extends ListenerAdapter {
     private static final String TTT_PREFIX = "TTT-";
     private static final String TTT_REQ_AP_PREFIX = "TTTReqAp-";
     private static final String TTT_REQ_RE_PREFIX = "TTTReqRe-";
+    private static final Logger LOGGER = LoggerFactory.getLogger(TTTEventHandler.class);
+    private final Set<String> consumedTurns = ConcurrentHashMap.newKeySet();
 
     @Override
     public void onButtonInteraction(@Nonnull ButtonInteractionEvent event) {
@@ -128,13 +140,22 @@ public class TTTEventHandler extends ListenerAdapter {
             return;
         }
 
-        // Consume the old board before advancing so two clicks cannot create two games.
-        event.deferEdit().queue(hook -> hook.deleteOriginal().queue(
-            ignored -> playTurn(event, setup, board, row, column),
-            new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE)));
+        // Keep successful snapshots consumed too: a queued click can contain the old board.
+        String turnKey = event.getMessageId() + ":" + Arrays.deepToString(board);
+        if (!consumedTurns.add(turnKey)) {
+            event.reply("That turn is already being played. Please use the updated board.")
+                .setEphemeral(true).queue();
+            return;
+        }
+        try {
+            playTurn(event, setup, board, row, column, turnKey);
+        } catch (RuntimeException failure) {
+            reportUpdateFailure(event, turnKey, failure);
+        }
     }
 
-    private void playTurn(ButtonInteractionEvent event, TTTGameSetup setup, char[][] board, int row, int column) {
+    private void playTurn(ButtonInteractionEvent event, TTTGameSetup setup, char[][] board, int row, int column,
+            String turnKey) {
         boolean player1Turn = event.getUser().getId().equals(setup.getPlayer1().getId());
         TTTChoice choice = player1Turn ? setup.getPlayer1Choice() : setup.getPlayer2Choice();
         board[row][column] = choice.getString().charAt(0);
@@ -148,14 +169,33 @@ public class TTTEventHandler extends ListenerAdapter {
 
         List<List<Button>> updatedBoard = TTTUtils.createBoard(setup, board, nextPlayer);
         TTTChoice winner = TTTLogic.getWinner(board);
+        boolean finished = winner != null || TTTLogic.isDraw(board);
+        MessageEditBuilder update = new MessageEditBuilder().setReplace(true);
         if (winner != null) {
-            event.getChannel().sendMessageEmbeds(
-                generateWinnerEmbed(setup, setup.getPlayerFromChoice(winner), updatedBoard)).queue();
-        } else if (TTTLogic.isDraw(board)) {
-            event.getChannel().sendMessageEmbeds(generateDrawEmbed(setup, updatedBoard)).queue();
+            update.setEmbeds(generateWinnerEmbed(setup, setup.getPlayerFromChoice(winner), updatedBoard));
+        } else if (finished) {
+            update.setEmbeds(generateDrawEmbed(setup, updatedBoard));
         } else {
-            TTTUtils.sendBoard(event.getChannel(), updatedBoard, nextPlayer);
+            update.setContent(nextPlayer.getAsMention() + " it's your turn!")
+                .setComponents(updatedBoard.stream().map(ActionRow::of).toList());
         }
+
+        // Acknowledge the click by editing its source message with BOTH moves in one request.
+        event.editMessage(update.build()).queue(hook -> {
+            CompletableFuture.delayedExecutor(10L, TimeUnit.MINUTES)
+                .execute(() -> consumedTurns.remove(turnKey));
+            if (finished) {
+                TTTUtils.cancelBoardExpiry(event.getMessageId());
+            } else {
+                TTTUtils.scheduleBoardExpiry(event.getMessage());
+            }
+        }, failure -> reportUpdateFailure(event, turnKey, failure));
+    }
+
+    private void reportUpdateFailure(ButtonInteractionEvent event, String turnKey, Throwable failure) {
+        consumedTurns.remove(turnKey);
+        LOGGER.error("Could not update tic tac toe message {} in channel {}",
+            event.getMessageId(), event.getChannel().getId(), failure);
     }
 
     private List<List<Button>> extractButtonsFromMessage(Message message) {
