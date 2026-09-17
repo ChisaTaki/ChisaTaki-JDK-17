@@ -2,6 +2,13 @@
 
 The ChisaTaki bot is a bot written for the ChisaTaki server, and its exclusive use. This bot should never be allowed into another server as it could cause unforeseen consequences. However, you are allowed to fork this repo and use the code in your own bot.
 
+## Tic Tac Toe
+
+- `/tic-tac-toe singleplayer`: Choose X or O, then play against ChisaTaki. You move first with either piece; the bot replies automatically and plays optimally, so your best result is a draw.
+- `/tic-tac-toe multiplayer opponent:@member`: Choose your piece and send another member a challenge. The challenger moves first after the opponent accepts.
+
+Only the current player can use the board. Inactive boards expire after 10 minutes.
+
 ### Maven Dependencies
 
 To avoid formatting conflicts between developer environments, each developer will have their own `pom.xml` by following the steps below:
