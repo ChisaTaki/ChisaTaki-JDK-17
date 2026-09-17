@@ -182,7 +182,7 @@ public class TTTEventHandler extends ListenerAdapter {
             // Acknowledge now; delaying the initial interaction response would time out.
             event.editMessage(thinking).queue(hook -> {
                 TTTUtils.scheduleBoardExpiry(event.getMessage());
-                hook.editOriginal(response).queueAfter(5L, TimeUnit.SECONDS,
+                hook.editOriginal(response).queueAfter(2L, TimeUnit.SECONDS,
                     ignored -> finishTurn(event, turnKey, finished),
                     failure -> restoreBoard(event, hook, original, turnKey, failure));
                 event.getChannel().sendTyping().queue();
