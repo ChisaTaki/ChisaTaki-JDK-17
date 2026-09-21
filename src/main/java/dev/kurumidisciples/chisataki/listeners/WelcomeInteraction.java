@@ -135,7 +135,7 @@ public class WelcomeInteraction extends ListenerAdapter {
 
 	}
 
-	  public static BufferedImage makeCircleImage(BufferedImage image) {
+	  public static BufferedImage makeCircleImage(BufferedImage image) throws NullPointerException {
         int diameter = Math.min(image.getWidth(), image.getHeight());
         BufferedImage output = new BufferedImage(diameter, diameter, BufferedImage.TYPE_INT_ARGB);
 
@@ -192,7 +192,15 @@ public class WelcomeInteraction extends ListenerAdapter {
         }
 
         // Cache avatar image and welcome text
-        BufferedImage avatar = makeCircleImage(ImageIO.read(new URL(member.getUser().getAvatarUrl())));
+        BufferedImage avatar;
+
+        try {
+            avatar = makeCircleImage(ImageIO.read(new URL(member.getUser().getAvatarUrl())));
+        } catch (Exception e) {
+            logger.error("Failed to load avatar for " + member.getUser().getName(), e);
+            avatar = ImageIO.read(new File("data/images/default-avatar.jpeg"));
+        }
+        
         String welcomeText = "Welcome " + member.getUser().getName() + "!";
 
         ArrayList<BufferedImage> generateFrames = new ArrayList<>(bufferedImages.size());
