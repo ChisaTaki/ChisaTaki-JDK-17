@@ -174,7 +174,7 @@ public class TTTEventHandler extends ListenerAdapter {
                     .map(buttons -> ActionRow.of(buttons.stream().map(Button::asDisabled).toList())).toList())
                 .build();
 
-            TTTLogic.findBestMove(board, setup.getPlayer2Choice()).ifPresent(move ->
+            TTTLogic.findBestMoveHard(board, setup.getPlayer2Choice()).ifPresent(move ->
                 board[move.row()][move.column()] = setup.getPlayer2Choice().getString().charAt(0));
             MessageEditData response = createTurnUpdate(setup, board, setup.getPlayer1());
             boolean finished = TTTLogic.isWin(board) || TTTLogic.isFull(board);

@@ -1,13 +1,14 @@
 package dev.kurumidisciples.chisataki.games.tictactoe;
 
 import java.util.Optional;
+import java.util.Random;
 
 public class TTTLogic {
 
     public record Move(int row, int column) {}
 
     /** Finds an optimal legal move without changing the supplied board. */
-    public static Optional<Move> findBestMove(char[][] board, TTTChoice botChoice) {
+    public static Optional<Move> findBestMoveHard(char[][] board, TTTChoice botChoice) {
         if (isWin(board) || isFull(board)) {
             return Optional.empty();
         }
@@ -29,6 +30,23 @@ public class TTTLogic {
             }
         }
         return Optional.ofNullable(bestMove);
+    }
+
+    public static Optional<Move> findBestMoveEasy(char[][] board, TTTChoice botChoice) {
+        if (isWin(board) || isFull(board)) {
+            return Optional.empty();
+        }
+
+        Random random = new Random();
+
+        while (true) {
+            int row = random.nextInt(3);
+            int column = random.nextInt(3);
+
+            if (board[row][column] == ' ') {
+                return Optional.of(new Move(row, column));
+            }
+        }
     }
 
     private static int minimax(char[][] board, TTTChoice botChoice, boolean botTurn, int depth) {
