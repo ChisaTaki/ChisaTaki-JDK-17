@@ -1,10 +1,10 @@
 package dev.kurumidisciples.chisataki.quotes.command;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 import java.sql.Timestamp;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 
 import javax.imageio.ImageIO;
 
@@ -15,11 +15,13 @@ import org.slf4j.LoggerFactory;
 import dev.kurumidisciples.chisataki.commands.message.MessageCommand;
 import dev.kurumidisciples.chisataki.quotes.QuoteSettings;
 import dev.kurumidisciples.chisataki.quotes.QuoteSettingsUtils;
+import dev.kurumidisciples.chisataki.quotes.QuoteThreadResolver;
 import dev.kurumidisciples.chisataki.quotes.image.QuoteImageGenerator;
 import dev.kurumidisciples.chisataki.quotes.quota.QuoteQuotaUtils;
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.command.MessageContextInteractionEvent;
 import net.dv8tion.jda.api.utils.FileUpload;
@@ -28,6 +30,7 @@ import net.dv8tion.jda.api.utils.FileUpload;
 public class QuoteContextCommand extends MessageCommand  {
 
     final static Logger logger = LoggerFactory.getLogger(QuoteContextCommand.class);
+    private static final long QUOTES_THREAD_ID = 1221538772785561600L;
     
     public QuoteContextCommand(){
         super("Make it a Quote!");
@@ -35,7 +38,14 @@ public class QuoteContextCommand extends MessageCommand  {
 
     @Override
     public void execute(MessageContextInteractionEvent event) {
-        event.deferReply(true).queue();
+        if (event.getGuild() == null || event.getMember() == null) {
+            event.reply("Quotes can only be generated in a server.").setEphemeral(true).queue();
+            return;
+        }
+        event.deferReply(true).queue(hook -> generateQuote(event));
+    }
+
+    private void generateQuote(MessageContextInteractionEvent event) {
         if (event.getTarget().getContentRaw().length() > 2000) {
             event.getHook().editOriginal("The message is too long to be a quote!").queue();
             return;
@@ -58,25 +68,48 @@ public class QuoteContextCommand extends MessageCommand  {
             return;
         }
 
-        event.getGuild().getThreadChannelById(1221538772785561600L).sendMessage("*Generating Quote...*").queue(message -> {
-            final QuoteSettings finalSettings = settings;
-            Member member = event.getMember();
-            event.getChannel().retrieveMessageById(event.getTarget().getId()).queue(message1 -> {
-                BufferedImage quoteImage = QuoteImageGenerator.generateQuoteImage(finalSettings, message1);
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                try {
-                    ImageIO.write(quoteImage, "png", baos);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        CompletableFuture.completedFuture(event.getGuild())
+            .thenCompose(guild -> QuoteThreadResolver.resolve(guild, QUOTES_THREAD_ID))
+            .thenCompose(thread -> {
+                if (thread.isLocked()) {
+                    return CompletableFuture.<Message>failedFuture(new IllegalStateException("The quotes thread is locked."));
                 }
-                InputStream stream = new ByteArrayInputStream(baos.toByteArray());
-                FileUpload file = FileUpload.fromData(stream, member.getId() + "-quote.png");
-                message.editMessageEmbeds(generateQuoteEmbed()).setContent(member.getAsMention() + " a quote has been generated for you! " + event.getTarget().getJumpUrl()).setFiles(file).queue();
+                // Discord automatically unarchives an unlocked thread when a message is sent.
+                return thread.sendMessage("*Generating Quote...*").submit();
+            })
+            .thenCompose(message -> finishQuote(event, settings, message))
+            .whenComplete((message, failure) -> {
+                if (failure != null) {
+                    logger.error("Could not generate a quote in thread {}", QUOTES_THREAD_ID, failure);
+                    event.getHook().editOriginal("I couldn't post the quote. Please ask a moderator to check that the quotes thread exists, is unlocked, and that I can view it, read its history, send messages in threads, and attach files.").queue();
+                } else {
+                    event.getHook().editOriginal("A quote has been generated for you! " + message.getJumpUrl()).queue();
+                }
             });
-        });
+    }
 
-        event.getHook().editOriginal("A quote has been generated for you!").queue();
-
+    private CompletableFuture<Message> finishQuote(MessageContextInteractionEvent event, QuoteSettings settings,
+            Message placeholder) {
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                BufferedImage quoteImage = QuoteImageGenerator.generateQuoteImage(settings, event.getTarget());
+                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+                if (!ImageIO.write(quoteImage, "png", bytes)) {
+                    throw new IllegalStateException("PNG image encoder is unavailable");
+                }
+                return bytes.toByteArray();
+            } catch (Exception failure) {
+                throw new CompletionException(failure);
+            }
+        }).thenCompose(bytes -> placeholder.editMessageEmbeds(generateQuoteEmbed())
+            .setContent(event.getMember().getAsMention() + " a quote has been generated for you! " + event.getTarget().getJumpUrl())
+            .setFiles(FileUpload.fromData(bytes, "quote.png")).submit())
+            .whenComplete((message, failure) -> {
+                if (failure != null) {
+                    placeholder.delete().queue(null, cleanupFailure ->
+                        logger.warn("Could not remove failed quote placeholder {}", placeholder.getId(), cleanupFailure));
+                }
+            });
     }
 
     private static boolean hasConflicts(MessageContextInteractionEvent event, QuoteSettings settings, Member member) {
