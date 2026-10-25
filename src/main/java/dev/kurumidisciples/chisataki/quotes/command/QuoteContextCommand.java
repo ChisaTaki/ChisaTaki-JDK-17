@@ -70,7 +70,7 @@ public class QuoteContextCommand extends MessageCommand  {
                     e.printStackTrace();
                 }
                 InputStream stream = new ByteArrayInputStream(baos.toByteArray());
-                FileUpload file = FileUpload.fromData(stream, "quote.png");
+                FileUpload file = FileUpload.fromData(stream, member.getId() + "-quote.png");
                 message.editMessageEmbeds(generateQuoteEmbed()).setContent(member.getAsMention() + " a quote has been generated for you! " + event.getTarget().getJumpUrl()).setFiles(file).queue();
             });
         });
