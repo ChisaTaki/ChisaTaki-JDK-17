@@ -46,20 +46,16 @@ public class QuoteContextCommand extends MessageCommand  {
     }
 
     private void generateQuote(MessageContextInteractionEvent event) {
-        if (event.getTarget().getContentRaw().length() > 2000) {
-            event.getHook().editOriginal("The message is too long to be a quote!").queue();
-            return;
-        }
-
         QuoteSettings settings = QuoteSettingsUtils.selectSettings(event.getGuild().getId());
 
         if (settings == null) {
             logger.warn("Quote settings were not found in database for server {}", event.getGuild().getId());
             event.getHook().editOriginal("No settings found for this server! Please contact the moderators.").queue();
             return;
-        } 
-
-        if (!isAllowed(event, settings, event.getMember())) {
+        } else if (!isAllowed(event, settings, event.getMember())) {
+            return;
+        } else if (event.getTarget().getContentRaw().length() > 2000) {
+            event.getHook().editOriginal("The message is too long to be a quote!").queue();
             return;
         }
 
@@ -135,19 +131,14 @@ public class QuoteContextCommand extends MessageCommand  {
     }
 
     private static boolean isAllowed(MessageContextInteractionEvent event, QuoteSettings settings, Member member) {
-        if (!settings.isEnabled()){
-            event.getHook().editOriginal("Quotes are currently not enabled for this server!").queue();
-            return false;
-        } else if (settings.isBoosterOnly() && !member.isBoosting()){
-            event.getHook().editOriginal("Quotes are currently only enabled for boosters!").queue();
+        if (hasConflicts(event, settings, member)){
+            // already sent a message to the user in hasConflicts, so just return false
             return false;
         } else if (withinModerationCategory(event)){
             event.getHook().editOriginal("Quotes can not be generated in the moderation category.").queue();
             return false;
         } else if (hasUserExceededQuota(event.getUser().getIdLong())){
             event.getHook().editOriginal("Please wait 10 seconds before generating another quote.").queue();
-            return false;
-        } else if (hasConflicts(event, settings, member)){
             return false;
         }
         return true;
