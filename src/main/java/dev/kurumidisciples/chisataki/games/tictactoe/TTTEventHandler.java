@@ -16,6 +16,10 @@ import org.slf4j.LoggerFactory;
 import dev.kurumidisciples.chisataki.enums.GifEnum;
 import dev.kurumidisciples.chisataki.games.rps.RpsLogic;
 import dev.kurumidisciples.chisataki.games.rps.RpsResult;
+import dev.kurumidisciples.chisataki.games.tictactoe.enums.TTTChoice;
+import dev.kurumidisciples.chisataki.games.tictactoe.enums.TTTDifficulty;
+import dev.kurumidisciples.chisataki.games.tictactoe.utils.TTTLogic;
+import dev.kurumidisciples.chisataki.games.tictactoe.utils.TTTUtils;
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
@@ -109,14 +113,19 @@ public class TTTEventHandler extends ListenerAdapter {
     }
 
     private void handleTTTSelection(ButtonInteractionEvent event) {
-        // Board IDs: TTT-row-column-player1-piece1-player2-piece2-currentPlayer.
+        // Board IDs: TTT-row-column-player1-piece1-player2-piece2-currentPlayer-difficulty(optional).
         String[] parts = event.getComponentId().split("-");
-        if (parts.length != 8 || !event.getUser().getId().equals(parts[7])) {
+        if (!event.getUser().getId().equals(parts[7])) {
             cannotInteract(event);
             return;
         }
-        boolean isSinglePlayer = parts[5].equals(event.getJDA().getSelfUser().getId());
-        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromButton(event, event.getComponentId(), isSinglePlayer);
+        boolean isSinglePlayer = parts[5].equals(event.getJDA().getSelfUser().getId()); //singleplayer will always have 8 parts, multiplayer will have 7 parts
+        TTTGameSetup setup;
+        if (isSinglePlayer){
+            setup = TTTUtils.rebuildGameSetupFromButton(event, event.getComponentId(), isSinglePlayer, TTTDifficulty.fromId(parts[8]));
+        } else {
+            setup = TTTUtils.rebuildGameSetupFromButton(event, event.getComponentId(), isSinglePlayer, null);
+        }
         if (!playersAvailable(event, setup)) {
             return;
         }
@@ -156,33 +165,50 @@ public class TTTEventHandler extends ListenerAdapter {
         }
     }
 
-    private void playTurn(ButtonInteractionEvent event, TTTGameSetup setup, char[][] board, int row, int column,
-            String turnKey) {
+   
+    private void playTurn(ButtonInteractionEvent event, TTTGameSetup setup, char[][] board, int row, int column, String turnKey) {
         boolean player1Turn = event.getUser().getId().equals(setup.getPlayer1().getId());
         TTTChoice choice = player1Turn ? setup.getPlayer1Choice() : setup.getPlayer2Choice();
         board[row][column] = choice.getString().charAt(0);
+
         Member nextPlayer = player1Turn ? setup.getPlayer2() : setup.getPlayer1();
 
-        if (setup.isSinglePlayer() && player1Turn && !TTTLogic.isWin(board) && !TTTLogic.isFull(board)) {
+        if (setup.isSinglePlayer() && player1Turn &&
+                !TTTLogic.isWin(board) && !TTTLogic.isFull(board)) {
+
             MessageEditData original = new MessageEditBuilder().setReplace(true)
                 .setContent(setup.getPlayer1().getAsMention() + " it's your turn!")
-                .setComponents(extractButtonsFromMessage(event.getMessage()).stream().map(ActionRow::of).toList())
+                .setComponents(extractButtonsFromMessage(event.getMessage()).stream()
+                    .map(ActionRow::of).toList())
                 .build();
+
             MessageEditData thinking = new MessageEditBuilder().setReplace(true)
                 .setContent(setup.getPlayer2().getEffectiveName() + " is thinking...")
                 .setComponents(TTTUtils.createBoard(setup, board, setup.getPlayer2()).stream()
-                    .map(buttons -> ActionRow.of(buttons.stream().map(Button::asDisabled).toList())).toList())
+                    .map(buttons -> ActionRow.of(buttons.stream()
+                        .map(Button::asDisabled).toList())).toList())
                 .build();
 
-            TTTLogic.findBestMoveHard(board, setup.getPlayer2Choice()).ifPresent(move ->
-                board[move.row()][move.column()] = setup.getPlayer2Choice().getString().charAt(0));
+            switch (setup.getDifficulty()) {
+                case EASY -> TTTLogic.findBestMoveEasy(board, setup.getPlayer2Choice())
+                    .ifPresent(move -> board[move.row()][move.column()] =
+                        setup.getPlayer2Choice().getString().charAt(0));
+
+                case MEDIUM -> TTTLogic.findBestMoveMedium(board, setup.getPlayer2Choice())
+                    .ifPresent(move -> board[move.row()][move.column()] =
+                        setup.getPlayer2Choice().getString().charAt(0));
+
+                case HARD -> TTTLogic.findBestMoveHard(board, setup.getPlayer2Choice())
+                    .ifPresent(move -> board[move.row()][move.column()] =
+                        setup.getPlayer2Choice().getString().charAt(0));
+            }
+
             MessageEditData response = createTurnUpdate(setup, board, setup.getPlayer1());
             boolean finished = TTTLogic.isWin(board) || TTTLogic.isFull(board);
 
-            // Acknowledge now; delaying the initial interaction response would time out.
             event.editMessage(thinking).queue(hook -> {
                 TTTUtils.scheduleBoardExpiry(event.getMessage());
-                hook.editOriginal(response).queueAfter(2L, TimeUnit.SECONDS,
+                hook.editOriginal(response).queueAfter(1L, TimeUnit.SECONDS,
                     ignored -> finishTurn(event, turnKey, finished),
                     failure -> restoreBoard(event, hook, original, turnKey, failure));
                 event.getChannel().sendTyping().queue();
@@ -196,10 +222,19 @@ public class TTTEventHandler extends ListenerAdapter {
             failure -> reportUpdateFailure(event, turnKey, failure));
     }
 
+
     private MessageEditData createTurnUpdate(TTTGameSetup setup, char[][] board, Member nextPlayer) {
-        List<List<Button>> updatedBoard = TTTUtils.createBoard(setup, board, nextPlayer);
+        List<List<Button>> updatedBoard;
+
+        if (setup.isSinglePlayer()){
+           updatedBoard = TTTUtils.createBoard(setup, board, nextPlayer, setup.getDifficulty());
+        } else {
+           updatedBoard = TTTUtils.createBoard(setup, board, nextPlayer);
+        }
+
         TTTChoice winner = TTTLogic.getWinner(board);
         MessageEditBuilder update = new MessageEditBuilder().setReplace(true);
+
         if (winner != null) {
             update.setEmbeds(generateWinnerEmbed(setup, setup.getPlayerFromChoice(winner), updatedBoard));
         } else if (TTTLogic.isDraw(board)) {

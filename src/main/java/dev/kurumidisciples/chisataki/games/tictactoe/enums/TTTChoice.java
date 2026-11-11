@@ -1,4 +1,4 @@
-package dev.kurumidisciples.chisataki.games.tictactoe;
+package dev.kurumidisciples.chisataki.games.tictactoe.enums;
 
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 

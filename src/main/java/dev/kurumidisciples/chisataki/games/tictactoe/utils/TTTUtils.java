@@ -1,4 +1,4 @@
-package dev.kurumidisciples.chisataki.games.tictactoe;
+package dev.kurumidisciples.chisataki.games.tictactoe.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,13 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import dev.kurumidisciples.chisataki.games.tictactoe.TTTGameSetup;
+import dev.kurumidisciples.chisataki.games.tictactoe.enums.TTTChoice;
+import dev.kurumidisciples.chisataki.games.tictactoe.enums.TTTDifficulty;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
 import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.components.buttons.ButtonStyle;
+import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
@@ -23,7 +27,33 @@ public class TTTUtils {
 
     public static void startGame(MessageChannel channel, TTTGameSetup setup) {
         char[][] board = {{' ', ' ', ' '}, {' ', ' ', ' '}, {' ', ' ', ' '}};
-        sendBoard(channel, createBoard(setup, board, setup.getPlayer1()), setup.getPlayer1());
+        if (setup.isSinglePlayer()){
+            sendBoard(channel, createBoard(setup, board, setup.getPlayer1(), setup.getDifficulty()), setup.getPlayer1());
+        } else {
+            sendBoard(channel, createBoard(setup, board, setup.getPlayer1()), setup.getPlayer1());
+        }
+    }
+
+    public static List<List<Button>> createBoard(TTTGameSetup setup, char[][] board, Member currentPlayer, TTTDifficulty difficulty) {
+        List<List<Button>> buttons = new ArrayList<>();
+        for (int row = 0; row < 3; row++) {
+            List<Button> buttonRow = new ArrayList<>();
+            for (int column = 0; column < 3; column++) {
+                String id = "TTT-" + row + "-" + column + "-" + setup.getPlayer1().getId()
+                    + "-" + setup.getPlayer1Choice().getString() + "-" + setup.getPlayer2().getId()
+                    + "-" + setup.getPlayer2Choice().getString() + "-" + currentPlayer.getId();
+                if (difficulty != null) {
+                    id += "-" + difficulty.getId();
+                }
+                System.out.println("TTTUtils: createBoard: button id: " + id);
+                TTTChoice choice = TTTChoice.getChoiceFromChar(board[row][column]);
+                buttonRow.add(choice == null
+                    ? Button.of(ButtonStyle.SECONDARY, id, "_")
+                    : Button.of(ButtonStyle.SECONDARY, id, choice.getEmoji()).asDisabled());
+            }
+            buttons.add(buttonRow);
+        }
+        return buttons;
     }
 
     public static List<List<Button>> createBoard(TTTGameSetup setup, char[][] board, Member currentPlayer) {
@@ -89,6 +119,19 @@ public class TTTUtils {
         return new TTTGameSetup(resolveMember(event, ids[1]), resolveMember(event, ids[2]), isSinglePlayer);
     }
 
+    public static TTTGameSetup rebuildGameSetupFromMenu(Interaction event, String id, boolean isSinglePlayer, String difficultyId){
+        String[] ids = id.split("-");
+        TTTDifficulty difficulty = difficultyId != null ? TTTDifficulty.fromId(difficultyId) : null;
+        return new TTTGameSetup(resolveMember(event, ids[1]), resolveMember(event, ids[2]), isSinglePlayer, difficulty);
+    }
+
+    public static TTTGameSetup rebuildGameSetupFromButton(Interaction event, String buttonId, boolean isSinglePlayer, TTTDifficulty difficulty){
+        String[] ids = buttonId.split("-");
+        TTTGameSetup setup = new TTTGameSetup(resolveMember(event, ids[3]), resolveMember(event, ids[5]), isSinglePlayer, difficulty);
+        setup.setPlayer1Choice(TTTChoice.getChoice(ids[4]));
+        return setup;
+    }
+
     public static TTTGameSetup rebuildGameSetupFromButton(Interaction event, String buttonId, boolean isSinglePlayer){
         String[] ids = buttonId.split("-");
         TTTGameSetup setup = new TTTGameSetup(resolveMember(event, ids[3]), resolveMember(event, ids[5]), isSinglePlayer);
@@ -145,5 +188,20 @@ public class TTTUtils {
     public static Member getCurrentPlayerFromTTTBoard(Interaction event, Button button){
         String[] ids = button.getCustomId().split("-");
         return resolveMember(event, ids[7]);
+    }
+
+    public static StringSelectMenu createChoiceMenu(Member player1, Member player2, TTTDifficulty difficulty) {
+       String id = "menu:TTT-" + player1.getId() + "-" + player2.getId();
+
+        if (difficulty != null) {
+            id += "-" + difficulty.getId();
+        }
+
+        return StringSelectMenu.create(id)
+            .setPlaceholder("Choose your game piece!")
+            .addOption("X", "x", TTTChoice.X.getEmoji())
+            .addOption("O", "o", TTTChoice.O.getEmoji())
+            .setRequiredRange(1, 1)
+            .build();
     }
 }

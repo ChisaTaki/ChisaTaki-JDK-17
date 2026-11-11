@@ -1,5 +1,7 @@
 package dev.kurumidisciples.chisataki.games.tictactoe;
 
+import dev.kurumidisciples.chisataki.games.tictactoe.enums.TTTChoice;
+import dev.kurumidisciples.chisataki.games.tictactoe.enums.TTTDifficulty;
 import net.dv8tion.jda.api.entities.Member;
 
 public class TTTGameSetup {
@@ -10,11 +12,17 @@ public class TTTGameSetup {
     // if player2 is the chisataki bot then the game is single player and the bot will be the second player
     private Member player2;
     private boolean isSinglePlayer;
+    private TTTDifficulty difficulty;
 
-    public TTTGameSetup(Member player1, Member player2, boolean isSinglePlayer) {
+    public TTTGameSetup(Member player1, Member player2, boolean isSinglePlayer, TTTDifficulty difficulty) {
         this.player1 = player1;
         this.player2 = player2;
         this.isSinglePlayer = isSinglePlayer;
+        this.difficulty = difficulty;
+    }
+    
+    public TTTGameSetup(Member player1, Member player2, boolean isSinglePlayer) {
+        this(player1, player2, isSinglePlayer, null);
     }
 
 
@@ -37,6 +45,10 @@ public class TTTGameSetup {
 
     public Member getPlayer2() {
         return this.player2;
+    }
+
+    public TTTDifficulty getDifficulty() {
+        return this.difficulty;
     }
 
     public boolean isSinglePlayer() {

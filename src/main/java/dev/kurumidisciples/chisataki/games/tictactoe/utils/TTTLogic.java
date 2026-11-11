@@ -1,7 +1,9 @@
-package dev.kurumidisciples.chisataki.games.tictactoe;
+package dev.kurumidisciples.chisataki.games.tictactoe.utils;
 
 import java.util.Optional;
 import java.util.Random;
+
+import dev.kurumidisciples.chisataki.games.tictactoe.enums.TTTChoice;
 
 public class TTTLogic {
 
@@ -48,6 +50,16 @@ public class TTTLogic {
             }
         }
     }
+
+
+    public static Optional<Move> findBestMoveMedium(char[][] board, TTTChoice botChoice) {
+        Random random = new Random();
+
+        return random.nextDouble() < 0.45
+            ? findBestMoveHard(board, botChoice)
+            : findBestMoveEasy(board, botChoice);
+    }
+
 
     private static int minimax(char[][] board, TTTChoice botChoice, boolean botTurn, int depth) {
         TTTChoice winner = getWinner(board);

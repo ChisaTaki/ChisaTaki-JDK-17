@@ -2,10 +2,10 @@ package dev.kurumidisciples.chisataki.commands.slash;
 
 import java.util.List;
 
-import dev.kurumidisciples.chisataki.games.tictactoe.TTTChoice;
+import dev.kurumidisciples.chisataki.games.tictactoe.enums.TTTDifficulty;
+import dev.kurumidisciples.chisataki.games.tictactoe.utils.TTTUtils;
 import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.components.actionrow.ActionRow;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
@@ -30,9 +30,16 @@ public class TTTCommand extends SlashCommand {
         }
 
         if ("singleplayer".equals(event.getSubcommandName())) {
-            event.reply("Choose your game piece! You go first against ChisaTaki.")
+            event.reply("Choose a difficulty! You will always go first against ChisaTaki.")
                 .setEphemeral(true)
-                .setComponents(ActionRow.of(generateChoiceMenu(event.getMember(), event.getGuild().getSelfMember())))
+                .setComponents(ActionRow.of(StringSelectMenu.create("menu:TTTDifficulty-"
+                    + event.getUser().getId() + "-" + event.getJDA().getSelfUser().getId())
+                    .setPlaceholder("Choose a difficulty")
+                    .addOption("Easy", TTTDifficulty.EASY.getId(), "ChisaTaki picks random legal moves.")
+                    .addOption("Medium", TTTDifficulty.MEDIUM.getId(), "ChisaTaki plays optimally 50% of the time.")
+                    .addOption("Hard", TTTDifficulty.HARD.getId(), "ChisaTaki plays optimally. Nearly always a win or draw for ChisaTaki.")
+                    .setRequiredRange(1,1)
+                    .build()))
                 .queue();
         } else if ("multiplayer".equals(event.getSubcommandName())) {
             //check if member is not in ingnore list
@@ -48,18 +55,10 @@ public class TTTCommand extends SlashCommand {
             } else if (opponentOption.getAsUser().isBot()){
                 event.getHook().editOriginal("Please select singleplayer to play against a bot!").queue();
             } else {
-               event.getHook().editOriginal("Please select your Game Piece first!").setComponents(ActionRow.of(generateChoiceMenu(event.getMember(), opponentOption.getAsMember()))).queue();
+               event.getHook().editOriginal("Please select your Game Piece first!").setComponents(ActionRow.of(TTTUtils.createChoiceMenu(event.getMember(), opponentOption.getAsMember(), null))).queue();
             }
             
         }
     }
 
-    private StringSelectMenu generateChoiceMenu(Member player1, Member player2){
-        return StringSelectMenu.create("menu:TTT-" + player1.getId() + "-" + player2.getId())
-        .setPlaceholder("Choose your game piece!")
-        .addOption("X", "x", TTTChoice.X.getEmoji())
-        .addOption("O", "o", TTTChoice.O.getEmoji())
-        .setRequiredRange(1, 1)
-        .build();
-    }
 }

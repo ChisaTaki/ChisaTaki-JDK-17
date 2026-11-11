@@ -5,6 +5,10 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import dev.kurumidisciples.chisataki.utils.ColorUtils;
+
+import dev.kurumidisciples.chisataki.games.tictactoe.utils.*;
+import dev.kurumidisciples.chisataki.games.tictactoe.enums.*;
+
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.components.buttons.ButtonStyle;
@@ -20,49 +24,74 @@ import net.dv8tion.jda.api.requests.ErrorResponse;
 public class TTTInteractionHandler extends ListenerAdapter{
 
     @Override
-    public void onStringSelectInteraction(@Nonnull StringSelectInteractionEvent event){
-        String id = event.getComponentId();
-        if (!id.startsWith("menu:TTT-")) {
-            return;
-        }
-        String[] parts = id.split("-");
-        if (parts.length != 3 || !event.getUser().getId().equals(parts[1])) {
-            event.reply("Only the player who started this game can choose a piece.").setEphemeral(true).queue();
-            return;
-        }
-        boolean isSinglePlayer = parts[2].equals(event.getJDA().getSelfUser().getId());
-        TTTGameSetup setup = TTTUtils.rebuildGameSetupFromMenu(event, id, isSinglePlayer);
-        if (setup.getPlayer1() == null || setup.getPlayer2() == null) {
-            event.reply("A player is no longer available. Please start a new game.").setEphemeral(true).queue();
-            return;
-        }
-        TTTChoice choice = event.getValues().size() == 1 ? TTTChoice.getChoice(event.getValues().get(0)) : null;
-        if (choice == null) {
-            event.reply("Please choose X or O.").setEphemeral(true).queue();
-            return;
-        }
-        setup.setPlayer1Choice(choice);
+    public void onStringSelectInteraction(@Nonnull StringSelectInteractionEvent event) {
+    String id = event.getComponentId();
 
-        event.deferEdit().queue(hook -> hook.deleteOriginal().queue(ignored -> {
-            if (setup.isSinglePlayer()) {
-                TTTUtils.startGame(event.getChannel(), setup);
-            } else {
-                event.getChannel().sendMessage(setup.getPlayer2().getAsMention() + " you've been requested to play Tic Tac Toe by " + setup.getPlayer1().getAsMention() + ".")
+    if (id.startsWith("menu:TTTDifficulty-")) {
+        String[] ids = id.split("-");
+        event.deferEdit().queue();
+        if (event.getGuild() == null || event.getMember() == null || ids.length != 3
+                || !event.getUser().getId().equals(ids[1])
+                || !event.getJDA().getSelfUser().getId().equals(ids[2])
+                || event.getValues().size() != 1) {
+            event.reply("Invalid game setup or this isn't your game. If issue persists, please contact developer.").setEphemeral(true).queue();
+            return;
+        }
+        try {
+            TTTDifficulty difficulty = TTTDifficulty.fromId(event.getValues().get(0));
+            event.getHook().editOriginal("Difficulty Selected: **" + difficulty.getLabel() + "**!\nChoose your piece!")
+                .setComponents(ActionRow.of(TTTUtils.createChoiceMenu(
+                    event.getMember(), event.getGuild().getSelfMember(), difficulty))).queue();
+        } catch (IllegalArgumentException e) {
+            event.reply("An error occurred while setting the difficulty.").setEphemeral(true).queue();
+        }
+        return;
+    } else if (!id.startsWith("menu:TTT-")) {
+        return;
+    }
+
+    String[] parts = id.split("-");
+    System.out.println("TTTInteractionHandler: onStringSelectInteraction: " + id);
+    if (parts.length < 3 || !event.getUser().getId().equals(parts[1])) {
+        event.reply("Only the player who started this game can choose a piece.").setEphemeral(true).queue();
+        return;
+    }
+    boolean isSinglePlayer = parts[2].equals(event.getJDA().getSelfUser().getId());
+    String difficultyId = isSinglePlayer ? parts[3] : null;
+    TTTGameSetup setup = TTTUtils.rebuildGameSetupFromMenu(event, id, isSinglePlayer, difficultyId);
+    if (setup.getPlayer1() == null || setup.getPlayer2() == null) {
+        event.reply("A player is no longer available. Please start a new game.").setEphemeral(true).queue();
+        return;
+    }
+    TTTChoice choice = event.getValues().size() == 1 ? TTTChoice.getChoice(event.getValues().get(0)) : null;
+    if (choice == null) {
+        event.reply("Please choose X or O.").setEphemeral(true).queue();
+        return;
+    }
+    setup.setPlayer1Choice(choice);
+
+    event.deferEdit().queue(hook -> hook.deleteOriginal().queue(ignored -> {
+        if (setup.isSinglePlayer()) {
+            TTTUtils.startGame(event.getChannel(), setup);
+        } else {
+            event.getChannel().sendMessage(setup.getPlayer2().getAsMention()
+                    + " you've been requested to play Tic Tac Toe by " + setup.getPlayer1().getAsMention() + ".")
                 .setEmbeds(createRequestEmbed(setup))
                 .setComponents(ActionRow.of(createRequestButtons(setup)))
                 .queue(message -> {
-                    message.delete().queueAfter(10L, java.util.concurrent.TimeUnit.MINUTES, null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
+                    message.delete().queueAfter(10L, java.util.concurrent.TimeUnit.MINUTES,
+                        null, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE));
                 });
-            }
-        }, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE)));
-    }
+        }
+    }, new ErrorHandler().ignore(ErrorResponse.UNKNOWN_MESSAGE)));
+}
 
     private MessageEmbed createRequestEmbed(TTTGameSetup setup){
         return new EmbedBuilder()
                 .setTitle("Tic Tac Toe")
                 .setDescription(setup.getPlayer1().getAsMention() + " has requested to play Tic Tac Toe with you.")
-                .addField("Player 1", setup.getPlayer1Choice().getEmojString(), true)
-                .addField("Player 2", setup.getPlayer2Choice().getEmojString(), true)
+                .addField(setup.getPlayer1().getEffectiveName(), setup.getPlayer1Choice().getEmojString(), true)
+                .addField(setup.getPlayer2().getEffectiveName(), setup.getPlayer2Choice().getEmojString(), true)
                 .setImage("https://media.tenor.com/RFanknJESW4AAAAd/tic-tac-toe-kyper.gif")
                 .setColor(ColorUtils.PURPLE)
                 .build();
