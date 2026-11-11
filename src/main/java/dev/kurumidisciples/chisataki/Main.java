@@ -78,7 +78,7 @@ public class Main {
         .directory("crypt/")
         .load();
       CommandCenter commandCenter = new CommandCenter();
-     //Database.start();
+      Database.start();
       jda = JDABuilder.createDefault(env.get("TOKEN"))
           .enableIntents(GatewayIntent.getIntents(GatewayIntent.ALL_INTENTS))
           .enableCache(CacheFlag.VOICE_STATE, CacheFlag.ACTIVITY, CacheFlag.EMOJI, CacheFlag.MEMBER_OVERRIDES,
@@ -123,10 +123,6 @@ public class Main {
 
       //deleteMangadexDynastyMessages();
       //SantaClock.start();
-    }
-
-    catch (InterruptedException e) {
-      e.printStackTrace();
     }
     catch (Exception e) {
       e.printStackTrace();
