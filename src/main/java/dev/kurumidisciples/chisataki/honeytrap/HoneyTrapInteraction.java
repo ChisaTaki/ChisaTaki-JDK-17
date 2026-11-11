@@ -11,12 +11,14 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.utils.FileUpload;
 import net.dv8tion.jda.api.components.separator.Separator;
+import net.dv8tion.jda.api.entities.messages.MessageSnapshot;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,28 +52,56 @@ public class HoneyTrapInteraction extends ListenerAdapter{
 
     @SuppressWarnings("null")
     private static void notifyBotHouse(MessageReceivedEvent event){
-        var attachmentsComponent = event.getMessage().getAttachments().isEmpty()
-            ? TextDisplay.of("*No attachments were sent with the message.*")
-            : MediaGallery.of(collectAttachments(event.getMessage()));
-        var messageContent = event.getMessage().getContentRaw().isEmpty()
-            ? TextDisplay.of("*No text content was sent with the message.*")
-            : TextDisplay.of("```\n" + event.getMessage().getContentRaw() + "\n```");
 
-        event.getGuild().getTextChannelById(ChannelEnum.BOT_HOUSE.getId())
-            .sendMessageComponents(
-                Container.of(
-                    Section.of(
-                        Thumbnail.fromUrl(event.getMember().getEffectiveAvatarUrl()),
-                        TextDisplay.of("# Honey Trap Triggered\nContents of the messsage are contained below."),
-                        TextDisplay.of("**User ID:** " + event.getAuthor().getId() + "\n**Username:** " + event.getAuthor().getAsTag())
-                    ),
-                    Separator.createDivider(Separator.Spacing.LARGE),
+        if (isForwardedMessage(event.getMessage().getMessageSnapshots())){
+            List<MessageSnapshot> messageSnapshots = event.getMessage().getMessageSnapshots();
+            var attachmentsComponent = messageSnapshots.isEmpty()
+                ? TextDisplay.of("*No attachments were sent with the message.*")
+                : MediaGallery.of(collectAttachments(messageSnapshots));
+            var messageContent = messageSnapshots.isEmpty()
+                ? TextDisplay.of("*No text content was sent with the message.*")
+                : TextDisplay.of("```\n" + messageSnapshots.get(0).getContentRaw() + "\n```");
+            event.getGuild().getTextChannelById(ChannelEnum.BOT_HOUSE.getId())
+                .sendMessageComponents(
+                    Container.of(
+                        Section.of(
+                            Thumbnail.fromUrl(event.getMember().getEffectiveAvatarUrl()),
+                            TextDisplay.of("# Honey Trap Triggered\nContents of the messsage are contained below."),
+                            TextDisplay.of("**User ID:** " + event.getAuthor().getId() + "\n**Username:** " + event.getAuthor().getAsTag())
+                        ),
+                        Separator.createDivider(Separator.Spacing.LARGE),
 
-                    TextDisplay.of("Message Content:"),
-                    messageContent,
-                    attachmentsComponent
-                )
-            ).useComponentsV2().queue();
+                        TextDisplay.of("Message Content:"),
+                        messageContent,
+                        attachmentsComponent
+                    )
+                ).useComponentsV2().queue();
+        } else {
+            var attachmentsComponent = event.getMessage().getAttachments().isEmpty()
+                ? TextDisplay.of("*No attachments were sent with the message.*")
+                : MediaGallery.of(collectAttachments(event.getMessage()));
+            var messageContent = event.getMessage().getContentRaw().isEmpty()
+                ? TextDisplay.of("*No text content was sent with the message.*")
+                : TextDisplay.of("```\n" + event.getMessage().getContentRaw() + "\n```");
+            event.getGuild().getTextChannelById(ChannelEnum.BOT_HOUSE.getId())
+                .sendMessageComponents(
+                    Container.of(
+                        Section.of(
+                            Thumbnail.fromUrl(event.getMember().getEffectiveAvatarUrl()),
+                            TextDisplay.of("# Honey Trap Triggered\nContents of the messsage are contained below."),
+                            TextDisplay.of("**User ID:** " + event.getAuthor().getId() + "\n**Username:** " + event.getAuthor().getAsTag())
+                        ),
+                        Separator.createDivider(Separator.Spacing.LARGE),
+
+                        TextDisplay.of("Message Content:"),
+                        messageContent,
+                        attachmentsComponent
+                    )
+                ).useComponentsV2().queue();
+        }
+        
+
+        
     }
 
     private static ArrayList<MediaGalleryItem> collectAttachments(Message message){
@@ -88,5 +118,28 @@ public class HoneyTrapInteraction extends ListenerAdapter{
         }
 
         return items;
+    }
+
+    // overloaded method to handle message snapshots
+    private static ArrayList<MediaGalleryItem> collectAttachments(List<MessageSnapshot> messageSnapshots){
+        ArrayList<MediaGalleryItem> items = new ArrayList<>();
+
+        for (MessageSnapshot snapshot : messageSnapshots) {
+            for (Message.Attachment attachment : snapshot.getAttachments()) {
+                try {
+                    items.add(MediaGalleryItem.fromFile(FileUpload.fromData(attachment.getProxy().download().get(), attachment.getFileName())).withSpoiler(true));
+                } catch (InterruptedException e) {
+                    logger.error("Attachment download interrupted for {} from message {}", attachment.getFileName(), "N/A Forwarded Message", e);
+                } catch (ExecutionException e) {
+                    logger.error("Failed to download attachment {} from message {}", attachment.getFileName(), "N/A Forwarded Message", e);
+                }
+            }
+        }
+
+        return items;
+    }
+
+    private static boolean isForwardedMessage(List<MessageSnapshot> messageSnapshots) {
+        return !messageSnapshots.isEmpty(); // if there are message snapshots retun true, else return false
     }
 }
