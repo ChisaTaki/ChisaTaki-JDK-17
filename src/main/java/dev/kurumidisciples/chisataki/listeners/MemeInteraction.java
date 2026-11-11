@@ -30,6 +30,8 @@ public class MemeInteraction extends ListenerAdapter {
 	private static final String TAKINA_FOOT = "<:TakinaFoot:1039462047257219162>";
 	private static final String MAD_DOG_TAKINA = "<:MadDogTakina:1027897140976025701>";
 	private static final String CHISATAKI_KISS = "<:ChisaTakiKiss:1013059473167888486>";
+	private static final String TAKINA_TRAIN = "<:TrainTakina:1013976244884344872>";
+	private static final String CHISATO_TRAIN = "<:TrainChisato:1013976121253040160>";
 
 	private static final ExecutorService THREAD_POOL_EXECUTOR = Executors.newFixedThreadPool(5);
 
@@ -75,6 +77,9 @@ public class MemeInteraction extends ListenerAdapter {
 					event.getMessage().addReaction(Emoji.fromUnicode("🎄")).complete();
 				} */ else if (userMessage.toLowerCase().contains("supaka")){
 					event.getMessage().addReaction(Emoji.fromFormatted("<a:ChisatoDrive:1015331140317499392>")).queue();
+				} else if (userMessage.toLowerCase().contains("train")){
+					event.getMessage().addReaction(Emoji.fromFormatted(TAKINA_TRAIN)).queue();
+					event.getMessage().addReaction(Emoji.fromFormatted(CHISATO_TRAIN)).queue();
 				}
 
 			}
